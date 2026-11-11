@@ -4,7 +4,7 @@ import { db } from '@/lib/db';
 export async function GET() {
   const articles = db.getArticles();
   const categories = db.getCategories();
-  const baseUrl = 'https://eixonacional.com.br';
+  const baseUrl = 'https://patriacentral.com.br';
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
@@ -46,7 +46,7 @@ export async function GET() {
     <priority>0.9</priority>
     <news:news>
       <news:publication>
-        <news:name>Eixo Nacional</news:name>
+        <news:name>Pátria Central</news:name>
         <news:language>pt-br</news:language>
       </news:publication>
       <news:publication_date>${new Date(a.publishedAt).toISOString()}</news:publication_date>

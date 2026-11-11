@@ -46,14 +46,14 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-white flex flex-col font-sans-journal text-[#16181d]">
-      {/* 1. Cabeçalho Oficial Pátria / Eixo */}
+      {/* 1. Cabeçalho Oficial Pátria Central */}
       <Header categories={categories} settings={settings} />
 
       {/* 2. Barra informativa institucional */}
       <div className="bg-[#f4f5f7] border-b border-[#e3e5e9] text-[12px] text-[#5b616e]">
         <div className="max-w-[1280px] mx-auto px-5 py-1.5 flex justify-between items-center flex-wrap gap-2">
           <span>Jornalismo profissional independente · Cobertura dos Três Poderes, Economia e Federação.</span>
-          <span className="hidden sm:inline">Portal Eixo Nacional</span>
+          <span className="hidden sm:inline">Portal Pátria Central</span>
         </div>
       </div>
 

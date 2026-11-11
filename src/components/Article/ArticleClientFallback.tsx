@@ -132,7 +132,7 @@ export default function ArticleClientFallback({ slug }: FallbackProps) {
       {/* Data e autor */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 py-3 border-t border-b border-[#e3e5e9]">
         <span className="text-[13px] text-[#3c414b]">
-          Por <strong className="text-[#16181d]">{article.sourceName || 'Redação Eixo Nacional'}</strong> · Publicado em {formattedPublish} às {timeStr}
+          Por <strong className="text-[#16181d]">{article.sourceName || 'Redação Pátria Central'}</strong> · Publicado em {formattedPublish} às {timeStr}
         </span>
         <ShareButtons title={article.title} slug={article.slug} />
       </div>

@@ -250,7 +250,7 @@ export default function Header({ categories, settings, urgentText, urgentLink }:
               </span>
             </button>
 
-            {/* Logotipo Eixo Nacional */}
+            {/* Logotipo Pátria Central */}
             <Link href="/" className="flex items-center gap-2.5 sm:gap-3 group text-[#0b2545]">
               <span className="w-2 sm:w-2.5 h-9 sm:h-11 bg-[#c8102e] shrink-0 rounded-xs"></span>
               <span className="flex flex-col">

@@ -51,7 +51,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <div className="flex items-center gap-2">
             <span className="w-2 h-5 bg-red-700"></span>
             <span className="font-headline font-bold uppercase text-sm tracking-wide">
-              Eixo Nacional • Redação & Admin
+              Pátria Central • Redação & Admin
             </span>
           </div>
           <button
@@ -75,7 +75,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 <div className="flex items-center gap-2">
                   <span className="w-2.5 h-6 bg-red-700 inline-block rounded-xs"></span>
                   <span className="text-xl font-black text-white font-headline uppercase tracking-tight">
-                    Eixo Nacional
+                    Pátria Central
                   </span>
                 </div>
                 <p className="text-[10px] text-slate-500 uppercase tracking-widest mt-1">
@@ -144,7 +144,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </button>
 
             <div className="text-[10px] text-slate-500 text-center pt-2">
-              Versão 1.0 • Eixo Nacional
+              Versão 1.0 • Pátria Central
             </div>
           </div>
         </aside>

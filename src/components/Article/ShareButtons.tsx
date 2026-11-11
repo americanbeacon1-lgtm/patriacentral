@@ -10,7 +10,7 @@ interface ShareButtonsProps {
 export default function ShareButtons({ title, slug }: ShareButtonsProps) {
   const [copied, setCopied] = useState(false);
 
-  const url = typeof window !== 'undefined' ? window.location.href : `https://eixonacional.com.br/noticia/${slug}`;
+  const url = typeof window !== 'undefined' ? window.location.href : `https://patriacentral.com.br/noticia/${slug}`;
   const encodedUrl = encodeURIComponent(url);
   const encodedTitle = encodeURIComponent(title);
 

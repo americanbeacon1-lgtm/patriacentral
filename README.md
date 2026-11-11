@@ -1,7 +1,7 @@
-# PORTAL EIXO NACIONAL
+# PORTAL PÁTRIA CENTRAL
 ## Plataforma Jornalística Digital de Notícias e do Poder no Brasil
 
-O **Portal Eixo Nacional** é um grande veículo de comunicação digital brasileiro desenvolvido com tecnologia de ponta, alta performance editorial, SEO técnico jornalístico e um sistema proprietário completo de monetização e publicidade digital — estruturado para atender tanto marcas corporativas privadas quanto as exigências rigorosas de transparência para **publicidade governamental e institucional (SECOM/PR, Midiacad, Ministérios, Governos Estaduais e Prefeituras)**.
+O **Portal Pátria Central** é um grande veículo de comunicação digital brasileiro desenvolvido com tecnologia de ponta, alta performance editorial, SEO técnico jornalístico e um sistema proprietário completo de monetização e publicidade digital — estruturado para atender tanto marcas corporativas privadas quanto as exigências rigorosas de transparência para **publicidade governamental e institucional (SECOM/PR, Midiacad, Ministérios, Governos Estaduais e Prefeituras)**.
 
 ---
 

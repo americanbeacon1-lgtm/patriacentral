@@ -135,7 +135,7 @@ export default function AdminReportsPage() {
             <div className="flex items-center gap-2">
               <span className="w-3 h-7 bg-red-700 inline-block"></span>
               <span className="text-2xl font-black font-headline uppercase tracking-tight text-slate-950">
-                EIXO NACIONAL
+                PÁTRIA CENTRAL
               </span>
             </div>
             <p className="text-xs text-slate-500 font-semibold uppercase tracking-wider mt-1">
@@ -292,14 +292,14 @@ export default function AdminReportsPage() {
           <div>
             <p className="font-bold text-slate-800">Declaração de Autenticidade:</p>
             <p className="text-[11px] leading-relaxed mt-1 text-slate-500">
-              Certificamos que as inserções publicitárias acima discriminadas foram integralmente veiculadas nos servidores de produção do Portal Eixo Nacional, em consonância com as regras técnicas da SECOM/Midiacad e boas práticas do IAB Brasil.
+              Certificamos que as inserções publicitárias acima discriminadas foram integralmente veiculadas nos servidores de produção do Portal Pátria Central, em consonância com as regras técnicas da SECOM/Midiacad e boas práticas do IAB Brasil.
             </p>
           </div>
 
           <div className="text-center sm:text-right space-y-2">
             <div className="inline-block border-t border-slate-400 pt-2 px-8">
               <p className="font-bold text-slate-900">Diretoria Comercial & Auditoria</p>
-              <p className="text-[11px] text-slate-500">Eixo Nacional Comunicação Digital Ltda.</p>
+              <p className="text-[11px] text-slate-500">Pátria Central Comunicação Digital Ltda.</p>
               <p className="text-[10px] font-mono text-slate-400">CNPJ: 51.849.204/0001-88</p>
             </div>
           </div>

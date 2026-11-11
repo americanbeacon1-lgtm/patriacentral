@@ -59,7 +59,7 @@ export const INITIAL_CATEGORIES: Category[] = [
 ];
 
 export const DEFAULT_SETTINGS: SiteSettings = {
-  portalName: 'Eixo Nacional',
+  portalName: 'Pátria Central',
   tagline: 'O portal de notícias e do poder no Brasil',
   primaryColor: '#0B2545',
   accentColor: '#c8102e',
@@ -67,7 +67,7 @@ export const DEFAULT_SETTINGS: SiteSettings = {
   urgentBarText: 'CONGRESSO: Senado aprova projeto prioritário para infraestrutura logística e transição energética nacional',
   urgentBarLink: '/noticia/congresso-aprova-projeto-prioritario-infraestrutura-logistica',
   whatsappChannelUrl: '',
-  companyName: 'Eixo Nacional',
+  companyName: 'Pátria Central',
   cnpj: '',
   addressBrasilia: '',
   addressSaoPaulo: '',

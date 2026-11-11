@@ -17,7 +17,7 @@ const INSTITUTIONAL_CONTENT: Record<string, { title: string; subtitle: string; c
     subtitle: 'Nossa história, compromisso editorial e princípios constitucionais',
     content: `
       <h2>Origem e Propósito</h2>
-      <p>O <strong>Portal Eixo Nacional</strong> é um veículo de comunicação digital concebido para fornecer jornalismo analítico, aprofundado, ético e tempestivo sobre a realidade brasileira, com ênfase na cobertura dos Três Poderes da República, políticas públicas estruturantes, macroeconomia, agronegócio e desenvolvimento regional.</p>
+      <p>O <strong>Portal Pátria Central</strong> é um veículo de comunicação digital concebido para fornecer jornalismo analítico, aprofundado, ético e tempestivo sobre a realidade brasileira, com ênfase na cobertura dos Três Poderes da República, políticas públicas estruturantes, macroeconomia, agronegócio e desenvolvimento regional.</p>
       
       <h2>Nossos Valores</h2>
       <ul>
@@ -40,7 +40,7 @@ const INSTITUTIONAL_CONTENT: Record<string, { title: string; subtitle: string; c
       <p><strong>Colunista de Tecnologia & Inovação:</strong> Patrícia Moraes</p>
 
       <h2>Conselho Editorial Independente</h2>
-      <p>O Conselho Editorial do Eixo Nacional reúne profissionais com notório saber em Direito Público, Economia e Comunicação Social, reunindo-se periodicamente para avaliar a observância aos princípios éticos do veículo.</p>
+      <p>O Conselho Editorial do Pátria Central reúne profissionais com notório saber em Direito Público, Economia e Comunicação Social, reunindo-se periodicamente para avaliar a observância aos princípios éticos do veículo.</p>
     `,
   },
   'editor-responsavel': {
@@ -49,7 +49,7 @@ const INSTITUTIONAL_CONTENT: Record<string, { title: string; subtitle: string; c
     content: `
       <h2>Jornalista Responsável</h2>
       <p>O jornalista Roberto Mendonça Valente (Registro Profissional MTE 14.892/DF) responde formal e editorialmente por todas as publicações veiculadas no portal, zelando pelo cumprimento irrestrito do Código de Ética dos Jornalistas Brasileiros e pela exatidão das matérias publicadas.</p>
-      <p>Contatos diretos com a chefia de redação podem ser encaminhados para: <code>redacao@eixonacional.com.br</code>.</p>
+      <p>Contatos diretos com a chefia de redação podem ser encaminhados para: <code>redacao@patriacentral.com.br</code>.</p>
     `,
   },
   'equipe-reportagem': {
@@ -66,7 +66,7 @@ const INSTITUTIONAL_CONTENT: Record<string, { title: string; subtitle: string; c
     subtitle: 'Diretrizes éticas, apuração, verificação de fatos e separação entre redação e publicidade',
     content: `
       <h2>Princípios Editoriais Fundamentais</h2>
-      <p>A cobertura editorial do Eixo Nacional é orientada pelo interesse público, pela busca da verdade factual, pela pluralidade de versões e pela defesa intransigente das liberdades democráticas.</p>
+      <p>A cobertura editorial do Pátria Central é orientada pelo interesse público, pela busca da verdade factual, pela pluralidade de versões e pela defesa intransigente das liberdades democráticas.</p>
       
       <h2>Separação Entre Redação e Publicidade</h2>
       <p>Nossa equipe editorial atua de forma estritamente desvinculada de interesses comerciais. Nenhum contrato publicitário confere privilégio de pauta ou imunidade editorial.</p>
@@ -77,8 +77,8 @@ const INSTITUTIONAL_CONTENT: Record<string, { title: string; subtitle: string; c
     subtitle: 'Compromisso público com a transparência, retificação imediata e registro histórico',
     content: `
       <h2>Correções Imediatas e Transparentes</h2>
-      <p>O Eixo Nacional reconhece e corrige seus erros de forma célere e transparente. Quando um equívoco de fato ou digitação for identificado, o texto é atualizado com nota de correção no final da matéria com horário e data.</p>
-      <p>Canal exclusivo de correções: <code>redacao@eixonacional.com.br</code>.</p>
+      <p>O Pátria Central reconhece e corrige seus erros de forma célere e transparente. Quando um equívoco de fato ou digitação for identificado, o texto é atualizado com nota de correção no final da matéria com horário e data.</p>
+      <p>Canal exclusivo de correções: <code>redacao@patriacentral.com.br</code>.</p>
     `,
   },
   'direito-de-resposta': {
@@ -94,7 +94,7 @@ const INSTITUTIONAL_CONTENT: Record<string, { title: string; subtitle: string; c
     subtitle: 'Conformidade integral com a Lei Geral de Proteção de Dados (Lei nº 13.709/2018 - LGPD)',
     content: `
       <h2>Compromisso com a Privacidade</h2>
-      <p>O Eixo Nacional coleta e processa apenas os dados estritamente necessários para viabilizar a navegação, mensurar o alcance de audiência (quando autorizado) e processar contatos comerciais voluntários.</p>
+      <p>O Pátria Central coleta e processa apenas os dados estritamente necessários para viabilizar a navegação, mensurar o alcance de audiência (quando autorizado) e processar contatos comerciais voluntários.</p>
     `,
   },
   'termos-de-uso': {
@@ -157,7 +157,7 @@ export default async function InstitutionalPage({ params }: InstitutionalPagePro
           </p>
 
           <div className="border border-[#e3e5e9] rounded-[4px] p-4 bg-[#f4f5f7] my-3 text-[14px]">
-            <span className="font-bold text-[#0b2545]">Eixo Nacional</span>
+            <span className="font-bold text-[#0b2545]">Pátria Central</span>
             <p className="text-[#3c414b] text-[13.5px] mt-1 m-0">
               Veículo de comunicação digital com cobertura nacional e jornalismo independente.
             </p>

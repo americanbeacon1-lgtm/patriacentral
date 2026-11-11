@@ -81,7 +81,7 @@ export default function AdminAuthGuard({ children }: { children: React.ReactNode
             <div className="inline-flex items-center gap-2.5 mb-3">
               <span className="w-3 h-8 bg-[#c8102e] rounded-xs shadow-sm"></span>
               <span className="text-2xl font-black text-white font-headline tracking-tight uppercase">
-                Eixo Nacional
+                Pátria Central
               </span>
             </div>
             <div className="flex items-center justify-center gap-1.5 text-xs text-amber-400 font-semibold tracking-wider uppercase mb-1">

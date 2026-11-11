@@ -241,7 +241,7 @@ export async function fetchPageOgImage(articleUrl: string): Promise<string | und
   return undefined;
 }
 
-// Mapeia categoria do Eixo Nacional a partir do título e conteúdo
+// Mapeia categoria do Pátria Central a partir do título e conteúdo
 function detectCategory(title: string, content: string, defaultCategory: string): string {
   const combined = (title + ' ' + content).toLowerCase();
 
@@ -306,7 +306,7 @@ export async function fetchNewsFromPortals(options: {
         const response = await fetch(rssInfo.url, {
           signal: controller.signal,
           headers: {
-            'User-Agent': 'Mozilla/5.0 (compatible; EixoNacionalBot/1.0; +https://eixonacional.com.br/redacao)',
+            'User-Agent': 'Mozilla/5.0 (compatible; PatriaCentralBot/1.0; +https://patriacentral.com.br/redacao)',
             'Accept': 'application/rss+xml, application/xml, text/xml, */*',
           },
         });
@@ -549,7 +549,7 @@ export async function fetchFullArticleContent(
       </blockquote>
 
       <p class="text-[#5b616e] text-sm border-t border-[#e3e5e9] pt-3 mt-6">
-        A cobertura completa e as repercussões continuam sendo monitoradas pela equipe do Portal Eixo Nacional em Brasília e nas capitais brasileiras.
+        A cobertura completa e as repercussões continuam sendo monitoradas pela equipe do Portal Pátria Central em Brasília e nas capitais brasileiras.
       </p>
     `;
   }
@@ -572,7 +572,7 @@ export async function fetchFullArticleContent(
     </blockquote>
 
     <p class="text-[#5b616e] text-sm border-t border-[#e3e5e9] pt-3 mt-6">
-      A cobertura completa e as repercussões continuam sendo monitoradas pela equipe do Portal Eixo Nacional em Brasília e nas capitais brasileiras.
+      A cobertura completa e as repercussões continuam sendo monitoradas pela equipe do Portal Pátria Central em Brasília e nas capitais brasileiras.
     </p>
   `;
 }
@@ -587,7 +587,7 @@ export async function publishExtractedNewsItem(
     isBreaking?: boolean;
   }
 ): Promise<Article> {
-  const title = (customOptions?.customTitle || item.title || 'Notícia Eixo Nacional').trim();
+  const title = (customOptions?.customTitle || item.title || 'Notícia Pátria Central').trim();
   const categoryId = customOptions?.customCategory || item.suggestedCategory || 'brasil';
 
   let slug = title
@@ -651,7 +651,7 @@ export async function publishExtractedNewsItem(
     imageCaption: `Reportagem sobre ${title.substring(0, 60)}...`,
     imageCredit: item.imageCredit || `${item.sourceName} / Divulgação`,
     categoryId,
-    tags: Array.from(new Set([...(item.suggestedTags || []), 'Eixo Nacional', 'Jornalismo'])),
+    tags: Array.from(new Set([...(item.suggestedTags || []), 'Pátria Central', 'Jornalismo'])),
     authorId: 'roberto-valente',
     publishedAt: item.pubDate
       ? new Date(parseNewsDate(item.pubDate)).toISOString()

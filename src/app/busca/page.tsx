@@ -13,8 +13,8 @@ import { Metadata } from 'next';
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: 'Busca de Notícias | Eixo Nacional',
-  description: 'Pesquise reportagens, artigos, coberturas políticas e análises no acervo do Portal Eixo Nacional.',
+  title: 'Busca de Notícias | Pátria Central',
+  description: 'Pesquise reportagens, artigos, coberturas políticas e análises no acervo do Portal Pátria Central.',
 };
 
 interface SearchPageProps {

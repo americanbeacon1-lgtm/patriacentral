@@ -71,7 +71,7 @@ export default function MediaKitPage() {
                 Identificação do Veículo
               </h3>
               <p className="text-sm text-[#3c414b] leading-relaxed mb-3">
-                <strong className="text-lg text-[#0b2545] block mb-1">Eixo Nacional</strong>
+                <strong className="text-lg text-[#0b2545] block mb-1">Pátria Central</strong>
                 Veículo de comunicação digital de abrangência nacional, focado na cobertura dos Três Poderes, análise econômica e políticas públicas.
               </p>
               <div className="p-3 bg-[#f4f5f7] rounded-[4px] border border-[#e3e5e9] text-xs text-[#5b616e]">

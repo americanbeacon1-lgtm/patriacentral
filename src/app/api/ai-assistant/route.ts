@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
           `Entenda os impactos da decisão sobre ${title.split(' ').slice(0, 5).join(' ')} no cenário nacional`,
           `Bastidores de Brasília: O que está por trás de: ${title}`,
           `Em votação decisiva, novo marco avança com foco em estabilidade e desenvolvimento`,
-          `Análise Eixo Nacional: Como a medida repercute no mercado e nos estados`,
+          `Análise Pátria Central: Como a medida repercute no mercado e nos estados`,
         ],
       });
     }
@@ -29,8 +29,8 @@ export async function POST(req: NextRequest) {
       const firstLines = cleanText.substring(0, 240);
       return NextResponse.json({
         success: true,
-        socialSummary: `🔴 *EIXO NACIONAL | PLANTÃO*\n\n📌 *${title}*\n\n${firstLines}...\n\n📲 Leia a cobertura completa com análises e bastidores no portal: https://eixonacional.com.br`,
-        metaDescription: `${title}: Acompanhe todos os detalhes, análises e desdobramentos oficiais no Portal Eixo Nacional.`,
+        socialSummary: `🔴 *PÁTRIA CENTRAL | PLANTÃO*\n\n📌 *${title}*\n\n${firstLines}...\n\n📲 Leia a cobertura completa com análises e bastidores no portal: https://patriacentral.com.br`,
+        metaDescription: `${title}: Acompanhe todos os detalhes, análises e desdobramentos oficiais no Portal Pátria Central.`,
       });
     }
 
@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
       // Simulação de revisão de estilo, concordância padrão Manual de Redação e gramática
       return NextResponse.json({
         success: true,
-        feedback: 'Texto em perfeita conformidade com a norma culta e padrões de clareza do Manual de Redação Jornalística do Eixo Nacional. Vocabulário preciso e orações estruturadas na ordem direta.',
+        feedback: 'Texto em perfeita conformidade com a norma culta e padrões de clareza do Manual de Redação Jornalística do Pátria Central. Vocabulário preciso e orações estruturadas na ordem direta.',
         suggestedKickers: ['PODER', 'POLÍTICA', 'DECISÃO', 'EXCLUSIVO', 'MERCADO', 'NACIONAL'],
       });
     }

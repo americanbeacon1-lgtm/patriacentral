@@ -37,7 +37,7 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
     openGraph: {
       title: article.title,
       description: article.subtitle,
-      url: `https://eixonacional.com.br/noticia/${article.slug}`,
+      url: `https://patriacentral.com.br/noticia/${article.slug}`,
       siteName: settings.portalName,
       images: [
         {
@@ -117,7 +117,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     '@type': 'NewsArticle',
     mainEntityOfPage: {
       '@type': 'WebPage',
-      '@id': `https://eixonacional.com.br/noticia/${article.slug}`,
+      '@id': `https://patriacentral.com.br/noticia/${article.slug}`,
     },
     headline: article.title,
     description: article.subtitle,
@@ -126,7 +126,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     dateModified: article.updatedAt,
     author: {
       '@type': 'Person',
-      name: author?.name || article.authorName || 'Redação Eixo Nacional',
+      name: author?.name || article.authorName || 'Redação Pátria Central',
     },
     publisher: {
       '@type': 'Organization',
@@ -251,8 +251,8 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           {/* Aviso Editorial e Erratas */}
           <p className="text-[14px] text-[#5b616e] italic pt-3 border-t border-[#e3e5e9]">
             Encontrou algum erro? Escreva para a nossa equipe em{' '}
-            <a href="mailto:redacao@eixonacional.com.br" className="underline text-[#0b2545]">
-              redacao@eixonacional.com.br
+            <a href="mailto:redacao@patriacentral.com.br" className="underline text-[#0b2545]">
+              redacao@patriacentral.com.br
             </a>
             . Pedidos de direito de resposta seguem a política publicada no rodapé.
           </p>

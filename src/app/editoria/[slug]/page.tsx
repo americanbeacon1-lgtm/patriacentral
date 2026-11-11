@@ -206,7 +206,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
             {/* Aviso Editorial amigável em caso de fallback */}
             {isFallback && (
               <div className="p-3.5 bg-blue-50/60 border border-blue-200/60 rounded text-xs text-blue-900 mb-4 leading-relaxed">
-                A redação do Portal Eixo Nacional está apurando novas reportagens específicas para <strong>{category.name}</strong>. Acompanhe abaixo os principais destaques nacionais em tempo real:
+                A redação do Portal Pátria Central está apurando novas reportagens específicas para <strong>{category.name}</strong>. Acompanhe abaixo os principais destaques nacionais em tempo real:
               </div>
             )}
 

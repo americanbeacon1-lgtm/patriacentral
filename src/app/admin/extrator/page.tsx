@@ -43,7 +43,7 @@ export default function AdminCrawlerPage() {
     actionUrl?: string;
   } | null>(null);
 
-  // Carrega categorias do Eixo Nacional
+  // Carrega categorias do Pátria Central
   useEffect(() => {
     fetch('/api/admin/settings')
       .then(() => {
@@ -155,7 +155,7 @@ export default function AdminCrawlerPage() {
 
       setMessage({
         type: 'success',
-        text: `Notícia "${item.title.substring(0, 50)}..." postada com sucesso no Portal Eixo Nacional!`,
+        text: `Notícia "${item.title.substring(0, 50)}..." postada com sucesso no Portal Pátria Central!`,
         actionUrl: postUrl,
       });
 
@@ -177,7 +177,7 @@ export default function AdminCrawlerPage() {
       return;
     }
 
-    if (!confirm(`Deseja importar e publicar todas as ${unimported.length} notícias no Eixo Nacional?`)) {
+    if (!confirm(`Deseja importar e publicar todas as ${unimported.length} notícias no Pátria Central?`)) {
       return;
     }
 
@@ -224,7 +224,7 @@ export default function AdminCrawlerPage() {
 
       setMessage({
         type: 'success',
-        text: `Sucesso! ${data.count} notícias foram postadas simultaneamente no Eixo Nacional!`,
+        text: `Sucesso! ${data.count} notícias foram postadas simultaneamente no Pátria Central!`,
         actionUrl: `/editoria/ultimas`,
       });
     } catch (err: any) {
@@ -304,7 +304,7 @@ export default function AdminCrawlerPage() {
               rel="noopener noreferrer"
               className="px-3.5 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded font-bold uppercase tracking-wider text-[11px] flex items-center gap-1.5 shrink-0 transition-colors shadow-xs"
             >
-              <span>Ver no Portal Eixo Nacional</span>
+              <span>Ver no Portal Pátria Central</span>
               <ExternalLink className="w-3.5 h-3.5" />
             </a>
           )}
@@ -491,7 +491,7 @@ export default function AdminCrawlerPage() {
                       ? 'border-emerald-300 bg-emerald-50/20 hover:border-emerald-400 hover:shadow-md'
                       : 'border-slate-200 hover:border-blue-900 hover:shadow-md'
                   }`}
-                  title={item.alreadyImported ? 'Clique para abrir no Portal Eixo Nacional' : 'Clique para ler prévia e publicar'}
+                  title={item.alreadyImported ? 'Clique para abrir no Portal Pátria Central' : 'Clique para ler prévia e publicar'}
                 >
                   <div>
                     {/* Topo do Card: Origem & Data */}
@@ -581,7 +581,7 @@ export default function AdminCrawlerPage() {
                             className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-blue-950 hover:bg-blue-900 text-white rounded text-xs font-bold uppercase tracking-wider transition-all disabled:opacity-50 shadow-xs"
                           >
                             <Send className="w-3.5 h-3.5 text-amber-400" />
-                            <span>{isPosting ? 'Postando...' : 'Postar no Eixo'}</span>
+                            <span>{isPosting ? 'Postando...' : 'Postar no Pátria Central'}</span>
                           </button>
                         </>
                       )}
@@ -705,7 +705,7 @@ export default function AdminCrawlerPage() {
                       className="px-4 py-2 bg-blue-950 hover:bg-blue-900 text-white rounded-lg text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 shadow-xs disabled:opacity-50"
                     >
                       <Send className="w-3.5 h-3.5 text-amber-400" />
-                      <span>{postingId === previewModalItem.id ? 'Publicando...' : 'Publicar no Eixo'}</span>
+                      <span>{postingId === previewModalItem.id ? 'Publicando...' : 'Publicar no Pátria Central'}</span>
                     </button>
                     <button
                       type="button"

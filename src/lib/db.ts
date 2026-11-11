@@ -123,7 +123,7 @@ function saveDatabase(data: DatabaseSchema): void {
   } catch {}
 }
 
-// Mapeamento inteligente de subcategorias e categorias correlatas para o jornalismo do Eixo Nacional
+// Mapeamento inteligente de subcategorias e categorias correlatas para o jornalismo do Pátria Central
 function articleMatchesCategory(article: Article, targetSlug: string): boolean {
   const slug = targetSlug.toLowerCase().trim();
   const cat = (article.categoryId || '').toLowerCase().trim();
