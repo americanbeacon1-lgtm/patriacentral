@@ -1,0 +1,109 @@
+@import url('https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;0,8..60,800;1,8..60,400;1,8..60,600&display=swap');
+@import "tailwindcss";
+
+:root {
+  --accent: #c8102e;
+  --navy-deep: #0b2545;
+  --text-main: #16181d;
+  --text-sub: #3c414b;
+  --text-muted: #5b616e;
+  --border-light: #e3e5e9;
+  --border-mid: #c9ccd3;
+  --bg-subtle: #f4f5f7;
+  --bg-footer: #1c1f25;
+}
+
+body {
+  margin: 0;
+  background-color: #ffffff;
+  color: #16181d;
+  font-family: 'Public Sans', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  text-wrap: pretty;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  text-decoration: none;
+}
+
+button, input, select, textarea {
+  font-family: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid #2a6fdb;
+  outline-offset: 2px;
+}
+
+/* Tipografia Jornalística */
+.font-serif-journal,
+.font-headline {
+  font-family: 'Source Serif 4', Georgia, serif;
+}
+
+.font-sans-journal {
+  font-family: 'Public Sans', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Botões com alto contraste garantido */
+.btn-navy {
+  background-color: #0b2545 !important;
+  color: #ffffff !important;
+}
+.btn-navy:hover {
+  background-color: #13315c !important;
+  color: #ffffff !important;
+}
+
+.btn-accent {
+  background-color: #c8102e !important;
+  color: #ffffff !important;
+}
+.btn-accent:hover {
+  background-color: #a50d25 !important;
+  color: #ffffff !important;
+}
+
+/* Utilitários visuais de estilo */
+.bg-navy-deep {
+  background-color: #0b2545;
+}
+
+.text-navy-deep {
+  color: #0b2545;
+}
+
+.border-accent {
+  border-color: var(--accent);
+}
+
+.text-accent {
+  color: var(--accent);
+}
+
+.bg-accent {
+  background-color: var(--accent);
+}
+
+/* Scrollbar invisível */
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Estilização para impressão e comprovação de veiculação (Clipping Oficial) */
+@media print {
+  header, footer, .no-print, [role="dialog"] {
+    display: none !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+  body {
+    background: white !important;
+    color: black !important;
+  }
+}
