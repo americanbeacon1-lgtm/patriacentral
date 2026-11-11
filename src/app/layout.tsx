@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import GoogleTagManager from '@/components/GoogleTagManager';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://eixonacional.com.br'),
@@ -85,6 +86,7 @@ export default function RootLayout({
         <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml" />
       </head>
       <body className="antialiased bg-white text-[#16181d] min-h-screen flex flex-col font-sans-journal">
+        <GoogleTagManager />
         {children}
       </body>
     </html>

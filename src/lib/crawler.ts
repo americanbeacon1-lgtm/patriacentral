@@ -416,6 +416,161 @@ export async function fetchNewsFromPortals(options: {
   return results;
 }
 
+// Limpeza minuciosa de parágrafo extraído de HTML jornalístico
+function cleanParagraph(rawText: string): string | null {
+  if (!rawText) return null;
+  const text = rawText
+    .replace(/<!--[\s\S]*?-->/g, '')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&ndash;/g, '–')
+    .replace(/&mdash;/g, '—')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  if (text.length < 35) return null;
+  const lower = text.toLowerCase();
+
+  // Filtra ruídos, botões sociais, avisos de cookies e chamadas de WhatsApp
+  if (
+    lower.startsWith('por ') ||
+    /^\d{2}\/\d{2}\/\d{4}/.test(lower) ||
+    lower.startsWith('há ') ||
+    lower.includes('copiar link') ||
+    lower.includes('caixa de spam') ||
+    lower.includes('newsletter') ||
+    lower.includes('vídeos mais assistidos') ||
+    lower.includes('mais lidas') ||
+    lower.includes('todos os direitos reservados') ||
+    lower.includes('canal do whatsapp') ||
+    lower.includes('receba notícias no whatsapp') ||
+    lower.includes('inscreva-se no canal') ||
+    lower.includes('siga o canal') ||
+    lower.includes('compartilhe no whatsapp') ||
+    lower.includes('compartilhar no') ||
+    lower.includes('leia mais:') ||
+    lower.includes('veja também:') ||
+    lower.includes('confira também:') ||
+    lower.includes('clique aqui') ||
+    lower.includes('termos de uso') ||
+    lower.includes('política de privacidade') ||
+    lower.includes('fale com a redação') ||
+    lower.includes('publicidade') ||
+    lower.startsWith('fonte:') ||
+    lower.startsWith('crédito:') ||
+    lower.startsWith('foto:') ||
+    lower.includes('function(') ||
+    lower.includes('window.') ||
+    lower.includes('glb.cdn')
+  ) {
+    return null;
+  }
+
+  return text;
+}
+
+// Extrai a matéria completa a partir da URL original do portal de notícias
+export async function fetchFullArticleContent(
+  articleUrl: string,
+  fallbackSnippet: string,
+  sourceName: string
+): Promise<string> {
+  let paragraphs: string[] = [];
+
+  if (articleUrl && articleUrl.startsWith('http')) {
+    try {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 6000);
+
+      const res = await fetch(articleUrl, {
+        signal: controller.signal,
+        headers: {
+          'User-Agent':
+            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+          Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+          'Accept-Language': 'pt-BR,pt;q=0.9,en-US;q=0.8',
+        },
+      });
+      clearTimeout(timeout);
+
+      if (res.ok) {
+        const html = await res.text();
+        const cleanedHtml = html
+          .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+          .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '')
+          .replace(/<noscript\b[^<]*(?:(?!<\/noscript>)<[^<]*)*<\/noscript>/gi, '')
+          .replace(/<nav\b[^<]*(?:(?!<\/nav>)<[^<]*)*<\/nav>/gi, '')
+          .replace(/<footer\b[^<]*(?:(?!<\/footer>)<[^<]*)*<\/footer>/gi, '')
+          .replace(/<header\b[^<]*(?:(?!<\/header>)<[^<]*)*<\/header>/gi, '');
+
+        const pMatches = Array.from(cleanedHtml.matchAll(/<p[^>]*>([\s\S]*?)<\/p>/gi));
+        const seen = new Set<string>();
+
+        for (const match of pMatches) {
+          const p = cleanParagraph(match[1]);
+          if (p) {
+            const key = p.slice(0, 50).toLowerCase();
+            if (!seen.has(key)) {
+              seen.add(key);
+              paragraphs.push(p);
+            }
+          }
+        }
+      }
+    } catch (err) {
+      console.warn('Erro ao extrair matéria completa de', articleUrl, err);
+    }
+  }
+
+  // Se extraiu pelo menos 2 parágrafos legítimos da página original
+  if (paragraphs.length >= 2) {
+    const lead = paragraphs[0];
+    const bodyParas = paragraphs.slice(1);
+
+    return `
+      <p class="lead font-medium text-lg leading-relaxed text-[#16181d] mb-4">${lead}</p>
+      
+      ${bodyParas.map((p) => `<p class="mb-4">${p}</p>`).join('\n')}
+
+      <blockquote class="border-l-4 border-[#0b2545] pl-4 py-3 my-6 italic text-[#3c414b] bg-[#f4f5f7] rounded-r">
+        Reportagem apurada originalmente pelo veículo <strong>${sourceName}</strong>.
+        ${articleUrl ? `<a href="${articleUrl}" target="_blank" rel="noopener noreferrer" class="text-[#c8102e] underline font-semibold ml-1 hover:text-[#0b2545]">Consulte a publicação na íntegra no portal de origem.</a>` : ''}
+      </blockquote>
+
+      <p class="text-[#5b616e] text-sm border-t border-[#e3e5e9] pt-3 mt-6">
+        A cobertura completa e as repercussões continuam sendo monitoradas pela equipe do Portal Eixo Nacional em Brasília e nas capitais brasileiras.
+      </p>
+    `;
+  }
+
+  // Fallback: se a conexão falhou ou a página não expõe parágrafos
+  const cleanSnippet = cleanText(fallbackSnippet);
+  const snippetChunks = cleanSnippet
+    .split(/\.\s+/)
+    .filter((s) => s.trim().length > 20)
+    .map((s) => (s.endsWith('.') ? s : s + '.'));
+
+  return `
+    <p class="lead font-medium text-lg leading-relaxed text-[#16181d] mb-4">${snippetChunks[0] || cleanSnippet}</p>
+    
+    ${snippetChunks.slice(1).map((chunk) => `<p class="mb-4">${chunk}</p>`).join('\n')}
+
+    <blockquote class="border-l-4 border-[#0b2545] pl-4 py-3 my-6 italic text-[#3c414b] bg-[#f4f5f7] rounded-r">
+      Informações apuradas originalmente pelo veículo <strong>${sourceName}</strong>. 
+      ${articleUrl ? `<a href="${articleUrl}" target="_blank" rel="noopener noreferrer" class="text-[#c8102e] underline font-semibold ml-1 hover:text-[#0b2545]">Consulte a publicação original na íntegra.</a>` : ''}
+    </blockquote>
+
+    <p class="text-[#5b616e] text-sm border-t border-[#e3e5e9] pt-3 mt-6">
+      A cobertura completa e as repercussões continuam sendo monitoradas pela equipe do Portal Eixo Nacional em Brasília e nas capitais brasileiras.
+    </p>
+  `;
+}
+
 export async function publishExtractedNewsItem(
   item: ExtractedNewsItem,
   customOptions?: {
@@ -471,19 +626,12 @@ export async function publishExtractedNewsItem(
     finalImageUrl = getCategoryFallbackImage(categoryId);
   }
 
-  // Monta o corpo da notícia com citação profissional de fonte e links jornalísticos
-  const content = `
-    <p class="lead">${item.summary || item.title}.</p>
-    
-    <p>${item.contentSnippet || item.summary}</p>
-
-    <blockquote class="border-l-4 border-blue-900 pl-4 py-2 my-4 italic text-slate-700 bg-slate-50">
-      Informações apuradas originalmente pelo veículo <strong>${item.sourceName}</strong>. 
-      ${item.link ? `<a href="${item.link}" target="_blank" rel="noopener noreferrer" class="text-blue-900 underline font-semibold ml-1">Consulte a publicação original na íntegra.</a>` : ''}
-    </blockquote>
-
-    <p>A cobertura completa e as repercussões políticas e econômicas continuam sendo monitoradas pela equipe do Portal Eixo Nacional em Brasília e nas capitais brasileiras.</p>
-  `;
+  // Extrai a matéria completa e parágrafos direto da URL original da fonte
+  const content = await fetchFullArticleContent(
+    item.link,
+    item.contentSnippet || item.summary,
+    item.sourceName
+  );
 
   const newArticle: Article = {
     id: 'art-' + Date.now() + '-' + Math.random().toString(36).substring(2, 6),

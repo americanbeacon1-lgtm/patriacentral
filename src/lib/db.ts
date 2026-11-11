@@ -53,6 +53,16 @@ function getInitialData(): DatabaseSchema {
   };
 }
 
+function mergeInitialArticles(dbSchema: DatabaseSchema): void {
+  const existingIds = new Set(dbSchema.articles.map((a) => a.id));
+  const existingSlugs = new Set(dbSchema.articles.map((a) => a.slug));
+  for (const initArt of INITIAL_ARTICLES) {
+    if (!existingIds.has(initArt.id) && !existingSlugs.has(initArt.slug)) {
+      dbSchema.articles.push(initArt);
+    }
+  }
+}
+
 function ensureDatabase(): DatabaseSchema {
   if (inMemoryDatabase) {
     return inMemoryDatabase;
@@ -64,6 +74,7 @@ function ensureDatabase(): DatabaseSchema {
       const raw = fs.readFileSync(TMP_FILE, 'utf-8');
       inMemoryDatabase = JSON.parse(raw);
       if (inMemoryDatabase && Array.isArray(inMemoryDatabase.articles)) {
+        mergeInitialArticles(inMemoryDatabase);
         return inMemoryDatabase;
       }
     }
@@ -75,6 +86,7 @@ function ensureDatabase(): DatabaseSchema {
       const raw = fs.readFileSync(DB_FILE, 'utf-8');
       inMemoryDatabase = JSON.parse(raw);
       if (inMemoryDatabase && Array.isArray(inMemoryDatabase.articles)) {
+        mergeInitialArticles(inMemoryDatabase);
         return inMemoryDatabase;
       }
     }
@@ -109,6 +121,186 @@ function saveDatabase(data: DatabaseSchema): void {
     }
     fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2), 'utf-8');
   } catch {}
+}
+
+// Mapeamento inteligente de subcategorias e categorias correlatas para o jornalismo do Eixo Nacional
+function articleMatchesCategory(article: Article, targetSlug: string): boolean {
+  const slug = targetSlug.toLowerCase().trim();
+  const cat = (article.categoryId || '').toLowerCase().trim();
+  const state = (article.state || '').toUpperCase().trim();
+  const tags = (article.tags || []).map((t) => t.toLowerCase().trim());
+  const title = (article.title || '').toLowerCase();
+  const subtitle = (article.subtitle || '').toLowerCase();
+  const chapeu = (article.chapeu || '').toLowerCase();
+  const allText = `${title} ${subtitle} ${chapeu} ${tags.join(' ')}`;
+
+  // Se a matéria está cadastrada com exatamente essa categoria
+  if (cat === slug) return true;
+
+  switch (slug) {
+    case 'ultimas':
+    case 'ultimas-noticias':
+      return true;
+
+    case 'politica':
+      // Política engloba Congresso, Governo Federal, STF e articulações partidárias
+      return (
+        ['governo', 'congresso', 'politica', 'justica'].includes(cat) ||
+        tags.some((t) => /política|governo|congresso|senado|câmara|planalto|ministro|stf|eleição|partido/i.test(t)) ||
+        /política|governo federal|congresso nacional|senado|câmara dos deputados|planalto|ministério/i.test(allText)
+      );
+
+    case 'governo':
+      // Governo Federal e atos do Executivo
+      return (
+        cat === 'governo' ||
+        tags.some((t) => /governo|planalto|ministério|executivo|presidente|republica|decreto/i.test(t)) ||
+        /governo federal|palácio do planalto|ministro|ministério|casa civil|secretaria/i.test(allText)
+      );
+
+    case 'congresso':
+      // Congresso Nacional, Câmara e Senado
+      return (
+        cat === 'congresso' ||
+        tags.some((t) => /congresso|senado|câmara|parlamentar|deputado|senador|ccj|plenário/i.test(t)) ||
+        /congresso nacional|câmara dos deputados|senado federal|bancada|votação no plenário/i.test(allText)
+      );
+
+    case 'economia':
+      // Economia e Negócios engloba agro e infraestrutura
+      return (
+        ['economia', 'agro', 'infraestrutura'].includes(cat) ||
+        tags.some((t) => /economia|mercado|selic|inflação|dólar|pib|banco central|finanças|fazenda/i.test(t)) ||
+        /economia|mercado financeiro|taxa selic|inflação|banco central|câmbio|receita federal/i.test(allText)
+      );
+
+    case 'agro':
+      // Agronegócio
+      return (
+        cat === 'agro' ||
+        tags.some((t) => /agro|safra|soja|milho|agricultura|pecuária|campo|conab|cna/i.test(t)) ||
+        /agronegócio|safra brasileira|agricultura|produtores rurais|lavoura|grãos/i.test(allText)
+      );
+
+    case 'infraestrutura':
+      // Infraestrutura e Transportes
+      return (
+        cat === 'infraestrutura' ||
+        tags.some((t) => /infraestrutura|ferrovia|rodovia|transporte|porto|aeroporto|saneamento|energia/i.test(t)) ||
+        /infraestrutura|ferrovia|rodovia|concessão|obras públicas|logística|portos/i.test(allText)
+      );
+
+    case 'justica':
+      // Justiça e Segurança
+      return (
+        cat === 'justica' ||
+        tags.some((t) => /justiça|stf|stj|tribunal|polícia|segurança|magistratura|tse|lei/i.test(t)) ||
+        /stf|stj|supremo tribunal|polícia federal|segurança pública|julgamento|recurso/i.test(allText)
+      );
+
+    case 'saude':
+      return (
+        cat === 'saude' ||
+        tags.some((t) => /saúde|sus|vacina|anvisa|hospital|médico|doença|vigilância/i.test(t)) ||
+        /saúde|sus|ministério da saúde|vacinação|anvisa|hospital|medicamento/i.test(allText)
+      );
+
+    case 'educacao':
+      return (
+        cat === 'educacao' ||
+        tags.some((t) => /educação|mec|enem|ensino|escola|universidade|professor|estudante/i.test(t)) ||
+        /educação|ensino superior|escolas públicas|enem|ministério da educação|mec/i.test(allText)
+      );
+
+    case 'tecnologia':
+      return (
+        cat === 'tecnologia' ||
+        tags.some((t) => /tecnologia|ia|inteligência artificial|software|cibernética|inovação|digital/i.test(t)) ||
+        /inteligência artificial|inovação tecnológica|segurança cibernética|transformação digital/i.test(allText)
+      );
+
+    case 'distrito-federal':
+      // Distrito Federal e Brasília
+      return (
+        cat === 'distrito-federal' ||
+        state === 'DF' ||
+        tags.some((t) => /distrito federal|brasília|gdf|taguatinga|ceilândia/i.test(t)) ||
+        /distrito federal|capital federal|brasília|governo do df|gdf/i.test(allText)
+      );
+
+    case 'estados':
+      // Estados e Municípios (todas as notícias estaduais fora de DF ou de federação)
+      return (
+        cat === 'estados' ||
+        (state !== '' && state !== 'DF') ||
+        tags.some((t) => /estados|municípios|governadores|prefeituras|regional|nordeste|sudeste|sul|norte|centro-oeste/i.test(t)) ||
+        /estados brasileiros|governadores|prefeituras|desenvolvimento regional/i.test(allText)
+      );
+
+    case 'meio-ambiente':
+      return (
+        cat === 'meio-ambiente' ||
+        tags.some((t) => /meio ambiente|clima|sustentabilidade|amazônia|cerrado|desmatamento|ibama/i.test(t)) ||
+        /meio ambiente|transição energética|sustentabilidade|amazônia|mudanças climáticas/i.test(allText)
+      );
+
+    case 'concursos':
+      return (
+        cat === 'concursos' ||
+        tags.some((t) => /concurso|concursos|edital|vagas|empregos|carreira|salário/i.test(t)) ||
+        /concurso público|edital publicado|vagas abertas|processo seletivo/i.test(allText)
+      );
+
+    case 'internacional':
+      return (
+        cat === 'internacional' ||
+        tags.some((t) => /internacional|exterior|diplomacia|eua|europa|itamaraty|onu|geopolítica/i.test(t)) ||
+        /itamaraty|relações exteriores|diplomacia|comércio internacional|geopolítica/i.test(allText)
+      );
+
+    case 'esportes':
+      return (
+        cat === 'esportes' ||
+        tags.some((t) => /esporte|esportes|futebol|campeonato|olimpíada|atleta/i.test(t)) ||
+        /futebol brasileiro|campeonato|copa|seleção brasileira|esportes/i.test(allText)
+      );
+
+    case 'cultura':
+      return (
+        cat === 'cultura' ||
+        tags.some((t) => /cultura|arte|livro|cinema|música|teatro|patrimônio/i.test(t)) ||
+        /cultura|patrimônio histórico|artes cênicas|literatura brasileira/i.test(allText)
+      );
+
+    case 'entretenimento':
+      return (
+        cat === 'entretenimento' ||
+        tags.some((t) => /entretenimento|streaming|tv|show|famosos|novela/i.test(t)) ||
+        /entretenimento|streaming|séries|televisão|espetáculos/i.test(allText)
+      );
+
+    case 'turismo':
+      return (
+        cat === 'turismo' ||
+        tags.some((t) => /turismo|viagem|viagens|hotéis|destinos|aeroportos/i.test(t)) ||
+        /turismo brasileiro|destinos turísticos|rede hoteleira|ecoturismo/i.test(allText)
+      );
+
+    case 'especiais':
+      return Boolean(article.isSpecial) || cat === 'especiais' || tags.some((t) => /especial|série especial|investigação/i.test(t));
+
+    case 'videos':
+      return Boolean(article.isVideo) || cat === 'videos' || tags.some((t) => /vídeo|podcast|audiovisual/i.test(t));
+
+    case 'opiniao':
+      return cat === 'opiniao' || tags.some((t) => /opinião|colunista|artigo/i.test(t)) || /opinião|colunista|artigo/i.test(allText);
+
+    case 'brasil':
+      return true;
+
+    default:
+      return tags.some((t) => t.includes(slug)) || allText.includes(slug);
+  }
 }
 
 export const db = {
@@ -174,7 +366,7 @@ export const db = {
     }
 
     if (filter?.categorySlug && filter.categorySlug !== 'ultimas' && filter.categorySlug !== 'ultimas-noticias') {
-      result = result.filter((a) => a.categoryId === filter.categorySlug);
+      result = result.filter((a) => articleMatchesCategory(a, filter.categorySlug!));
     }
 
     if (filter?.state) {
