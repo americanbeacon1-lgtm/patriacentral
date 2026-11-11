@@ -2,15 +2,16 @@
 @import "tailwindcss";
 
 :root {
-  --accent: #c8102e;
-  --navy-deep: #0b2545;
+  --accent: #008744;
+  --gold: #f59e0b;
+  --navy-deep: #04391d;
   --text-main: #16181d;
   --text-sub: #3c414b;
   --text-muted: #5b616e;
   --border-light: #e3e5e9;
   --border-mid: #c9ccd3;
   --bg-subtle: #f4f5f7;
-  --bg-footer: #1c1f25;
+  --bg-footer: #022110;
 }
 
 body {
@@ -31,7 +32,7 @@ button, input, select, textarea {
 }
 
 :focus-visible {
-  outline: 2px solid #2a6fdb;
+  outline: 2px solid #008744;
   outline-offset: 2px;
 }
 
@@ -47,30 +48,30 @@ button, input, select, textarea {
 
 /* Botões com alto contraste garantido */
 .btn-navy {
-  background-color: #0b2545 !important;
+  background-color: #04391d !important;
   color: #ffffff !important;
 }
 .btn-navy:hover {
-  background-color: #13315c !important;
+  background-color: #008744 !important;
   color: #ffffff !important;
 }
 
 .btn-accent {
-  background-color: #c8102e !important;
+  background-color: #008744 !important;
   color: #ffffff !important;
 }
 .btn-accent:hover {
-  background-color: #a50d25 !important;
+  background-color: #006e37 !important;
   color: #ffffff !important;
 }
 
 /* Utilitários visuais de estilo */
 .bg-navy-deep {
-  background-color: #0b2545;
+  background-color: #04391d;
 }
 
 .text-navy-deep {
-  color: #0b2545;
+  color: #04391d;
 }
 
 .border-accent {

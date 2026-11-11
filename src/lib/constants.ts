@@ -61,8 +61,8 @@ export const INITIAL_CATEGORIES: Category[] = [
 export const DEFAULT_SETTINGS: SiteSettings = {
   portalName: 'Pátria Central',
   tagline: 'O portal de notícias e do poder no Brasil',
-  primaryColor: '#0B2545',
-  accentColor: '#c8102e',
+  primaryColor: '#04391d',
+  accentColor: '#008744',
   urgentBarActive: true,
   urgentBarText: 'CONGRESSO: Senado aprova projeto prioritário para infraestrutura logística e transição energética nacional',
   urgentBarLink: '/noticia/congresso-aprova-projeto-prioritario-infraestrutura-logistica',

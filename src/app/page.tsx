@@ -107,7 +107,7 @@ export default function HomePage() {
         {/* Estados e Regiões: 27 UFs Interativas */}
         <StateFilterSection articles={allArticles} />
 
-        {/* Vídeos e Entrevistas (Full-bleed azul-marinho #0b2545) */}
+        {/* Vídeos e Entrevistas (Full-bleed verde nobre) */}
         <VideosSection articles={allArticles} />
 
         {/* Reportagens Especiais + Mais Lidas */}

@@ -47,7 +47,7 @@ export default function CookieBanner() {
         <button
           type="button"
           onClick={() => handleConsent('all')}
-          className="border-0 bg-[#0b2545] hover:bg-[#13315c] text-white rounded-[4px] px-3.5 py-2 font-semibold text-[13px] cursor-pointer transition-colors"
+          className="border-0 bg-[#04391d] hover:bg-[#008744] text-white rounded-[4px] px-3.5 py-2 font-semibold text-[13px] cursor-pointer transition-colors"
         >
           Aceitar todos
         </button>

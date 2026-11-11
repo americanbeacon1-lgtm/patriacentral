@@ -73,10 +73,10 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
         <div className="flex flex-wrap gap-8 py-7 pb-10">
           <div className="flex-[2_1_520px] flex flex-col min-w-0">
             <span className="text-[12px] text-[#5b616e] mb-2">
-              <Link href="/" className="hover:text-[#0b2545]">Início</Link> › Busca
+              <Link href="/" className="hover:text-[#04391d]">Início</Link> › Busca
             </span>
 
-            <h1 className="m-0 mb-3 font-serif-journal text-3xl sm:text-4xl lg:text-[44px] font-bold text-[#0b2545] border-b-3 border-[#c8102e] pb-3">
+            <h1 className="m-0 mb-3 font-serif-journal text-3xl sm:text-4xl lg:text-[44px] font-bold text-[#04391d] border-b-3 border-[#008744] pb-3">
               {tag ? `Notícias: #${tag}` : q ? `Busca: "${q}"` : 'Busca no Acervo Editorial'}
             </h1>
 
@@ -91,7 +91,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
               />
               <button
                 type="submit"
-                className="border-0 bg-[#2b2f36] hover:bg-[#0b2545] text-white px-4 font-semibold text-[13px] cursor-pointer transition-colors"
+                className="border-0 bg-[#2b2f36] hover:bg-[#04391d] text-white px-4 font-semibold text-[13px] cursor-pointer transition-colors"
               >
                 Buscar
               </button>
@@ -122,10 +122,10 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                       />
                     </div>
                     <div className="flex flex-col gap-1.5">
-                      <span className="text-[11.5px] font-bold tracking-[0.08em] uppercase text-[#c8102e]">
+                      <span className="text-[11.5px] font-bold tracking-[0.08em] uppercase text-[#008744]">
                         {art.categoryName || 'Notícia'}
                       </span>
-                      <span className="font-serif-journal font-semibold text-[18px] sm:text-[20px] leading-[1.25] text-[#0b2545] group-hover:text-[#c8102e] transition-colors line-clamp-2">
+                      <span className="font-serif-journal font-semibold text-[18px] sm:text-[20px] leading-[1.25] text-[#04391d] group-hover:text-[#008744] transition-colors line-clamp-2">
                         {art.title}
                       </span>
                       {art.subtitle && (

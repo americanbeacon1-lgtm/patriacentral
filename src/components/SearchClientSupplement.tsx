@@ -82,10 +82,10 @@ export default function SearchClientSupplement({ query, serverSlugs }: SearchCli
               />
             </div>
             <div className="flex flex-col gap-1.5">
-              <span className="text-[11.5px] font-bold tracking-[0.08em] uppercase text-[#c8102e]">
+              <span className="text-[11.5px] font-bold tracking-[0.08em] uppercase text-[#008744]">
                 {art.chapeu || art.categoryId?.toUpperCase() || 'NOTÍCIA'}
               </span>
-              <span className="font-serif-journal font-semibold text-[18px] sm:text-[20px] leading-[1.25] text-[#0b2545] group-hover:text-[#c8102e] transition-colors line-clamp-2">
+              <span className="font-serif-journal font-semibold text-[18px] sm:text-[20px] leading-[1.25] text-[#04391d] group-hover:text-[#008744] transition-colors line-clamp-2">
                 {art.title}
               </span>
               {art.subtitle && (

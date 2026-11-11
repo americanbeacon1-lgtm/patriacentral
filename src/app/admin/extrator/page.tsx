@@ -642,7 +642,7 @@ export default function AdminCrawlerPage() {
                 {previewModalItem.title}
               </h2>
 
-              <p className="text-sm text-slate-600 font-medium leading-relaxed italic border-l-3 border-[#c8102e] pl-3 py-0.5 bg-slate-50">
+              <p className="text-sm text-slate-600 font-medium leading-relaxed italic border-l-3 border-[#008744] pl-3 py-0.5 bg-slate-50">
                 {previewModalItem.summary}
               </p>
 

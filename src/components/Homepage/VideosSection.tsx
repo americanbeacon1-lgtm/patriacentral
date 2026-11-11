@@ -40,10 +40,11 @@ export default function VideosSection({ articles }: VideosSectionProps) {
   ];
 
   return (
-    <section className="mt-8 [margin-left:calc(50%-50vw)] [margin-right:calc(50%-50vw)] bg-[#0b2545] text-white">
+    <section className="mt-8 [margin-left:calc(50%-50vw)] [margin-right:calc(50%-50vw)] bg-[#032613] text-white border-y border-[#064e3b]">
       <div className="max-w-[1280px] mx-auto px-5 py-8 flex flex-col gap-4">
-        <h2 className="m-0 font-serif-journal text-2xl sm:text-[26px] font-bold text-white">
-          Vídeos e entrevistas
+        <h2 className="m-0 font-serif-journal text-2xl sm:text-[26px] font-bold text-white flex items-center gap-2">
+          <span className="w-2.5 h-6 bg-[#f59e0b] rounded-xs"></span>
+          <span>Vídeos e entrevistas</span>
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {videos.map((v) => (
@@ -62,10 +63,10 @@ export default function VideosSection({ articles }: VideosSectionProps) {
                 />
                 <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
               </div>
-              <span className="text-[11.5px] font-bold tracking-[0.08em] uppercase text-[#9fb3cf] mt-1">
+              <span className="text-[11.5px] font-bold tracking-[0.08em] uppercase text-[#f59e0b] mt-1">
                 {v.kind} · {v.dur}
               </span>
-              <span className="font-semibold text-[16px] leading-[1.35] text-white group-hover:text-[#dfe6f0] transition-colors line-clamp-2">
+              <span className="font-semibold text-[16px] leading-[1.35] text-white group-hover:text-[#f59e0b] transition-colors line-clamp-2">
                 {v.title}
               </span>
             </Link>

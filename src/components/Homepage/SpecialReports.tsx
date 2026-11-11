@@ -14,7 +14,7 @@ export default function SpecialReports({ articles }: SpecialReportsProps) {
     <div className="flex flex-col gap-4 min-w-0">
       <Link
         href="/editoria/especiais"
-        className="font-serif-journal text-2xl sm:text-[26px] font-bold text-[#0b2545] hover:text-[#c8102e] transition-colors"
+        className="font-serif-journal text-2xl sm:text-[26px] font-bold text-[#04391d] hover:text-[#008744] transition-colors"
       >
         Reportagens especiais ›
       </Link>
@@ -36,10 +36,10 @@ export default function SpecialReports({ articles }: SpecialReportsProps) {
               />
             </div>
             <div className="flex flex-col gap-1.5">
-              <span className="text-[11.5px] font-bold tracking-[0.08em] uppercase text-[#c8102e]">
+              <span className="text-[11.5px] font-bold tracking-[0.08em] uppercase text-[#008744]">
                 Especial · {art.state || 'Brasil'}
               </span>
-              <span className="font-serif-journal font-semibold text-[18px] sm:text-[20px] leading-[1.25] text-[#0b2545] group-hover:text-[#c8102e] transition-colors line-clamp-2">
+              <span className="font-serif-journal font-semibold text-[18px] sm:text-[20px] leading-[1.25] text-[#04391d] group-hover:text-[#008744] transition-colors line-clamp-2">
                 {art.title}
               </span>
               {art.subtitle && (

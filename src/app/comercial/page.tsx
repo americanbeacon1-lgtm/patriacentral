@@ -132,10 +132,10 @@ export default function CommercialPage() {
       <main className="flex-1 w-full max-w-[1280px] mx-auto px-5 box-border py-8 sm:py-12 flex flex-col gap-10">
         {/* Seção 1: Apresentação Comercial */}
         <section className="flex flex-col gap-3.5 max-w-[860px]">
-          <span className="text-[12px] font-bold tracking-[0.1em] uppercase text-[#c8102e]">
+          <span className="text-[12px] font-bold tracking-[0.1em] uppercase text-[#008744]">
             Central comercial
           </span>
-          <h1 className="m-0 font-serif-journal text-3xl sm:text-4xl lg:text-[50px] leading-[1.08] font-bold text-[#0b2545]">
+          <h1 className="m-0 font-serif-journal text-3xl sm:text-4xl lg:text-[50px] leading-[1.08] font-bold text-[#04391d]">
             Anuncie no {DEFAULT_SETTINGS.portalName}
           </h1>
           <p className="m-0 text-[17px] sm:text-[18px] leading-[1.55] text-[#3c414b]">
@@ -144,15 +144,15 @@ export default function CommercialPage() {
           <div className="flex gap-2.5 flex-wrap pt-2 items-center">
             <a
               href="#proposta"
-              style={{ backgroundColor: '#0b2545', color: '#ffffff' }}
-              className="px-5 py-3 rounded-[4px] font-bold text-[14px] text-white bg-[#0b2545] hover:bg-[#13315c] transition-colors shadow-sm inline-flex items-center justify-center cursor-pointer border border-[#0b2545]"
+              style={{ backgroundColor: '#04391d', color: '#ffffff' }}
+              className="px-5 py-3 rounded-[4px] font-bold text-[14px] text-white bg-[#04391d] hover:bg-[#008744] transition-colors shadow-sm inline-flex items-center justify-center cursor-pointer border border-[#04391d]"
             >
               Solicitar proposta
             </a>
             <button
               type="button"
               onClick={() => setKitRequested(true)}
-              className="border border-[#0b2545] bg-white hover:bg-slate-50 text-[#0b2545] px-4.5 py-3 rounded-[4px] font-semibold text-[14px] cursor-pointer transition-colors"
+              className="border border-[#04391d] bg-white hover:bg-slate-50 text-[#04391d] px-4.5 py-3 rounded-[4px] font-semibold text-[14px] cursor-pointer transition-colors"
             >
               {kitRequested ? 'Mídia kit solicitado ✓' : 'Solicitar mídia kit'}
             </button>
@@ -168,7 +168,7 @@ export default function CommercialPage() {
                 <span className="text-xs uppercase font-bold tracking-wider text-slate-500">
                   Canal Oficial de Propostas & Patrocínio
                 </span>
-                <span className="font-mono text-[15px] sm:text-[16px] font-bold text-[#0b2545]">
+                <span className="font-mono text-[15px] sm:text-[16px] font-bold text-[#04391d]">
                   {CONTACT_EMAIL}
                 </span>
                 <span className="text-xs text-slate-600 mt-0.5">
@@ -191,8 +191,8 @@ export default function CommercialPage() {
               <button
                 type="button"
                 onClick={() => setQuickModalOpen(true)}
-                style={{ backgroundColor: '#c8102e', color: '#ffffff' }}
-                className="px-3.5 py-2 rounded text-white font-bold text-xs uppercase tracking-wider flex items-center gap-1.5 hover:bg-[#a50d25] transition-colors cursor-pointer shadow-xs"
+                style={{ backgroundColor: '#008744', color: '#ffffff' }}
+                className="px-3.5 py-2 rounded text-white font-bold text-xs uppercase tracking-wider flex items-center gap-1.5 hover:bg-[#006e37] transition-colors cursor-pointer shadow-xs"
               >
                 <Send className="w-3.5 h-3.5" />
                 <span>Enviar E-mail Direto</span>
@@ -214,7 +214,7 @@ export default function CommercialPage() {
 
         {/* Seção 2: Tabela de Formatos Disponíveis */}
         <section className="flex flex-col gap-3.5">
-          <h2 className="m-0 font-serif-journal text-2xl sm:text-[26px] font-bold text-[#0b2545]">
+          <h2 className="m-0 font-serif-journal text-2xl sm:text-[26px] font-bold text-[#04391d]">
             Formatos disponíveis
           </h2>
           <div className="overflow-x-auto border border-[#e3e5e9] rounded-[4px]">
@@ -230,7 +230,7 @@ export default function CommercialPage() {
               <tbody>
                 {FORMATS.map((f, i) => (
                   <tr key={i} className="border-t border-[#e3e5e9]">
-                    <td className="p-3 px-3.5 font-semibold text-[#0b2545]">{f.name}</td>
+                    <td className="p-3 px-3.5 font-semibold text-[#04391d]">{f.name}</td>
                     <td className="p-3 px-3.5 tabular-nums">{f.dim}</td>
                     <td className="p-3 px-3.5 text-[#3c414b]">{f.where}</td>
                     <td className="p-3 px-3.5 text-[#3c414b]">{f.dev}</td>
@@ -247,7 +247,7 @@ export default function CommercialPage() {
         {/* Seção 3: Formulário de Proposta Comercial */}
         <section id="proposta" className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4">
           <div className="flex flex-col gap-2.5">
-            <h2 className="m-0 font-serif-journal text-2xl sm:text-[26px] font-bold text-[#0b2545]">
+            <h2 className="m-0 font-serif-journal text-2xl sm:text-[26px] font-bold text-[#04391d]">
               Solicite uma proposta
             </h2>
             <p className="m-0 text-[15px] leading-[1.55] text-[#3c414b]">
@@ -285,7 +285,7 @@ export default function CommercialPage() {
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 placeholder="Seu nome completo"
-                className="border border-[#c9ccd3] rounded-[4px] p-2.5 text-sm font-normal text-[#16181d] outline-none focus:border-[#0b2545]"
+                className="border border-[#c9ccd3] rounded-[4px] p-2.5 text-sm font-normal text-[#16181d] outline-none focus:border-[#04391d]"
               />
             </label>
 
@@ -296,7 +296,7 @@ export default function CommercialPage() {
                 value={formData.company}
                 onChange={(e) => setFormData({ ...formData, company: e.target.value })}
                 placeholder="Nome da empresa ou órgão"
-                className="border border-[#c9ccd3] rounded-[4px] p-2.5 text-sm font-normal text-[#16181d] outline-none focus:border-[#0b2545]"
+                className="border border-[#c9ccd3] rounded-[4px] p-2.5 text-sm font-normal text-[#16181d] outline-none focus:border-[#04391d]"
               />
             </label>
 
@@ -306,7 +306,7 @@ export default function CommercialPage() {
                 value={formData.cnpj}
                 onChange={(e) => setFormData({ ...formData, cnpj: e.target.value })}
                 placeholder="00.000.000/0001-00"
-                className="border border-[#c9ccd3] rounded-[4px] p-2.5 text-sm font-normal text-[#16181d] outline-none focus:border-[#0b2545]"
+                className="border border-[#c9ccd3] rounded-[4px] p-2.5 text-sm font-normal text-[#16181d] outline-none focus:border-[#04391d]"
               />
             </label>
 
@@ -318,7 +318,7 @@ export default function CommercialPage() {
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 placeholder="seuemail@empresa.com.br"
-                className="border border-[#c9ccd3] rounded-[4px] p-2.5 text-sm font-normal text-[#16181d] outline-none focus:border-[#0b2545]"
+                className="border border-[#c9ccd3] rounded-[4px] p-2.5 text-sm font-normal text-[#16181d] outline-none focus:border-[#04391d]"
               />
             </label>
 
@@ -329,7 +329,7 @@ export default function CommercialPage() {
                 value={formData.phone}
                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                 placeholder="(61) 99999-9999"
-                className="border border-[#c9ccd3] rounded-[4px] p-2.5 text-sm font-normal text-[#16181d] outline-none focus:border-[#0b2545]"
+                className="border border-[#c9ccd3] rounded-[4px] p-2.5 text-sm font-normal text-[#16181d] outline-none focus:border-[#04391d]"
               />
             </label>
 
@@ -354,7 +354,7 @@ export default function CommercialPage() {
                 placeholder="Ex.: 01/12 a 31/12 ou Imediato"
                 value={formData.period}
                 onChange={(e) => setFormData({ ...formData, period: e.target.value })}
-                className="border border-[#c9ccd3] rounded-[4px] p-2.5 text-sm font-normal text-[#16181d] outline-none focus:border-[#0b2545]"
+                className="border border-[#c9ccd3] rounded-[4px] p-2.5 text-sm font-normal text-[#16181d] outline-none focus:border-[#04391d]"
               />
             </label>
 
@@ -365,7 +365,7 @@ export default function CommercialPage() {
                 value={formData.message}
                 onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                 placeholder="Descreva os objetivos da campanha, formatos de interesse ou público-alvo pretendido..."
-                className="border border-[#c9ccd3] rounded-[4px] p-2.5 text-sm font-normal text-[#16181d] outline-none focus:border-[#0b2545] resize-y"
+                className="border border-[#c9ccd3] rounded-[4px] p-2.5 text-sm font-normal text-[#16181d] outline-none focus:border-[#04391d] resize-y"
               />
             </label>
 
@@ -377,7 +377,7 @@ export default function CommercialPage() {
             <button
               type="submit"
               disabled={loading}
-              className="sm:col-span-2 justify-self-start border-0 bg-[#c8102e] hover:bg-[#a50d25] text-white px-6 py-3.5 rounded-[4px] font-bold text-[14px] cursor-pointer transition-colors uppercase tracking-wider flex items-center gap-2 shadow-sm disabled:opacity-50"
+              className="sm:col-span-2 justify-self-start border-0 bg-[#008744] hover:bg-[#006e37] text-white px-6 py-3.5 rounded-[4px] font-bold text-[14px] cursor-pointer transition-colors uppercase tracking-wider flex items-center gap-2 shadow-sm disabled:opacity-50"
             >
               <Send className="w-4 h-4" />
               <span>{loading ? 'Transmitindo e enviando e-mail...' : 'Enviar solicitação de proposta'}</span>
@@ -390,7 +390,7 @@ export default function CommercialPage() {
       {quickModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
           <div className="bg-white rounded-xl shadow-2xl max-w-lg w-full overflow-hidden border border-slate-200 animate-in fade-in zoom-in-95 duration-150">
-            <div className="bg-[#0b2545] text-white p-5 flex items-center justify-between">
+            <div className="bg-[#04391d] text-white p-5 flex items-center justify-between">
               <div className="flex items-center gap-2.5">
                 <Mail className="w-5 h-5 text-amber-400" />
                 <div>
@@ -429,7 +429,7 @@ export default function CommercialPage() {
                     value={quickForm.name}
                     onChange={(e) => setQuickForm({ ...quickForm, name: e.target.value })}
                     placeholder="Nome completo"
-                    className="w-full border border-slate-300 rounded-lg p-2.5 text-sm outline-none focus:border-[#0b2545]"
+                    className="w-full border border-slate-300 rounded-lg p-2.5 text-sm outline-none focus:border-[#04391d]"
                   />
                 </div>
 
@@ -443,7 +443,7 @@ export default function CommercialPage() {
                     value={quickForm.email}
                     onChange={(e) => setQuickForm({ ...quickForm, email: e.target.value })}
                     placeholder="seuemail@exemplo.com"
-                    className="w-full border border-slate-300 rounded-lg p-2.5 text-sm outline-none focus:border-[#0b2545]"
+                    className="w-full border border-slate-300 rounded-lg p-2.5 text-sm outline-none focus:border-[#04391d]"
                   />
                 </div>
 
@@ -456,7 +456,7 @@ export default function CommercialPage() {
                     required
                     value={quickForm.subject}
                     onChange={(e) => setQuickForm({ ...quickForm, subject: e.target.value })}
-                    className="w-full border border-slate-300 rounded-lg p-2.5 text-sm outline-none focus:border-[#0b2545]"
+                    className="w-full border border-slate-300 rounded-lg p-2.5 text-sm outline-none focus:border-[#04391d]"
                   />
                 </div>
 
@@ -470,7 +470,7 @@ export default function CommercialPage() {
                     value={quickForm.message}
                     onChange={(e) => setQuickForm({ ...quickForm, message: e.target.value })}
                     placeholder="Escreva sua mensagem ou dúvida comercial..."
-                    className="w-full border border-slate-300 rounded-lg p-2.5 text-sm outline-none focus:border-[#0b2545] resize-y"
+                    className="w-full border border-slate-300 rounded-lg p-2.5 text-sm outline-none focus:border-[#04391d] resize-y"
                   />
                 </div>
 
@@ -485,7 +485,7 @@ export default function CommercialPage() {
                   <button
                     type="submit"
                     disabled={quickLoading}
-                    className="px-5 py-2 bg-[#c8102e] hover:bg-[#a50d25] text-white rounded-lg text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 shadow-sm disabled:opacity-50"
+                    className="px-5 py-2 bg-[#008744] hover:bg-[#006e37] text-white rounded-lg text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 shadow-sm disabled:opacity-50"
                   >
                     <Send className="w-3.5 h-3.5" />
                     <span>{quickLoading ? 'Enviando...' : 'Enviar E-mail Agora'}</span>

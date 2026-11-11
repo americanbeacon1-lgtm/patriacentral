@@ -145,10 +145,10 @@ export default async function InstitutionalPage({ params }: InstitutionalPagePro
       <main className="flex-1 w-full max-w-[1280px] mx-auto px-5 box-border py-8 flex justify-center">
         <article className="w-full max-w-[760px] flex flex-col gap-4 py-4">
           <span className="text-[12px] text-[#5b616e]">
-            <Link href="/" className="hover:text-[#0b2545]">Início</Link> › Institucional
+            <Link href="/" className="hover:text-[#04391d]">Início</Link> › Institucional
           </span>
 
-          <h1 className="m-0 font-serif-journal text-3xl sm:text-4xl lg:text-[42px] font-bold text-[#0b2545]">
+          <h1 className="m-0 font-serif-journal text-3xl sm:text-4xl lg:text-[42px] font-bold text-[#04391d]">
             {pageData.title}
           </h1>
 
@@ -157,7 +157,7 @@ export default async function InstitutionalPage({ params }: InstitutionalPagePro
           </p>
 
           <div className="border border-[#e3e5e9] rounded-[4px] p-4 bg-[#f4f5f7] my-3 text-[14px]">
-            <span className="font-bold text-[#0b2545]">Pátria Central</span>
+            <span className="font-bold text-[#04391d]">Pátria Central</span>
             <p className="text-[#3c414b] text-[13.5px] mt-1 m-0">
               Veículo de comunicação digital com cobertura nacional e jornalismo independente.
             </p>

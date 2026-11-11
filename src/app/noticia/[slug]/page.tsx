@@ -149,19 +149,19 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         <article className="w-full max-w-[760px] flex flex-col gap-4 py-4 sm:py-6">
           {/* Breadcrumb */}
           <div className="text-[12px] text-[#5b616e] flex items-center gap-1.5 flex-wrap">
-            <Link href="/" className="hover:text-[#0b2545]">
+            <Link href="/" className="hover:text-[#04391d]">
               Início
             </Link>
             <span>›</span>
             {category && (
-              <Link href={`/editoria/${category.slug}`} className="hover:text-[#0b2545]">
+              <Link href={`/editoria/${category.slug}`} className="hover:text-[#04391d]">
                 {category.name}
               </Link>
             )}
             {article.state && (
               <>
                 <span>›</span>
-                <Link href={`/estados/${article.state.toLowerCase()}`} className="hover:text-[#0b2545]">
+                <Link href={`/estados/${article.state.toLowerCase()}`} className="hover:text-[#04391d]">
                   {article.state}
                 </Link>
               </>
@@ -174,7 +174,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           </span>
 
           {/* Título Principal H1 */}
-          <h1 className="m-0 font-serif-journal text-3xl sm:text-4xl lg:text-[44px] leading-[1.1] font-bold tracking-[-0.015em] text-[#0b2545]">
+          <h1 className="m-0 font-serif-journal text-3xl sm:text-4xl lg:text-[44px] leading-[1.1] font-bold tracking-[-0.015em] text-[#04391d]">
             {article.title}
           </h1>
 
@@ -217,14 +217,14 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
           {/* Notificação de Fonte Externa se aplicável */}
           {article.sourceUrl && (
-            <div className="p-3 bg-[#f4f5f7] border-l-3 border-[#c8102e] text-[13px] text-[#3c414b] rounded-[2px] my-2">
-              <span className="font-semibold text-[#0b2545]">Fonte original: </span>
+            <div className="p-3 bg-[#f4f5f7] border-l-3 border-[#008744] text-[13px] text-[#3c414b] rounded-[2px] my-2">
+              <span className="font-semibold text-[#04391d]">Fonte original: </span>
               {article.sourceName || 'Agência Jornalística'} ·{' '}
               <a
                 href={article.sourceUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[#c8102e] underline font-medium hover:text-[#0b2545]"
+                className="text-[#008744] underline font-medium hover:text-[#04391d]"
               >
                 Acessar matéria de origem
               </a>
@@ -251,7 +251,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           {/* Aviso Editorial e Erratas */}
           <p className="text-[14px] text-[#5b616e] italic pt-3 border-t border-[#e3e5e9]">
             Encontrou algum erro? Escreva para a nossa equipe em{' '}
-            <a href="mailto:americanbeacon@americanbeacon.online" className="underline text-[#0b2545]">
+            <a href="mailto:americanbeacon@americanbeacon.online" className="underline text-[#04391d]">
               americanbeacon@americanbeacon.online
             </a>
             . Pedidos de direito de resposta seguem a política publicada no rodapé.
@@ -274,7 +274,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           {/* Notícias Relacionadas */}
           {relatedArticles.length > 0 && (
             <div className="mt-8 pt-6 border-t border-[#e3e5e9] flex flex-col gap-4">
-              <h3 className="m-0 text-[15px] font-bold uppercase tracking-[0.06em] text-[#0b2545] border-b-2 border-[#0b2545] pb-2">
+              <h3 className="m-0 text-[15px] font-bold uppercase tracking-[0.06em] text-[#04391d] border-b-2 border-[#04391d] pb-2">
                 Notícias relacionadas
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
@@ -293,7 +293,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                         loading="lazy"
                       />
                     </div>
-                    <span className="font-semibold text-[15px] leading-[1.35] text-[#16181d] group-hover:text-[#0b2545] transition-colors line-clamp-3">
+                    <span className="font-semibold text-[15px] leading-[1.35] text-[#16181d] group-hover:text-[#04391d] transition-colors line-clamp-3">
                       {rel.title}
                     </span>
                   </Link>

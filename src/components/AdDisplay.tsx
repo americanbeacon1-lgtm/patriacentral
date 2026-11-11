@@ -98,7 +98,7 @@ export default function AdDisplay({ banner, position }: AdDisplayProps) {
       <div className="flex justify-center w-full py-4">
         <Link
           href="/comercial"
-          className={`w-full ${info.containerStyle} ${info.aspectRatio} bg-[#f4f5f7] border border-dashed border-[#c9ccd3] rounded-[2px] flex flex-col items-center justify-center gap-1 text-[#7a808c] text-[12px] hover:border-[#0b2545] transition-colors`}
+          className={`w-full ${info.containerStyle} ${info.aspectRatio} bg-[#f4f5f7] border border-dashed border-[#c9ccd3] rounded-[2px] flex flex-col items-center justify-center gap-1 text-[#7a808c] text-[12px] hover:border-[#04391d] transition-colors`}
         >
           <span className="tracking-[0.12em] uppercase text-[10.5px] font-semibold text-[#5b616e]">
             Publicidade

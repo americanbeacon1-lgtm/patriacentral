@@ -70,18 +70,19 @@ export default function AdminAuthGuard({ children }: { children: React.ReactNode
   // Se não autenticado, renderiza a tela de login
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-[#071322] flex flex-col justify-center items-center px-4 py-12 relative overflow-hidden font-sans-journal selection:bg-red-700 selection:text-white">
+      <div className="min-h-screen bg-[#02180d] flex flex-col justify-center items-center px-4 py-12 relative overflow-hidden font-sans-journal selection:bg-emerald-700 selection:text-white">
         {/* Detalhes de luz de fundo */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none"></div>
-        <div className="absolute bottom-10 right-10 w-72 h-72 bg-red-600/5 rounded-full blur-3xl pointer-events-none"></div>
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-emerald-600/15 rounded-full blur-3xl pointer-events-none"></div>
+        <div className="absolute bottom-10 right-10 w-72 h-72 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
         <div className="w-full max-w-md relative z-10">
           {/* Logo e Cabeçalho de Identidade */}
           <div className="text-center mb-8">
-            <div className="inline-flex items-center gap-2.5 mb-3">
-              <span className="w-3 h-8 bg-[#c8102e] rounded-xs shadow-sm"></span>
+            <div className="inline-flex items-center gap-3 mb-3">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/logo.png" alt="Pátria Central" className="w-12 h-12 rounded-xl object-contain shadow-lg" />
               <span className="text-2xl font-black text-white font-headline tracking-tight uppercase">
-                Pátria Central
+                Pátria <span className="text-[#f59e0b]">Central</span>
               </span>
             </div>
             <div className="flex items-center justify-center gap-1.5 text-xs text-amber-400 font-semibold tracking-wider uppercase mb-1">
@@ -156,7 +157,7 @@ export default function AdminAuthGuard({ children }: { children: React.ReactNode
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full mt-2 py-3 px-4 bg-[#c8102e] hover:bg-red-700 text-white font-bold text-xs uppercase tracking-wider rounded-lg shadow-lg hover:shadow-red-900/30 transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                className="w-full mt-2 py-3 px-4 bg-[#008744] hover:bg-[#006e37] text-white font-bold text-xs uppercase tracking-wider rounded-lg shadow-lg hover:shadow-emerald-950/50 transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
               >
                 {loading ? (
                   <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>

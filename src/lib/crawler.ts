@@ -543,9 +543,9 @@ export async function fetchFullArticleContent(
       
       ${bodyParas.map((p) => `<p class="mb-4">${p}</p>`).join('\n')}
 
-      <blockquote class="border-l-4 border-[#0b2545] pl-4 py-3 my-6 italic text-[#3c414b] bg-[#f4f5f7] rounded-r">
+      <blockquote class="border-l-4 border-[#04391d] pl-4 py-3 my-6 italic text-[#3c414b] bg-[#f4f5f7] rounded-r">
         Reportagem apurada originalmente pelo veículo <strong>${sourceName}</strong>.
-        ${articleUrl ? `<a href="${articleUrl}" target="_blank" rel="noopener noreferrer" class="text-[#c8102e] underline font-semibold ml-1 hover:text-[#0b2545]">Consulte a publicação na íntegra no portal de origem.</a>` : ''}
+        ${articleUrl ? `<a href="${articleUrl}" target="_blank" rel="noopener noreferrer" class="text-[#008744] underline font-semibold ml-1 hover:text-[#04391d]">Consulte a publicação na íntegra no portal de origem.</a>` : ''}
       </blockquote>
 
       <p class="text-[#5b616e] text-sm border-t border-[#e3e5e9] pt-3 mt-6">
@@ -566,9 +566,9 @@ export async function fetchFullArticleContent(
     
     ${snippetChunks.slice(1).map((chunk) => `<p class="mb-4">${chunk}</p>`).join('\n')}
 
-    <blockquote class="border-l-4 border-[#0b2545] pl-4 py-3 my-6 italic text-[#3c414b] bg-[#f4f5f7] rounded-r">
+    <blockquote class="border-l-4 border-[#04391d] pl-4 py-3 my-6 italic text-[#3c414b] bg-[#f4f5f7] rounded-r">
       Informações apuradas originalmente pelo veículo <strong>${sourceName}</strong>. 
-      ${articleUrl ? `<a href="${articleUrl}" target="_blank" rel="noopener noreferrer" class="text-[#c8102e] underline font-semibold ml-1 hover:text-[#0b2545]">Consulte a publicação original na íntegra.</a>` : ''}
+      ${articleUrl ? `<a href="${articleUrl}" target="_blank" rel="noopener noreferrer" class="text-[#008744] underline font-semibold ml-1 hover:text-[#04391d]">Consulte a publicação original na íntegra.</a>` : ''}
     </blockquote>
 
     <p class="text-[#5b616e] text-sm border-t border-[#e3e5e9] pt-3 mt-6">

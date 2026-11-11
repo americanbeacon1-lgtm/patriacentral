@@ -37,7 +37,7 @@ export default function CategoryBlocks({ articles }: CategoryBlocksProps) {
         <div key={block.slug} className="flex flex-col">
           <Link
             href={`/editoria/${block.slug}`}
-            className="font-serif-journal text-[22px] font-bold text-[#0b2545] hover:text-[#c8102e] border-b-2 border-[#c8102e] pb-2 mb-1 transition-colors"
+            className="font-serif-journal text-[22px] font-bold text-[#04391d] hover:text-[#008744] border-b-2 border-[#008744] pb-2 mb-1 transition-colors"
           >
             {block.name} ›
           </Link>
@@ -48,7 +48,7 @@ export default function CategoryBlocks({ articles }: CategoryBlocksProps) {
                 href={`/noticia/${art.slug}`}
                 className="flex flex-col gap-1 py-3 border-b border-[#e3e5e9] group"
               >
-                <span className="font-semibold text-[15.5px] leading-[1.38] text-[#16181d] group-hover:text-[#0b2545] transition-colors">
+                <span className="font-semibold text-[15.5px] leading-[1.38] text-[#16181d] group-hover:text-[#04391d] transition-colors">
                   {art.title}
                 </span>
                 <span className="text-[12px] text-[#5b616e]">

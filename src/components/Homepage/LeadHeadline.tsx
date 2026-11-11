@@ -33,13 +33,13 @@ export default function LeadHeadline({ article, author, category }: LeadHeadline
         )}
       </Link>
 
-      <span className="text-[12px] font-bold tracking-[0.08em] uppercase text-[#c8102e]">
+      <span className="text-[12px] font-bold tracking-[0.08em] uppercase text-[#008744]">
         {catName}
       </span>
 
       <Link
         href={`/noticia/${article.slug}`}
-        className="font-serif-journal font-bold text-2xl sm:text-3xl lg:text-[40px] leading-[1.12] tracking-[-0.015em] text-[#0b2545] hover:text-[#c8102e] transition-colors"
+        className="font-serif-journal font-bold text-2xl sm:text-3xl lg:text-[40px] leading-[1.12] tracking-[-0.015em] text-[#04391d] hover:text-[#008744] transition-colors"
       >
         {article.title}
       </Link>

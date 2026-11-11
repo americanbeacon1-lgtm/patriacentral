@@ -25,6 +25,8 @@
 *.pem
 ._*
 *.zip
+*.jpeg
+square_*.png
 
 # debug
 npm-debug.log*

@@ -56,10 +56,10 @@ export default async function StatePage({ params }: StatePageProps) {
           {/* Coluna Principal do Estado */}
           <div className="flex-[2_1_520px] flex flex-col min-w-0">
             <span className="text-[12px] text-[#5b616e] mb-2">
-              <Link href="/" className="hover:text-[#0b2545]">Início</Link> › Estados › {stateObj.name}
+              <Link href="/" className="hover:text-[#04391d]">Início</Link> › Estados › {stateObj.name}
             </span>
 
-            <h1 className="m-0 mb-3 font-serif-journal text-3xl sm:text-4xl lg:text-[44px] font-bold text-[#0b2545] border-b-3 border-[#c8102e] pb-3">
+            <h1 className="m-0 mb-3 font-serif-journal text-3xl sm:text-4xl lg:text-[44px] font-bold text-[#04391d] border-b-3 border-[#008744] pb-3">
               Notícias de {stateObj.name} ({stateObj.uf})
             </h1>
 
@@ -81,10 +81,10 @@ export default async function StatePage({ params }: StatePageProps) {
                       />
                     </div>
                     <div className="flex flex-col gap-1.5">
-                      <span className="text-[11.5px] font-bold tracking-[0.08em] uppercase text-[#c8102e]">
+                      <span className="text-[11.5px] font-bold tracking-[0.08em] uppercase text-[#008744]">
                         {stateObj.name} · {art.categoryName || 'Região'}
                       </span>
-                      <span className="font-serif-journal font-semibold text-[18px] sm:text-[20px] leading-[1.25] text-[#0b2545] group-hover:text-[#c8102e] transition-colors line-clamp-2">
+                      <span className="font-serif-journal font-semibold text-[18px] sm:text-[20px] leading-[1.25] text-[#04391d] group-hover:text-[#008744] transition-colors line-clamp-2">
                         {art.title}
                       </span>
                       {art.subtitle && (

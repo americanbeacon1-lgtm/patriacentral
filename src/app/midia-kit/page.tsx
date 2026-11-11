@@ -30,10 +30,10 @@ export default function MediaKitPage() {
         <div className="border border-[#e3e5e9] rounded-[4px] p-6 sm:p-10 mb-8 bg-white">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#e3e5e9] pb-6 mb-6">
             <div>
-              <span className="text-[12px] font-bold uppercase tracking-[0.1em] text-[#c8102e] block mb-1">
+              <span className="text-[12px] font-bold uppercase tracking-[0.1em] text-[#008744] block mb-1">
                 Documento Técnico para Agências e Planejamento de Mídia
               </span>
-              <h1 className="m-0 font-serif-journal text-3xl sm:text-4xl font-bold text-[#0b2545]">
+              <h1 className="m-0 font-serif-journal text-3xl sm:text-4xl font-bold text-[#04391d]">
                 Mídia Kit Institucional {DEFAULT_SETTINGS.portalName}
               </h1>
               <p className="text-[13px] text-[#5b616e] mt-1">
@@ -45,7 +45,7 @@ export default function MediaKitPage() {
               <button
                 type="button"
                 onClick={() => typeof window !== 'undefined' && window.print()}
-                className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#0b2545] hover:bg-[#13315c] text-white rounded-[4px] text-[13px] font-semibold transition-colors cursor-pointer"
+                className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#04391d] hover:bg-[#008744] text-white rounded-[4px] text-[13px] font-semibold transition-colors cursor-pointer"
               >
                 <Download className="w-4 h-4" />
                 <span>Imprimir / Salvar PDF</span>
@@ -67,20 +67,20 @@ export default function MediaKitPage() {
           {/* Perfil do Veículo e Dados Societários */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8 pb-8 border-b border-[#e3e5e9]">
             <div>
-              <h3 className="font-serif-journal text-xl font-bold text-[#0b2545] mb-3">
+              <h3 className="font-serif-journal text-xl font-bold text-[#04391d] mb-3">
                 Identificação do Veículo
               </h3>
               <p className="text-sm text-[#3c414b] leading-relaxed mb-3">
-                <strong className="text-lg text-[#0b2545] block mb-1">Pátria Central</strong>
+                <strong className="text-lg text-[#04391d] block mb-1">Pátria Central</strong>
                 Veículo de comunicação digital de abrangência nacional, focado na cobertura dos Três Poderes, análise econômica e políticas públicas.
               </p>
               <div className="p-3 bg-[#f4f5f7] rounded-[4px] border border-[#e3e5e9] text-xs text-[#5b616e]">
-                Contato de patrocínio e propostas: <strong className="text-[#0b2545]">americanbeacon@americanbeacon.online</strong>
+                Contato de patrocínio e propostas: <strong className="text-[#04391d]">americanbeacon@americanbeacon.online</strong>
               </div>
             </div>
 
             <div>
-              <h3 className="font-serif-journal text-xl font-bold text-[#0b2545] mb-3">
+              <h3 className="font-serif-journal text-xl font-bold text-[#04391d] mb-3">
                 Linha Editorial & Público
               </h3>
               <p className="text-sm text-[#3c414b] leading-relaxed mb-4">
@@ -88,11 +88,11 @@ export default function MediaKitPage() {
               </p>
               <div className="grid grid-cols-2 gap-3 text-center text-xs">
                 <div className="p-3 bg-[#f4f5f7] rounded-[4px] border border-[#e3e5e9]">
-                  <span className="block font-bold text-lg text-[#0b2545]">78%</span>
+                  <span className="block font-bold text-lg text-[#04391d]">78%</span>
                   <span className="text-[#5b616e]">Decisores, Servidores e Gestores</span>
                 </div>
                 <div className="p-3 bg-[#f4f5f7] rounded-[4px] border border-[#e3e5e9]">
-                  <span className="block font-bold text-lg text-[#0b2545]">27 UFs</span>
+                  <span className="block font-bold text-lg text-[#04391d]">27 UFs</span>
                   <span className="text-[#5b616e]">Capilaridade Nacional</span>
                 </div>
               </div>
@@ -101,7 +101,7 @@ export default function MediaKitPage() {
 
           {/* Especificações Técnicas de Formatos IAB */}
           <div>
-            <h3 className="font-serif-journal text-xl font-bold text-[#0b2545] mb-4">
+            <h3 className="font-serif-journal text-xl font-bold text-[#04391d] mb-4">
               Inventário e Especificações Técnicas (Padrão IAB Brasil)
             </h3>
             <div className="overflow-x-auto border border-[#e3e5e9] rounded-[4px]">
@@ -117,42 +117,42 @@ export default function MediaKitPage() {
                 </thead>
                 <tbody className="divide-y divide-[#e3e5e9]">
                   <tr>
-                    <td className="p-3 font-semibold text-[#0b2545]">Superbanner Topo</td>
+                    <td className="p-3 font-semibold text-[#04391d]">Superbanner Topo</td>
                     <td className="p-3 tabular-nums">970 × 250 px</td>
                     <td className="p-3 text-[#5b616e]">150 KB</td>
                     <td className="p-3 text-[#5b616e]">HTML5, JPG, PNG, WebP</td>
                     <td className="p-3 text-[#5b616e]">Desktop</td>
                   </tr>
                   <tr>
-                    <td className="p-3 font-semibold text-[#0b2545]">Banner Horizontal</td>
+                    <td className="p-3 font-semibold text-[#04391d]">Banner Horizontal</td>
                     <td className="p-3 tabular-nums">728 × 90 px</td>
                     <td className="p-3 text-[#5b616e]">80 KB</td>
                     <td className="p-3 text-[#5b616e]">HTML5, JPG, PNG, WebP</td>
                     <td className="p-3 text-[#5b616e]">Desktop / Tablet</td>
                   </tr>
                   <tr>
-                    <td className="p-3 font-semibold text-[#0b2545]">Retângulo Médio</td>
+                    <td className="p-3 font-semibold text-[#04391d]">Retângulo Médio</td>
                     <td className="p-3 tabular-nums">300 × 250 px</td>
                     <td className="p-3 text-[#5b616e]">100 KB</td>
                     <td className="p-3 text-[#5b616e]">HTML5, JPG, PNG, WebP</td>
                     <td className="p-3 text-[#5b616e]">Todos</td>
                   </tr>
                   <tr>
-                    <td className="p-3 font-semibold text-[#0b2545]">Half Page Lateral</td>
+                    <td className="p-3 font-semibold text-[#04391d]">Half Page Lateral</td>
                     <td className="p-3 tabular-nums">300 × 600 px</td>
                     <td className="p-3 text-[#5b616e]">200 KB</td>
                     <td className="p-3 text-[#5b616e]">HTML5, JPG, PNG, WebP</td>
                     <td className="p-3 text-[#5b616e]">Desktop</td>
                   </tr>
                   <tr>
-                    <td className="p-3 font-semibold text-[#0b2545]">Banner Mobile</td>
+                    <td className="p-3 font-semibold text-[#04391d]">Banner Mobile</td>
                     <td className="p-3 tabular-nums">320 × 100 px</td>
                     <td className="p-3 text-[#5b616e]">50 KB</td>
                     <td className="p-3 text-[#5b616e]">HTML5, JPG, PNG, WebP</td>
                     <td className="p-3 text-[#5b616e]">Mobile</td>
                   </tr>
                   <tr>
-                    <td className="p-3 font-semibold text-[#0b2545]">Banner In-Feed</td>
+                    <td className="p-3 font-semibold text-[#04391d]">Banner In-Feed</td>
                     <td className="p-3 tabular-nums">Responsivo (800 × 180)</td>
                     <td className="p-3 text-[#5b616e]">120 KB</td>
                     <td className="p-3 text-[#5b616e]">HTML5, JPG, PNG, WebP</td>

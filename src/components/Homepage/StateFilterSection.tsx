@@ -23,7 +23,7 @@ export default function StateFilterSection({ articles }: StateFilterSectionProps
   return (
     <section className="py-7 border-t border-b border-[#e3e5e9] flex flex-col gap-4">
       <div className="flex justify-between items-baseline gap-3 flex-wrap">
-        <h2 className="m-0 font-serif-journal text-2xl sm:text-[26px] font-bold text-[#0b2545]">
+        <h2 className="m-0 font-serif-journal text-2xl sm:text-[26px] font-bold text-[#04391d]">
           Estados e regiões
         </h2>
         <span className="text-[13px] text-[#5b616e]">
@@ -43,8 +43,8 @@ export default function StateFilterSection({ articles }: StateFilterSectionProps
               title={`${s.name} (${s.region})`}
               className={`min-w-[44px] h-[34px] rounded-[3px] font-semibold text-[13px] cursor-pointer transition-colors border ${
                 isSelected
-                  ? 'bg-[#0b2545] text-white border-[#0b2545]'
-                  : 'bg-white text-[#2b2f36] border-[#c9ccd3] hover:border-[#0b2545]'
+                  ? 'bg-[#008744] text-white border-[#008744] shadow-xs'
+                  : 'bg-white text-[#2b2f36] border-[#c9ccd3] hover:border-[#008744] hover:text-[#008744]'
               }`}
             >
               {s.uf}
@@ -61,10 +61,10 @@ export default function StateFilterSection({ articles }: StateFilterSectionProps
             href={`/noticia/${art.slug}`}
             className="flex flex-col gap-1 py-3 border-b border-[#e3e5e9] group"
           >
-            <span className="text-[11.5px] font-bold text-[#c8102e]">
+            <span className="text-[11.5px] font-bold text-[#008744]">
               {art.state || selectedStateObj.name} · {art.categoryName || 'Região'}
             </span>
-            <span className="font-semibold text-[15.5px] leading-[1.38] text-[#16181d] group-hover:text-[#0b2545] transition-colors">
+            <span className="font-semibold text-[15.5px] leading-[1.38] text-[#16181d] group-hover:text-[#04391d] transition-colors">
               {art.title}
             </span>
           </Link>

@@ -27,13 +27,13 @@ export default function SecondaryHeadlines({ articles }: SecondaryHeadlinesProps
             />
           </Link>
 
-          <span className="text-[11.5px] font-bold tracking-[0.08em] uppercase text-[#c8102e] mt-1">
+          <span className="text-[11.5px] font-bold tracking-[0.08em] uppercase text-[#008744] mt-1">
             {art.chapeu || art.categoryName || 'DESTAQUE'}
           </span>
 
           <Link
             href={`/noticia/${art.slug}`}
-            className="font-serif-journal font-semibold text-[21px] leading-[1.22] text-[#0b2545] hover:text-[#c8102e] transition-colors line-clamp-3"
+            className="font-serif-journal font-semibold text-[21px] leading-[1.22] text-[#04391d] hover:text-[#008744] transition-colors line-clamp-3"
           >
             {art.title}
           </Link>

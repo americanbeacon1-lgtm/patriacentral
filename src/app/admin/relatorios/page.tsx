@@ -132,10 +132,11 @@ export default function AdminReportsPage() {
         {/* Cabeçalho do Laudo / Clipping */}
         <div className="border-b-2 border-slate-900 pb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <div className="flex items-center gap-2">
-              <span className="w-3 h-7 bg-red-700 inline-block"></span>
+            <div className="flex items-center gap-2.5">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/logo.png" alt="Pátria Central" className="w-8 h-8 rounded-lg object-contain shadow-xs" />
               <span className="text-2xl font-black font-headline uppercase tracking-tight text-slate-950">
-                PÁTRIA CENTRAL
+                PÁTRIA <span className="text-[#d97706]">CENTRAL</span>
               </span>
             </div>
             <p className="text-xs text-slate-500 font-semibold uppercase tracking-wider mt-1">

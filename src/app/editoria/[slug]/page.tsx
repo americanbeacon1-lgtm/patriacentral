@@ -161,14 +161,14 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
           <div className="flex-[2_1_520px] flex flex-col min-w-0">
             {/* Breadcrumb */}
             <span className="text-[12px] text-[#5b616e] mb-2 flex items-center gap-1.5 flex-wrap">
-              <Link href="/" className="hover:text-[#0b2545]">Início</Link>
+              <Link href="/" className="hover:text-[#04391d]">Início</Link>
               <span>›</span>
-              <span className="text-[#0b2545] font-semibold">{category.name}</span>
+              <span className="text-[#04391d] font-semibold">{category.name}</span>
             </span>
 
             {/* Cabeçalho da Editoria */}
-            <div className="border-b-3 border-[#c8102e] pb-3 mb-4">
-              <h1 className="m-0 font-serif-journal text-3xl sm:text-4xl lg:text-[42px] font-bold text-[#0b2545]">
+            <div className="border-b-3 border-[#008744] pb-3 mb-4">
+              <h1 className="m-0 font-serif-journal text-3xl sm:text-4xl lg:text-[42px] font-bold text-[#04391d]">
                 {category.name}
               </h1>
               {category.description && (
@@ -192,8 +192,8 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
                       href={`/editoria/${sub.slug}`}
                       className={`px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap transition-colors shrink-0 ${
                         isActive
-                          ? 'bg-[#0b2545] text-white shadow-xs'
-                          : 'bg-slate-100 text-slate-700 hover:bg-slate-200 hover:text-[#0b2545]'
+                          ? 'bg-[#04391d] text-white shadow-xs'
+                          : 'bg-slate-100 text-slate-700 hover:bg-slate-200 hover:text-[#04391d]'
                       }`}
                     >
                       {sub.name}
@@ -230,10 +230,10 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
                     </div>
                     <div className="flex flex-col justify-between gap-1">
                       <div>
-                        <span className="text-[10.5px] sm:text-[11.5px] font-bold tracking-[0.08em] uppercase text-[#c8102e]">
+                        <span className="text-[10.5px] sm:text-[11.5px] font-bold tracking-[0.08em] uppercase text-[#008744]">
                           {art.chapeu || category.name}
                         </span>
-                        <h2 className="font-serif-journal font-semibold text-[16px] sm:text-[19px] lg:text-[20px] leading-[1.25] text-[#0b2545] group-hover:text-[#c8102e] transition-colors line-clamp-2 mt-0.5">
+                        <h2 className="font-serif-journal font-semibold text-[16px] sm:text-[19px] lg:text-[20px] leading-[1.25] text-[#04391d] group-hover:text-[#008744] transition-colors line-clamp-2 mt-0.5">
                           {art.title}
                         </h2>
                         {art.subtitle && (
@@ -243,7 +243,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
                         )}
                       </div>
                       <span className="text-[11px] sm:text-[12px] text-[#5b616e] mt-1 flex items-center gap-1.5 sm:gap-2 flex-wrap">
-                        <span className="font-semibold text-[#0b2545]">
+                        <span className="font-semibold text-[#04391d]">
                           {new Date(art.publishedAt).toLocaleDateString('pt-BR', { day: 'numeric', month: 'short' })} às{' '}
                           {new Date(art.publishedAt).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
                         </span>

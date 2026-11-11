@@ -209,15 +209,16 @@ export default function Header({ categories, settings, urgentText, urgentLink }:
 
   return (
     <header className="w-full bg-white z-50 sticky top-0 shadow-xs select-none">
-      {/* 1. BARRA SUPERIOR AZUL-MARINHO INSTITUCIONAL */}
-      <div className="bg-[#0b2545] text-[#dfe6f0] text-[12px]">
+      {/* 1. BARRA SUPERIOR VERDE NOBRE & OURO INSTITUCIONAL */}
+      <div className="bg-[#042f18] text-[#e6f4ea] text-[12px] border-b border-[#064e3b]">
         <div className="max-w-[1280px] mx-auto px-4 sm:px-5 py-2 flex justify-between items-center gap-3">
           <div className="flex items-center gap-3">
-            <span className="font-bold tracking-wide text-white uppercase text-[11px] sm:text-[12px]">
+            <span className="font-bold tracking-wide text-white uppercase text-[11px] sm:text-[12px] flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-[#f59e0b]"></span>
               {settings.portalName}
             </span>
-            <span className="hidden sm:inline text-blue-200/60">|</span>
-            <span className="hidden sm:inline text-blue-100/80 text-[11px]">
+            <span className="hidden sm:inline text-emerald-300/40">|</span>
+            <span className="hidden sm:inline text-emerald-100/90 text-[11px]">
               Jornalismo Nacional & Três Poderes
             </span>
           </div>
@@ -225,7 +226,7 @@ export default function Header({ categories, settings, urgentText, urgentLink }:
           <div className="flex items-center gap-3">
             <Link
               href="/comercial"
-              className="px-3 py-1 bg-[#c8102e] hover:bg-[#a50d24] text-white rounded font-bold text-[11px] tracking-wider uppercase transition-colors shrink-0 shadow-xs"
+              className="px-3.5 py-1 bg-[#f59e0b] hover:bg-[#d97706] text-slate-950 rounded font-black text-[11px] tracking-wider uppercase transition-colors shrink-0 shadow-xs"
             >
               Anuncie no Portal
             </Link>
@@ -233,7 +234,7 @@ export default function Header({ categories, settings, urgentText, urgentLink }:
         </div>
       </div>
 
-      {/* 2. CABEÇALHO PRINCIPAL COM LOGO & BUSCA */}
+      {/* 2. CABEÇALHO PRINCIPAL COM LOGO OFICIAL & BUSCA */}
       <div className="border-b border-[#e3e5e9] bg-white">
         <div className="max-w-[1280px] mx-auto px-4 sm:px-5 py-3 sm:py-4 flex justify-between items-center gap-3">
           <div className="flex items-center gap-2 sm:gap-4">
@@ -241,23 +242,28 @@ export default function Header({ categories, settings, urgentText, urgentLink }:
             <button
               type="button"
               onClick={() => setMobileMenuOpen(true)}
-              className="p-2 -ml-1 text-[#0b2545] hover:bg-slate-100 rounded-lg transition-colors flex items-center gap-1.5 focus:outline-hidden"
+              className="p-2 -ml-1 text-[#04391d] hover:bg-emerald-50 rounded-lg transition-colors flex items-center gap-1.5 focus:outline-hidden"
               aria-label="Abrir menu de navegação"
             >
               <Menu className="w-6 h-6 shrink-0" />
-              <span className="hidden md:inline lg:hidden text-xs font-bold text-[#0b2545] uppercase">
+              <span className="hidden md:inline lg:hidden text-xs font-bold text-[#04391d] uppercase">
                 Menu
               </span>
             </button>
 
-            {/* Logotipo Pátria Central */}
-            <Link href="/" className="flex items-center gap-2.5 sm:gap-3 group text-[#0b2545]">
-              <span className="w-2 sm:w-2.5 h-9 sm:h-11 bg-[#c8102e] shrink-0 rounded-xs"></span>
+            {/* Logotipo Oficial Pátria Central */}
+            <Link href="/" className="flex items-center gap-2.5 sm:gap-3.5 group">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/logo.png"
+                alt="Pátria Central"
+                className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl object-contain shadow-xs shrink-0 group-hover:scale-105 transition-transform"
+              />
               <span className="flex flex-col">
-                <span className="font-serif-journal font-extrabold text-2xl sm:text-3xl lg:text-[38px] leading-none tracking-tight text-[#0b2545]">
-                  {settings?.portalName && !settings.portalName.toLowerCase().includes('eixo') ? settings.portalName : 'Pátria Central'}
+                <span className="font-serif-journal font-black text-2xl sm:text-3xl lg:text-[34px] leading-none tracking-tight text-[#04391d]">
+                  PÁTRIA <span className="text-[#f59e0b]">CENTRAL</span>
                 </span>
-                <span className="text-[9.5px] sm:text-[11px] tracking-[0.16em] uppercase text-[#5b616e] font-semibold mt-0.5">
+                <span className="text-[9.5px] sm:text-[11px] tracking-[0.16em] uppercase text-[#008744] font-bold mt-0.5">
                   Jornalismo de interesse público
                 </span>
               </span>
@@ -267,7 +273,7 @@ export default function Header({ categories, settings, urgentText, urgentLink }:
           {/* Campo de Busca Desktop */}
           <form
             onSubmit={handleSearchSubmit}
-            className="hidden md:flex items-center w-72 lg:w-88 border border-[#c9ccd3] rounded overflow-hidden focus-within:border-[#0b2545] transition-colors"
+            className="hidden md:flex items-center w-72 lg:w-88 border border-[#c9ccd3] rounded-lg overflow-hidden focus-within:border-[#008744] transition-colors"
           >
             <input
               type="search"
@@ -280,9 +286,9 @@ export default function Header({ categories, settings, urgentText, urgentLink }:
             />
             <button
               type="submit"
-              className="bg-[#2b2f36] hover:bg-[#0b2545] text-white px-3.5 py-2 text-xs font-bold uppercase transition-colors shrink-0 flex items-center gap-1"
+              className="bg-[#04391d] hover:bg-[#008744] text-white px-3.5 py-2 text-xs font-bold uppercase transition-colors shrink-0 flex items-center gap-1"
             >
-              <Search className="w-3.5 h-3.5" />
+              <Search className="w-3.5 h-3.5 text-[#f59e0b]" />
               <span>Buscar</span>
             </button>
           </form>
@@ -306,7 +312,7 @@ export default function Header({ categories, settings, urgentText, urgentLink }:
               <button
                 type="button"
                 onClick={() => handleScroll('left')}
-                className="hidden sm:flex absolute left-1 z-20 w-7 h-7 bg-white/95 border border-slate-300 rounded-full shadow-md items-center justify-center text-slate-700 hover:text-[#0b2545] hover:border-[#0b2545] transition-all"
+                className="hidden sm:flex absolute left-1 z-20 w-7 h-7 bg-white/95 border border-slate-300 rounded-full shadow-md items-center justify-center text-slate-700 hover:text-[#04391d] hover:border-[#04391d] transition-all"
                 aria-label="Rolar editorias para a esquerda"
               >
                 <ChevronLeft className="w-4 h-4" />
@@ -328,8 +334,8 @@ export default function Header({ categories, settings, urgentText, urgentLink }:
                 href="/"
                 className={`py-3 transition-colors shrink-0 ${
                   pathname === '/'
-                    ? 'border-b-3 border-[#c8102e] text-[#0b2545] font-bold'
-                    : 'border-b-3 border-transparent text-[#2b2f36] hover:text-[#0b2545]'
+                    ? 'border-b-3 border-[#008744] text-[#04391d] font-bold'
+                    : 'border-b-3 border-transparent text-[#2b2f36] hover:text-[#008744]'
                 }`}
               >
                 Início
@@ -346,8 +352,8 @@ export default function Header({ categories, settings, urgentText, urgentLink }:
                     href={href}
                     className={`py-3 transition-colors shrink-0 ${
                       isActive
-                        ? 'border-b-3 border-[#c8102e] text-[#0b2545] font-bold'
-                        : 'border-b-3 border-transparent text-[#2b2f36] hover:text-[#0b2545]'
+                        ? 'border-b-3 border-[#008744] text-[#04391d] font-bold'
+                        : 'border-b-3 border-transparent text-[#2b2f36] hover:text-[#008744]'
                     }`}
                   >
                     {shortLabel}
@@ -366,7 +372,7 @@ export default function Header({ categories, settings, urgentText, urgentLink }:
               <button
                 type="button"
                 onClick={() => handleScroll('right')}
-                className="hidden sm:flex absolute right-24 sm:right-28 z-20 w-7 h-7 bg-white/95 border border-slate-300 rounded-full shadow-md items-center justify-center text-slate-700 hover:text-[#0b2545] hover:border-[#0b2545] transition-all"
+                className="hidden sm:flex absolute right-24 sm:right-28 z-20 w-7 h-7 bg-white/95 border border-slate-300 rounded-full shadow-md items-center justify-center text-slate-700 hover:text-[#04391d] hover:border-[#008744] transition-all"
                 aria-label="Rolar editorias para a direita"
               >
                 <ChevronRight className="w-4 h-4" />
@@ -380,8 +386,8 @@ export default function Header({ categories, settings, urgentText, urgentLink }:
                 onClick={() => setMoreDropdownOpen(!moreDropdownOpen)}
                 className={`flex items-center gap-1 px-2.5 py-1.5 rounded text-xs font-bold uppercase transition-colors ${
                   moreDropdownOpen
-                    ? 'bg-[#0b2545] text-white'
-                    : 'text-[#0b2545] hover:bg-slate-100'
+                    ? 'bg-[#04391d] text-white'
+                    : 'text-[#04391d] hover:bg-emerald-50'
                 }`}
                 aria-expanded={moreDropdownOpen}
               >
@@ -397,7 +403,7 @@ export default function Header({ categories, settings, urgentText, urgentLink }:
               {moreDropdownOpen && (
                 <div className="absolute right-0 top-full mt-1.5 w-[320px] sm:w-[480px] bg-white border border-slate-200 rounded-lg shadow-2xl p-4 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
                   <div className="flex items-center justify-between pb-2 mb-3 border-b border-slate-100">
-                    <span className="text-xs font-bold uppercase tracking-wider text-[#0b2545]">
+                    <span className="text-xs font-bold uppercase tracking-wider text-[#04391d]">
                       Navegação por Editorias
                     </span>
                     <button
@@ -421,7 +427,7 @@ export default function Header({ categories, settings, urgentText, urgentLink }:
                               key={item.slug}
                               href={`/editoria/${item.slug}`}
                               onClick={() => setMoreDropdownOpen(false)}
-                              className="py-1 px-2 rounded hover:bg-slate-50 text-slate-700 hover:text-[#0b2545] font-medium transition-colors"
+                              className="py-1 px-2 rounded hover:bg-emerald-50 text-slate-700 hover:text-[#04391d] font-medium transition-colors"
                             >
                               {item.name}
                             </Link>
@@ -435,14 +441,14 @@ export default function Header({ categories, settings, urgentText, urgentLink }:
                     <Link
                       href="/comercial"
                       onClick={() => setMoreDropdownOpen(false)}
-                      className="text-[#c8102e] font-bold uppercase hover:underline"
+                      className="text-[#008744] font-bold uppercase hover:underline"
                     >
                       Anuncie no Portal →
                     </Link>
                     <Link
                       href="/admin"
                       onClick={() => setMoreDropdownOpen(false)}
-                      className="text-slate-500 hover:text-[#0b2545]"
+                      className="text-slate-500 hover:text-[#04391d]"
                     >
                       Painel Redação
                     </Link>
@@ -456,15 +462,15 @@ export default function Header({ categories, settings, urgentText, urgentLink }:
 
       {/* 4. BARRA DE NOTÍCIAS URGENTES */}
       {settings.urgentBarActive && (
-        <div className="bg-[#fff4f2] border-b border-[#f3d6d1]">
+        <div className="bg-[#fefce8] border-b border-[#fef08a]">
           <div className="max-w-[1280px] mx-auto px-4 sm:px-5 py-2 flex gap-3 items-center text-xs sm:text-sm">
-            <span className="bg-[#c8102e] text-white font-bold text-[10px] sm:text-[11px] tracking-wider px-2 py-0.5 rounded-xs whitespace-nowrap uppercase flex items-center gap-1">
-              <Flame className="w-3 h-3 shrink-0 animate-pulse" />
+            <span className="bg-[#04391d] text-[#f59e0b] font-bold text-[10px] sm:text-[11px] tracking-wider px-2 py-0.5 rounded-xs whitespace-nowrap uppercase flex items-center gap-1 border border-[#f59e0b]/30">
+              <Flame className="w-3 h-3 shrink-0 animate-pulse text-[#f59e0b]" />
               <span>URGENTE</span>
             </span>
             <Link
               href={breakingHref}
-              className="font-semibold text-[#16181d] hover:text-[#0b2545] truncate transition-colors"
+              className="font-semibold text-slate-900 hover:text-[#008744] truncate transition-colors"
             >
               {breakingTitle}
             </Link>
@@ -484,11 +490,12 @@ export default function Header({ categories, settings, urgentText, urgentLink }:
           {/* Painel Lateral Branco */}
           <div className="relative w-[86%] max-w-[340px] h-full bg-white shadow-2xl flex flex-col z-10 animate-in slide-in-from-left duration-250">
             {/* Topo da Gaveta */}
-            <div className="p-4 border-b border-slate-200 bg-[#0b2545] text-white flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <span className="w-2 h-7 bg-[#c8102e] rounded-xs"></span>
-                <span className="font-serif-journal font-bold text-xl text-white">
-                  {settings.portalName}
+            <div className="p-4 border-b border-[#064e3b] bg-[#042f18] text-white flex items-center justify-between">
+              <div className="flex items-center gap-2.5">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/logo.png" alt="Pátria Central" className="w-8 h-8 rounded-lg object-contain" />
+                <span className="font-serif-journal font-black text-xl text-white">
+                  PÁTRIA <span className="text-[#f59e0b]">CENTRAL</span>
                 </span>
               </div>
               <button
@@ -513,9 +520,9 @@ export default function Header({ categories, settings, urgentText, urgentLink }:
                 />
                 <button
                   type="submit"
-                  className="bg-[#0b2545] text-white px-3 text-xs font-semibold flex items-center justify-center"
+                  className="bg-[#04391d] text-white px-3 text-xs font-semibold flex items-center justify-center"
                 >
-                  <Search className="w-3.5 h-3.5" />
+                  <Search className="w-3.5 h-3.5 text-[#f59e0b]" />
                 </button>
               </form>
             </div>
@@ -528,10 +535,10 @@ export default function Header({ categories, settings, urgentText, urgentLink }:
               <Link
                 href="/"
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center justify-between p-2.5 rounded-lg bg-slate-100 font-bold text-sm text-[#0b2545]"
+                className="flex items-center justify-between p-2.5 rounded-lg bg-emerald-50 font-bold text-sm text-[#04391d]"
               >
                 <span>Página Inicial</span>
-                <ArrowRight className="w-4 h-4 text-slate-400" />
+                <ArrowRight className="w-4 h-4 text-[#008744]" />
               </Link>
 
               {CATEGORY_GROUPS.map((group) => (
@@ -550,12 +557,12 @@ export default function Header({ categories, settings, urgentText, urgentLink }:
                           onClick={() => setMobileMenuOpen(false)}
                           className={`flex items-center justify-between px-3 py-2 rounded text-xs font-semibold transition-colors ${
                             isActive
-                              ? 'bg-red-50 text-[#c8102e] font-bold'
-                              : 'text-slate-700 hover:bg-slate-50 hover:text-[#0b2545]'
+                              ? 'bg-emerald-50 text-[#008744] font-bold'
+                              : 'text-slate-700 hover:bg-slate-50 hover:text-[#04391d]'
                           }`}
                         >
                           <span>{item.name}</span>
-                          {isActive && <span className="w-1.5 h-1.5 rounded-full bg-[#c8102e]" />}
+                          {isActive && <span className="w-1.5 h-1.5 rounded-full bg-[#008744]" />}
                         </Link>
                       );
                     })}
@@ -569,7 +576,7 @@ export default function Header({ categories, settings, urgentText, urgentLink }:
               <Link
                 href="/comercial"
                 onClick={() => setMobileMenuOpen(false)}
-                className="w-full py-2.5 px-3 bg-[#c8102e] hover:bg-[#a50d24] text-white rounded text-xs font-bold uppercase tracking-wider text-center block shadow-xs transition-colors"
+                className="w-full py-2.5 px-3 bg-[#f59e0b] hover:bg-[#d97706] text-slate-950 rounded text-xs font-black uppercase tracking-wider text-center block shadow-xs transition-colors"
               >
                 Anuncie no Portal
               </Link>
@@ -578,7 +585,7 @@ export default function Header({ categories, settings, urgentText, urgentLink }:
                 <Link
                   href="/admin"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="font-semibold text-slate-700 hover:text-[#0b2545]"
+                  className="font-semibold text-slate-700 hover:text-[#04391d]"
                 >
                   Redação
                 </Link>

@@ -48,8 +48,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       <div className="min-h-screen bg-slate-100 flex flex-col md:flex-row">
         {/* Sidebar Mobile Toggle */}
         <div className="md:hidden bg-slate-950 text-white p-4 flex items-center justify-between sticky top-0 z-50">
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-5 bg-red-700"></span>
+          <div className="flex items-center gap-2.5">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo.png" alt="Pátria Central" className="w-6 h-6 rounded-md object-contain" />
             <span className="font-headline font-bold uppercase text-sm tracking-wide">
               Pátria Central • Redação & Admin
             </span>
@@ -72,10 +73,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             {/* Logo do Painel */}
             <div className="p-6 border-b border-slate-800">
               <Link href="/admin" className="block">
-                <div className="flex items-center gap-2">
-                  <span className="w-2.5 h-6 bg-red-700 inline-block rounded-xs"></span>
+                <div className="flex items-center gap-2.5">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/logo.png" alt="Pátria Central" className="w-8 h-8 rounded-lg object-contain shadow-xs" />
                   <span className="text-xl font-black text-white font-headline uppercase tracking-tight">
-                    Pátria Central
+                    Pátria <span className="text-[#f59e0b]">Central</span>
                   </span>
                 </div>
                 <p className="text-[10px] text-slate-500 uppercase tracking-widest mt-1">
@@ -86,7 +88,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
             {/* Perfil Ativo */}
             <div className="p-4 bg-slate-900/60 border-b border-slate-800 flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-red-700 text-white flex items-center justify-center font-bold text-xs">
+              <div className="w-8 h-8 rounded-full bg-[#008744] text-white flex items-center justify-center font-bold text-xs shadow-xs">
                 AB
               </div>
               <div className="min-w-0 flex-1">

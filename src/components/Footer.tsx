@@ -33,28 +33,35 @@ export default function Footer({ settings }: FooterProps) {
   ];
 
   return (
-    <footer className="bg-[#1c1f25] text-[#c4c8d0] mt-auto">
-      <div className="max-w-[1280px] mx-auto px-5 py-10 pb-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+    <footer className="bg-[#022110] text-[#c4dfce] mt-auto border-t-4 border-[#008744]">
+      <div className="max-w-[1280px] mx-auto px-5 py-12 pb-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
         {/* Coluna 1: O Portal */}
-        <div className="flex flex-col gap-2.5">
-          <span className="font-serif-journal font-bold text-2xl text-white">
-            {settings?.portalName && !settings.portalName.toLowerCase().includes('eixo') ? settings.portalName : 'Pátria Central'}
-          </span>
-          <p className="text-[13px] leading-relaxed text-[#c4c8d0]">
+        <div className="flex flex-col gap-3">
+          <Link href="/" className="flex items-center gap-3">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo.png" alt="Pátria Central" className="w-11 h-11 rounded-xl object-contain shadow-sm" />
+            <span className="font-serif-journal font-black text-2xl text-white">
+              PÁTRIA <span className="text-[#f59e0b]">CENTRAL</span>
+            </span>
+          </Link>
+          <p className="text-[13px] leading-relaxed text-[#a8c9b4]">
             Portal de jornalismo político, econômico e institucional do Brasil. Cobertura dos Três Poderes, análise e notícias nacionais.
           </p>
+          <span className="text-[11px] font-bold text-[#f59e0b] tracking-wider uppercase">
+            Jornalismo de Interesse Público
+          </span>
         </div>
 
         {/* Coluna 2: Editorias */}
         <div className="flex flex-col gap-2 text-[13.5px]">
-          <span className="text-[12px] font-bold tracking-[0.08em] uppercase text-white mb-1">
+          <span className="text-[12px] font-bold tracking-[0.1em] uppercase text-[#f59e0b] mb-1">
             Editorias
           </span>
           {editorias.map((ed) => (
             <Link
               key={ed.slug}
               href={`/editoria/${ed.slug}`}
-              className="text-[#c4c8d0] hover:text-white transition-colors"
+              className="text-[#c4dfce] hover:text-[#f59e0b] transition-colors"
             >
               {ed.name}
             </Link>
@@ -63,14 +70,14 @@ export default function Footer({ settings }: FooterProps) {
 
         {/* Coluna 3: Institucional */}
         <div className="flex flex-col gap-2 text-[13.5px]">
-          <span className="text-[12px] font-bold tracking-[0.08em] uppercase text-white mb-1">
+          <span className="text-[12px] font-bold tracking-[0.1em] uppercase text-[#f59e0b] mb-1">
             Institucional
           </span>
           {institucionais.map((inst) => (
             <Link
               key={inst.slug}
               href={`/institucional/${inst.slug}`}
-              className="text-[#c4c8d0] hover:text-white transition-colors"
+              className="text-[#c4dfce] hover:text-[#f59e0b] transition-colors"
             >
               {inst.name}
             </Link>
@@ -79,32 +86,32 @@ export default function Footer({ settings }: FooterProps) {
 
         {/* Coluna 4: Comercial & Contato */}
         <div className="flex flex-col gap-2 text-[13.5px]">
-          <span className="text-[12px] font-bold tracking-[0.08em] uppercase text-white mb-1">
+          <span className="text-[12px] font-bold tracking-[0.1em] uppercase text-[#f59e0b] mb-1">
             Comercial
           </span>
-          <Link href="/comercial" className="text-[#c4c8d0] hover:text-white transition-colors">
-            Publicidade e mídia kit
+          <Link href="/comercial" className="text-[#c4dfce] hover:text-[#f59e0b] transition-colors font-semibold">
+            Publicidade e mídia kit →
           </Link>
           <Link
             href="/institucional/transparencia-publicitaria"
-            className="text-[#c4c8d0] hover:text-white transition-colors"
+            className="text-[#c4dfce] hover:text-[#f59e0b] transition-colors"
           >
             Transparência publicitária
           </Link>
-          <Link href="/comercial#proposta" className="text-[#c4c8d0] hover:text-white transition-colors">
+          <Link href="/comercial#proposta" className="text-[#c4dfce] hover:text-[#f59e0b] transition-colors">
             Contato comercial
           </Link>
-          <Link href="/midia-kit" className="text-[#c4c8d0] hover:text-white transition-colors">
+          <Link href="/midia-kit" className="text-[#c4dfce] hover:text-[#f59e0b] transition-colors">
             Mídia Kit Técnico (Midiacad)
           </Link>
-          <Link href="/admin" className="text-[#c4c8d0] hover:text-white transition-colors pt-2">
+          <Link href="/admin" className="text-[#a8c9b4] hover:text-white transition-colors pt-2">
             Painel administrativo →
           </Link>
         </div>
       </div>
 
       {/* Linha Inferior com Auditoria Editorial */}
-      <div className="max-w-[1280px] mx-auto px-5 py-4 border-t border-[#343842] text-[12px] flex justify-between items-center gap-3 flex-wrap text-[#9ca3af]">
+      <div className="max-w-[1280px] mx-auto px-5 py-4 border-t border-[#064e3b] text-[12px] flex justify-between items-center gap-3 flex-wrap text-[#80a88e]">
         <span>© 2026 {settings.portalName}. Todos os direitos reservados.</span>
         <span>A publicidade não interfere na cobertura editorial independente.</span>
       </div>

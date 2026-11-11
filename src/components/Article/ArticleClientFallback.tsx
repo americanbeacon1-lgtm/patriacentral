@@ -67,7 +67,7 @@ export default function ArticleClientFallback({ slug }: FallbackProps) {
     return (
       <div className="py-16 text-center max-w-lg mx-auto space-y-4">
         <Newspaper className="w-12 h-12 text-slate-300 mx-auto" />
-        <h2 className="text-xl font-bold font-serif-journal text-[#0b2545]">
+        <h2 className="text-xl font-bold font-serif-journal text-[#04391d]">
           Reportagem em Processamento
         </h2>
         <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
@@ -76,7 +76,7 @@ export default function ArticleClientFallback({ slug }: FallbackProps) {
         <div className="pt-2">
           <Link
             href="/"
-            className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#0b2545] hover:bg-blue-900 text-white rounded text-xs font-bold uppercase transition-colors"
+            className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#04391d] hover:bg-[#008744] text-white rounded text-xs font-bold uppercase transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>Voltar para a Página Inicial</span>
@@ -103,11 +103,11 @@ export default function ArticleClientFallback({ slug }: FallbackProps) {
     <article className="w-full max-w-[760px] flex flex-col gap-4 py-4 sm:py-6">
       {/* Breadcrumb */}
       <div className="text-[12px] text-[#5b616e] flex items-center gap-1.5 flex-wrap">
-        <Link href="/" className="hover:text-[#0b2545]">
+        <Link href="/" className="hover:text-[#04391d]">
           Início
         </Link>
         <span>›</span>
-        <Link href={`/editoria/${article.categoryId || 'brasil'}`} className="hover:text-[#0b2545] capitalize">
+        <Link href={`/editoria/${article.categoryId || 'brasil'}`} className="hover:text-[#04391d] capitalize">
           {article.categoryId || 'Brasil'}
         </Link>
       </div>
@@ -118,7 +118,7 @@ export default function ArticleClientFallback({ slug }: FallbackProps) {
       </span>
 
       {/* Título */}
-      <h1 className="m-0 font-serif-journal text-3xl sm:text-4xl lg:text-[44px] leading-[1.1] font-bold tracking-[-0.015em] text-[#0b2545]">
+      <h1 className="m-0 font-serif-journal text-3xl sm:text-4xl lg:text-[44px] leading-[1.1] font-bold tracking-[-0.015em] text-[#04391d]">
         {article.title}
       </h1>
 
@@ -160,14 +160,14 @@ export default function ArticleClientFallback({ slug }: FallbackProps) {
 
       {/* Fonte Original */}
       {article.sourceUrl && (
-        <div className="p-3 bg-[#f4f5f7] border-l-3 border-[#c8102e] text-[13px] text-[#3c414b] rounded-[2px] my-2">
-          <span className="font-semibold text-[#0b2545]">Fonte original: </span>
+        <div className="p-3 bg-[#f4f5f7] border-l-3 border-[#008744] text-[13px] text-[#3c414b] rounded-[2px] my-2">
+          <span className="font-semibold text-[#04391d]">Fonte original: </span>
           {article.sourceName || 'Veículo de Notícias'} ·{' '}
           <a
             href={article.sourceUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-[#c8102e] underline font-medium hover:text-[#0b2545]"
+            className="text-[#008744] underline font-medium hover:text-[#04391d]"
           >
             Acessar matéria de origem
           </a>
