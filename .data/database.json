@@ -1,6 +1,40 @@
 {
   "articles": [
     {
+      "id": "art-1794361200724-xj53",
+      "title": "Bolão de MG leva prêmio de R$ 3,2 milhões da Mega-Sena 3084. Veja resultado",
+      "slug": "bolao-de-mg-leva-premio-de-r-3-2-milhoes-da-mega-sena-3084-veja-resultado",
+      "chapeu": "DISTRITO FEDERAL",
+      "subtitle": "Aposta feita em Iturama (MG) acertou as seis dezenas do concurso 3084 da Mega-Sena. Prêmio foi dividido em 15 cotas",
+      "content": "\n    <p class=\"lead\">Aposta feita em Iturama (MG) acertou as seis dezenas do concurso 3084 da Mega-Sena. Prêmio foi dividido em 15 cotas.</p>\n    \n    <p>Aposta feita em Iturama (MG) acertou as seis dezenas do concurso 3084 da Mega-Sena. Prêmio foi dividido em 15 cotas</p>\n\n    <blockquote class=\"border-l-4 border-blue-900 pl-4 py-2 my-4 italic text-slate-700 bg-slate-50\">\n      Informações apuradas originalmente pelo veículo <strong>Metrópoles</strong>. \n      <a href=\"https://www.metropoles.com/brasil/bolao-de-mg-leva-premio-de-r-32-milhoes-da-mega-sena-3084-veja-resultado\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"text-blue-900 underline font-semibold ml-1\">Consulte a publicação original na íntegra.</a>\n    </blockquote>\n\n    <p>A cobertura completa e as repercussões políticas e econômicas continuam sendo monitoradas pela equipe do Portal Eixo Nacional em Brasília e nas capitais brasileiras.</p>\n  ",
+      "summary": "Aposta feita em Iturama (MG) acertou as seis dezenas do concurso 3084 da Mega-Sena. Prêmio foi dividido em 15 cotas",
+      "imageUrl": "https://images.metroimg.com/2026/09/Mega-Sena-6.jpg",
+      "imageCaption": "Reportagem sobre Bolão de MG leva prêmio de R$ 3,2 milhões da Mega-Sena 3084....",
+      "imageCredit": "Metrópoles / Divulgação",
+      "categoryId": "distrito-federal",
+      "tags": [
+        "Metrópoles",
+        "DISTRITO-FEDERAL",
+        "Brasil",
+        "Notícias",
+        "Eixo Nacional",
+        "Jornalismo"
+      ],
+      "authorId": "roberto-valente",
+      "publishedAt": "2026-11-11T01:30:57.000Z",
+      "updatedAt": "2026-11-11T01:40:00.725Z",
+      "status": "published",
+      "isLeadStory": false,
+      "isSecondary": false,
+      "isBreaking": false,
+      "isSpecial": false,
+      "readingTime": 2,
+      "viewsCount": 275,
+      "sourceUrl": "https://www.metropoles.com/brasil/bolao-de-mg-leva-premio-de-r-32-milhoes-da-mega-sena-3084-veja-resultado",
+      "sourceName": "Metrópoles",
+      "categoryName": "DISTRITO-FEDERAL"
+    },
+    {
       "id": "art-1794349837555-ewm9",
       "title": "Novo painel de dados mostra chuva abaixo da média em 70% do país",
       "slug": "novo-painel-de-dados-mostra-chuva-abaixo-da-media-em-70-do-pais",

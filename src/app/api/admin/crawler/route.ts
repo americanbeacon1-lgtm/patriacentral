@@ -45,8 +45,12 @@ export async function POST(req: NextRequest) {
       const publishedList = [];
       for (const newsItem of items) {
         if (!newsItem.alreadyImported) {
-          const pub = await publishExtractedNewsItem(newsItem);
-          publishedList.push(pub);
+          try {
+            const pub = await publishExtractedNewsItem(newsItem);
+            publishedList.push(pub);
+          } catch (itemErr) {
+            console.warn('Erro ao publicar item em lote:', itemErr);
+          }
         }
       }
       return NextResponse.json({
@@ -60,7 +64,7 @@ export async function POST(req: NextRequest) {
   } catch (error: any) {
     console.error('Publish extracted error:', error);
     return NextResponse.json(
-      { error: 'Erro ao postar notícia extraída no portal.' },
+      { error: error?.message || 'Erro ao postar notícia extraída no portal.' },
       { status: 500 }
     );
   }

@@ -396,15 +396,19 @@ export async function publishExtractedNewsItem(
     isBreaking?: boolean;
   }
 ): Promise<Article> {
-  const title = customOptions?.customTitle || item.title;
-  const categoryId = customOptions?.customCategory || item.suggestedCategory;
+  const title = (customOptions?.customTitle || item.title || 'Notícia Eixo Nacional').trim();
+  const categoryId = customOptions?.customCategory || item.suggestedCategory || 'brasil';
 
-  const slug = title
+  let slug = title
     .toLowerCase()
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '');
+
+  if (!slug || slug.length < 3) {
+    slug = 'noticia-' + Date.now();
+  }
 
   const chapeuMap: Record<string, string> = {
     politica: 'PODER & BASTIDORES',
@@ -463,7 +467,7 @@ export async function publishExtractedNewsItem(
     imageCaption: `Reportagem sobre ${title.substring(0, 60)}...`,
     imageCredit: item.imageCredit || `${item.sourceName} / Divulgação`,
     categoryId,
-    tags: Array.from(new Set([...item.suggestedTags, 'Eixo Nacional', 'Jornalismo'])),
+    tags: Array.from(new Set([...(item.suggestedTags || []), 'Eixo Nacional', 'Jornalismo'])),
     authorId: 'roberto-valente',
     publishedAt: item.pubDate || new Date().toISOString(),
     updatedAt: new Date().toISOString(),
