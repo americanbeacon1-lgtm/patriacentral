@@ -25,15 +25,15 @@ export default function HomePage() {
   const authors = db.getAuthors();
   const allArticles = db.getArticles();
 
-  // Seleção editorial para a capa
-  const leadArticle = allArticles.find((a) => a.isLeadStory) || allArticles[0];
-  const restArticles = allArticles.filter((a) => a.id !== leadArticle?.id);
+  // Seleção editorial: a notícia mais recente (orientada pela data real da fonte) é a Manchete Principal
+  const leadArticle = allArticles[0];
+  const restArticles = allArticles.slice(1);
 
   const secondaryArticles = restArticles.slice(0, 3);
-  const carouselArticles = restArticles.slice(3, 10);
+  const carouselArticles = restArticles.slice(3, 11);
   const specialArticles = allArticles.filter((a) => a.isSpecial).length > 0
     ? allArticles.filter((a) => a.isSpecial)
-    : restArticles.slice(1, 4);
+    : restArticles.slice(0, 3);
 
   const leadAuthor = authors.find((au) => au.id === leadArticle?.authorId);
   const leadCategory = categories.find((c) => c.id === leadArticle?.categoryId);
@@ -77,9 +77,9 @@ export default function HomePage() {
             )}
           </div>
 
-          {/* Últimas Notícias + Retângulo Médio (flex: 1 1 300px) */}
+          {/* Últimas Notícias em Tempo Real + Retângulo Médio (flex: 1 1 300px) */}
           <aside className="flex-[1_1_300px] flex flex-col gap-5 min-w-0">
-            <RealtimeTicker articles={restArticles} />
+            <RealtimeTicker articles={allArticles.slice(0, 8)} />
             <AdDisplay banner={mediumRect} position="medium_rectangle" />
           </aside>
         </section>

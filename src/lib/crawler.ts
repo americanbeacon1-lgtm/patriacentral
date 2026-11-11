@@ -14,6 +14,37 @@ const xmlParser = new XMLParser({
   trimValues: true,
 });
 
+// Converte data de feed (em vários formatos jornalísticos) para timestamp numérico
+function parseNewsDate(raw: any): number {
+  if (!raw) return Date.now();
+  const str = (typeof raw === 'string' ? raw : raw['#text'] || String(raw)).trim();
+  
+  // Tenta parsing nativo ISO / RFC
+  let d = new Date(str);
+  if (!isNaN(d.getTime())) {
+    return d.getTime();
+  }
+
+  // Converte meses em português se o feed estiver em PT
+  const monthsPtToEn: Record<string, string> = {
+    jan: 'Jan', fev: 'Feb', mar: 'Mar', abr: 'Apr',
+    mai: 'May', jun: 'Jun', jul: 'Jul', ago: 'Aug',
+    set: 'Sep', out: 'Oct', nov: 'Nov', dez: 'Dec',
+  };
+
+  let normalized = str;
+  for (const [pt, en] of Object.entries(monthsPtToEn)) {
+    normalized = normalized.replace(new RegExp(`\\b${pt}\\b`, 'gi'), en);
+  }
+
+  d = new Date(normalized);
+  if (!isNaN(d.getTime())) {
+    return d.getTime();
+  }
+
+  return Date.now();
+}
+
 // Limpeza de tags HTML e entidades
 function cleanText(text: string): string {
   if (!text) return '';
@@ -304,10 +335,9 @@ export async function fetchNewsFromPortals(options: {
           const title = cleanText(rawTitle);
           if (!title || title.length < 15) continue;
 
-          // Data de publicação
+          // Data real de publicação na fonte original
           const rawDate = item.pubDate || item.published || item.updated || item['dc:date'];
-          const pubDateObj = rawDate ? new Date(rawDate) : new Date();
-          const pubTimestamp = isNaN(pubDateObj.getTime()) ? Date.now() : pubDateObj.getTime();
+          const pubTimestamp = parseNewsDate(rawDate);
 
           // Filtro por dias (1 a 10 dias)
           if (pubTimestamp < cutoffTime) {
@@ -469,7 +499,9 @@ export async function publishExtractedNewsItem(
     categoryId,
     tags: Array.from(new Set([...(item.suggestedTags || []), 'Eixo Nacional', 'Jornalismo'])),
     authorId: 'roberto-valente',
-    publishedAt: item.pubDate || new Date().toISOString(),
+    publishedAt: item.pubDate
+      ? new Date(parseNewsDate(item.pubDate)).toISOString()
+      : new Date().toISOString(),
     updatedAt: new Date().toISOString(),
     status: 'published',
     isLeadStory: Boolean(customOptions?.isLeadStory),

@@ -173,7 +173,7 @@ export const db = {
       result = result.filter((a) => a.status === 'published');
     }
 
-    if (filter?.categorySlug) {
+    if (filter?.categorySlug && filter.categorySlug !== 'ultimas' && filter.categorySlug !== 'ultimas-noticias') {
       result = result.filter((a) => a.categoryId === filter.categorySlug);
     }
 

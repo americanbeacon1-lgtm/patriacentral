@@ -18,7 +18,13 @@ interface CategoryPageProps {
 
 export async function generateMetadata({ params }: CategoryPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const category = db.getCategoryBySlug(slug);
+  const isUltimas = slug === 'ultimas' || slug === 'ultimas-noticias';
+  const category = db.getCategoryBySlug(slug) || (isUltimas ? {
+    id: 'ultimas',
+    slug: 'ultimas',
+    name: 'Últimas Notícias',
+    description: 'Cobertura em tempo real dos acontecimentos mais recentes no Brasil e no mundo.',
+  } : null);
   const settings = db.getSettings();
 
   if (!category) {
@@ -35,7 +41,16 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
 
 export default async function CategoryPage({ params }: CategoryPageProps) {
   const { slug } = await params;
-  const category = db.getCategoryBySlug(slug);
+  const isUltimas = slug === 'ultimas' || slug === 'ultimas-noticias';
+  const category = db.getCategoryBySlug(slug) || (isUltimas ? {
+    id: 'ultimas',
+    slug: 'ultimas',
+    name: 'Últimas Notícias',
+    description: 'Cobertura em tempo real dos acontecimentos mais recentes no Brasil e no mundo.',
+    color: '#B91C1C',
+    showInHeader: true,
+    order: 1,
+  } : null);
 
   if (!category) {
     notFound();
@@ -43,7 +58,10 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
   const settings = db.getSettings();
   const categories = db.getCategories();
-  const articles = db.getArticles({ categorySlug: category.slug });
+  // Se for "Últimas Notícias", traz todas as matérias em ordem cronológica estrita da fonte
+  const articles = isUltimas
+    ? db.getArticles()
+    : db.getArticles({ categorySlug: category.slug });
   const allArticles = db.getArticles();
 
   const halfPage = db.getActiveBanner('half_page', category.slug);
@@ -93,8 +111,15 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
                           {art.subtitle}
                         </span>
                       )}
-                      <span className="text-[12px] text-[#5b616e] mt-1">
-                        {art.state || 'Nacional'} · {art.readingTime || 4} min de leitura
+                      <span className="text-[12px] text-[#5b616e] mt-1 flex items-center gap-2 flex-wrap">
+                        <span className="font-semibold text-[#0b2545]">
+                          {new Date(art.publishedAt).toLocaleDateString('pt-BR', { day: 'numeric', month: 'short' })} às{' '}
+                          {new Date(art.publishedAt).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+                        </span>
+                        <span>·</span>
+                        <span>{art.state || 'Nacional'}</span>
+                        <span>·</span>
+                        <span>{art.readingTime || 3} min de leitura</span>
                       </span>
                     </div>
                   </Link>
