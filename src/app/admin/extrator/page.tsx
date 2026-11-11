@@ -21,6 +21,10 @@ import {
   Check,
   Clock,
   Newspaper,
+  Eye,
+  BookOpen,
+  X,
+  Search,
 } from 'lucide-react';
 
 export default function AdminCrawlerPage() {
@@ -31,17 +35,19 @@ export default function AdminCrawlerPage() {
   const [loading, setLoading] = useState(false);
   const [postingId, setPostingId] = useState<string | null>(null);
   const [postingBatch, setPostingBatch] = useState(false);
-  const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [previewModalItem, setPreviewModalItem] = useState<ExtractedNewsItem | null>(null);
+  const [filterText, setFilterText] = useState('');
+  const [message, setMessage] = useState<{
+    type: 'success' | 'error';
+    text: string;
+    actionUrl?: string;
+  } | null>(null);
 
   // Carrega categorias do Eixo Nacional
   useEffect(() => {
     fetch('/api/admin/settings')
       .then(() => {
-        // busca categorias
-        fetch('/api/articles')
-          .then(() => {
-            // inicializa categorias padrão se necessário
-          });
+        fetch('/api/articles').catch(() => {});
       })
       .catch(console.error);
   }, []);
@@ -96,7 +102,8 @@ export default function AdminCrawlerPage() {
   // Postar notícia individual
   const handlePublishSingle = async (
     item: ExtractedNewsItem,
-    customOptions?: { category?: string; isBreaking?: boolean; isLeadStory?: boolean }
+    customOptions?: { category?: string; isBreaking?: boolean; isLeadStory?: boolean },
+    autoOpen: boolean = false
   ) => {
     setPostingId(item.id);
     setMessage(null);
@@ -119,15 +126,31 @@ export default function AdminCrawlerPage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Erro ao publicar notícia.');
 
-      // Marca o item como importado na lista local
+      const publishedSlug = data.article?.slug || item.slug || 'noticia';
+
+      // Marca o item como importado na lista local e armazena o publishedSlug
       setNewsItems((prev) =>
-        prev.map((i) => (i.id === item.id ? { ...i, alreadyImported: true } : i))
+        prev.map((i) =>
+          i.id === item.id ? { ...i, alreadyImported: true, publishedSlug } : i
+        )
       );
+
+      // Se o modal estiver aberto para esse item, atualiza também
+      if (previewModalItem && previewModalItem.id === item.id) {
+        setPreviewModalItem({ ...previewModalItem, alreadyImported: true, publishedSlug });
+      }
+
+      const postUrl = `/noticia/${publishedSlug}`;
 
       setMessage({
         type: 'success',
         text: `Notícia "${item.title.substring(0, 50)}..." postada com sucesso no Portal Eixo Nacional!`,
+        actionUrl: postUrl,
       });
+
+      if (autoOpen) {
+        window.open(postUrl, '_blank');
+      }
     } catch (err: any) {
       setMessage({ type: 'error', text: err.message || 'Erro ao publicar matéria.' });
     } finally {
@@ -164,11 +187,25 @@ export default function AdminCrawlerPage() {
       if (!res.ok) throw new Error(data.error || 'Erro na publicação em lote.');
 
       // Atualiza todos para importados
-      setNewsItems((prev) => prev.map((i) => ({ ...i, alreadyImported: true })));
+      const slugMap: Record<string, string> = {};
+      if (Array.isArray(data.articles)) {
+        data.articles.forEach((a: any) => {
+          if (a.title && a.slug) slugMap[a.title.toLowerCase().trim()] = a.slug;
+        });
+      }
+
+      setNewsItems((prev) =>
+        prev.map((i) => ({
+          ...i,
+          alreadyImported: true,
+          publishedSlug: slugMap[i.title.toLowerCase().trim()] || i.slug,
+        }))
+      );
 
       setMessage({
         type: 'success',
         text: `Sucesso! ${data.count} notícias foram postadas simultaneamente no Eixo Nacional!`,
+        actionUrl: `/editoria/ultimas`,
       });
     } catch (err: any) {
       setMessage({ type: 'error', text: err.message || 'Erro ao importar lote.' });
@@ -176,6 +213,18 @@ export default function AdminCrawlerPage() {
       setPostingBatch(false);
     }
   };
+
+  // Filtra itens por texto de busca rápida
+  const filteredItems = newsItems.filter((item) => {
+    if (!filterText.trim()) return true;
+    const term = filterText.toLowerCase();
+    return (
+      item.title.toLowerCase().includes(term) ||
+      item.summary.toLowerCase().includes(term) ||
+      item.sourceName.toLowerCase().includes(term) ||
+      item.suggestedCategory.toLowerCase().includes(term)
+    );
+  });
 
   const unimportedCount = newsItems.filter((i) => !i.alreadyImported).length;
   const importedCount = newsItems.filter((i) => i.alreadyImported).length;
@@ -192,7 +241,7 @@ export default function AdminCrawlerPage() {
             Extrator de Notícias dos Maiores Portais do Brasil
           </h1>
           <p className="text-xs text-slate-500 mt-1">
-            Capture, filtre e publique reportagens de G1, Agência Brasil, Poder360, Metrópoles, CNN e Congresso (1 a 10 dias)
+            Capture, filtre, pré-visualize e publique reportagens na íntegra de G1, Agência Brasil, Poder360, Metrópoles, CNN e Congresso
           </p>
         </div>
 
@@ -210,20 +259,35 @@ export default function AdminCrawlerPage() {
         )}
       </div>
 
+      {/* Banner de Notificação com Botão Direto para Abrir Matéria */}
       {message && (
         <div
-          className={`p-4 rounded-lg text-xs flex items-center gap-2 ${
+          className={`p-4 rounded-lg text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${
             message.type === 'success'
               ? 'bg-emerald-50 border border-emerald-300 text-emerald-800'
               : 'bg-red-50 border border-red-300 text-red-800'
           }`}
         >
-          {message.type === 'success' ? (
-            <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-          ) : (
-            <AlertCircle className="w-4 h-4 text-red-600 shrink-0" />
+          <div className="flex items-center gap-2">
+            {message.type === 'success' ? (
+              <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
+            ) : (
+              <AlertCircle className="w-5 h-5 text-red-600 shrink-0" />
+            )}
+            <span className="font-medium text-[13px]">{message.text}</span>
+          </div>
+
+          {message.actionUrl && (
+            <a
+              href={message.actionUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-3.5 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded font-bold uppercase tracking-wider text-[11px] flex items-center gap-1.5 shrink-0 transition-colors shadow-xs"
+            >
+              <span>Ver no Portal Eixo Nacional</span>
+              <ExternalLink className="w-3.5 h-3.5" />
+            </a>
           )}
-          <span>{message.text}</span>
         </div>
       )}
 
@@ -241,7 +305,6 @@ export default function AdminCrawlerPage() {
             </span>
           </div>
 
-          {/* Botões Rápidos de Dias */}
           <div className="flex items-center gap-2 flex-wrap mb-4">
             {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((d) => (
               <button
@@ -259,93 +322,89 @@ export default function AdminCrawlerPage() {
             ))}
           </div>
 
-          {/* Slider de Precisão */}
           <input
             type="range"
-            min={1}
-            max={10}
+            min="1"
+            max="10"
+            step="1"
             value={daysAgo}
-            onChange={(e) => setDaysAgo(Number(e.target.value))}
-            className="w-full accent-blue-950 cursor-pointer"
+            onChange={(e) => setDaysAgo(parseInt(e.target.value, 10))}
+            className="w-full accent-blue-900 cursor-pointer"
           />
-          <div className="flex justify-between text-[10px] text-slate-400 mt-1 font-mono">
-            <span>1 dia (tempo real)</span>
-            <span>5 dias</span>
-            <span>10 dias (histórico estendido)</span>
-          </div>
         </div>
 
-        {/* 2. SELEÇÃO DE PORTAIS BRASILEIROS */}
-        <div className="pt-4 border-t border-slate-200">
+        {/* 2. SELETOR DE PORTAIS DE ORIGEM */}
+        <div>
           <div className="flex items-center justify-between mb-3">
             <label className="text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center gap-2">
-              <Globe className="w-4 h-4 text-emerald-700" />
-              <span>Portais & Agências Nacionais a Consultar</span>
+              <Globe className="w-4 h-4 text-blue-900" />
+              <span>Portais & Agências de Notícias Disponíveis</span>
             </label>
-
             <button
               type="button"
               onClick={handleSelectAllSources}
-              className="text-xs font-semibold text-blue-900 hover:underline"
+              className="text-xs font-bold text-blue-900 hover:underline"
             >
-              {selectedSources.length === KNOWN_SOURCES.length ? 'Desmarcar Todos' : 'Marcar Todos'}
+              {selectedSources.length === KNOWN_SOURCES.length
+                ? 'Desmarcar Todos'
+                : 'Selecionar Todos'}
             </button>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5">
             {KNOWN_SOURCES.map((source) => {
-              const isChecked = selectedSources.includes(source.id);
+              const isSelected = selectedSources.includes(source.id);
               return (
-                <label
+                <button
                   key={source.id}
-                  className={`flex items-center gap-2.5 p-3 rounded-lg border text-xs font-semibold cursor-pointer transition-colors ${
-                    isChecked
-                      ? 'border-blue-900 bg-blue-50/50 text-blue-950'
-                      : 'border-slate-200 bg-slate-50/40 text-slate-600 hover:bg-slate-100'
+                  type="button"
+                  onClick={() => handleSourceToggle(source.id)}
+                  className={`p-3 rounded-lg border text-left transition-all flex items-center justify-between ${
+                    isSelected
+                      ? 'border-blue-900 bg-blue-50/50 text-blue-950 shadow-xs'
+                      : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'
                   }`}
                 >
-                  <input
-                    type="checkbox"
-                    checked={isChecked}
-                    onChange={() => handleSourceToggle(source.id)}
-                    className="rounded text-blue-950 focus:ring-blue-900"
-                  />
-                  <span>{source.name}</span>
-                </label>
+                  <span className="text-xs font-bold truncate pr-1">{source.name}</span>
+                  <div
+                    className={`w-4 h-4 rounded flex items-center justify-center shrink-0 ${
+                      isSelected ? 'bg-blue-900 text-white' : 'border border-slate-300'
+                    }`}
+                  >
+                    {isSelected && <Check className="w-3 h-3" />}
+                  </div>
+                </button>
               );
             })}
           </div>
         </div>
 
-        {/* 3. BOTÃO DE BUSCA */}
-        <div className="pt-4 border-t border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        {/* 3. BOTÃO DE EXECUÇÃO */}
+        <div className="pt-2 border-t border-slate-100 flex items-center justify-between gap-4">
           <p className="text-xs text-slate-500">
-            A ferramenta busca feeds oficiais, extrai imagens, categoriza e prepara o texto com os devidos créditos de autoria.
+            A extração captura matérias completas, fotos HD originais e data real de publicação na fonte.
           </p>
 
           <button
+            type="button"
             onClick={handleFetchNews}
             disabled={loading}
-            className="px-6 py-3 bg-blue-950 hover:bg-blue-900 text-white rounded-lg text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-md transition-all disabled:opacity-50 shrink-0"
+            className="px-6 py-3 bg-blue-950 hover:bg-blue-900 text-white rounded-lg text-xs font-bold uppercase tracking-wider shadow-md flex items-center gap-2 transition-all disabled:opacity-50 shrink-0"
           >
             <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
-            <span>{loading ? 'Consultando Portais...' : 'Rastrear Notícias Agora'}</span>
+            <span>{loading ? 'Extraindo Notícias...' : 'Rastrear Notícias Agora'}</span>
           </button>
         </div>
       </div>
 
-      {/* RESULTADOS DA EXTRAÇÃO */}
+      {/* RESULTADO DA EXTRAÇÃO */}
       {newsItems.length > 0 && (
         <div className="space-y-4">
-          {/* Barra de Resumo */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-900 text-white p-4 rounded-xl text-xs">
-            <div className="flex items-center gap-4">
+          <div className="bg-slate-900 text-white px-5 py-3.5 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+            <div className="flex items-center gap-3">
+              <Sparkles className="w-4 h-4 text-amber-400" />
               <span>
-                Total Encontradas: <strong>{newsItems.length}</strong>
-              </span>
-              <span>•</span>
-              <span className="text-amber-400">
-                Novas Prontas para Postar: <strong>{unimportedCount}</strong>
+                Total de Notícias Extraídas: <strong>{newsItems.length}</strong>
               </span>
               <span>•</span>
               <span className="text-emerald-400">
@@ -353,20 +412,37 @@ export default function AdminCrawlerPage() {
               </span>
             </div>
 
-            {unimportedCount > 0 && (
-              <button
-                onClick={handlePublishBatch}
-                disabled={postingBatch}
-                className="px-3 py-1.5 bg-red-700 hover:bg-red-800 text-white rounded font-bold uppercase text-[11px] transition-colors"
-              >
-                Postar Todas as {unimportedCount} Novas Matérias
-              </button>
-            )}
+            {/* Campo de filtro rápido de matérias */}
+            <div className="flex items-center gap-2">
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Filtrar por palavra..."
+                  value={filterText}
+                  onChange={(e) => setFilterText(e.target.value)}
+                  className="px-2.5 py-1 text-xs bg-slate-800 border border-slate-700 rounded text-white placeholder-slate-400 outline-none w-44"
+                />
+              </div>
+
+              {unimportedCount > 0 && (
+                <button
+                  onClick={handlePublishBatch}
+                  disabled={postingBatch}
+                  className="px-3 py-1 bg-red-700 hover:bg-red-800 text-white rounded font-bold uppercase text-[11px] transition-colors shrink-0"
+                >
+                  Postar Todas as {unimportedCount} Novas
+                </button>
+              )}
+            </div>
           </div>
+
+          <p className="text-xs text-slate-500 px-1">
+            💡 <strong>Dica:</strong> Clique em qualquer notícia para abrir e ler a matéria completa. Se ela já foi postada, abrirá diretamente no portal.
+          </p>
 
           {/* Grid de Notícias Extraídas */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {newsItems.map((item) => {
+            {filteredItems.map((item) => {
               const isPosting = postingId === item.id;
               const sourceInfo = KNOWN_SOURCES.find((s) => s.id === item.sourceId);
 
@@ -378,14 +454,24 @@ export default function AdminCrawlerPage() {
                 minute: '2-digit',
               });
 
+              const targetPortalUrl = `/noticia/${item.publishedSlug || item.slug}`;
+
               return (
                 <div
                   key={item.id}
-                  className={`bg-white border rounded-xl p-5 flex flex-col justify-between shadow-xs transition-shadow ${
+                  onClick={() => {
+                    if (item.alreadyImported) {
+                      window.open(targetPortalUrl, '_blank');
+                    } else {
+                      setPreviewModalItem(item);
+                    }
+                  }}
+                  className={`bg-white border rounded-xl p-5 flex flex-col justify-between shadow-xs transition-all cursor-pointer ${
                     item.alreadyImported
-                      ? 'border-emerald-300 bg-emerald-50/20'
-                      : 'border-slate-200 hover:shadow-md'
+                      ? 'border-emerald-300 bg-emerald-50/20 hover:border-emerald-400 hover:shadow-md'
+                      : 'border-slate-200 hover:border-blue-900 hover:shadow-md'
                   }`}
+                  title={item.alreadyImported ? 'Clique para abrir no Portal Eixo Nacional' : 'Clique para ler prévia e publicar'}
                 >
                   <div>
                     {/* Topo do Card: Origem & Data */}
@@ -417,7 +503,7 @@ export default function AdminCrawlerPage() {
                       </div>
 
                       <div className="flex-1">
-                        <h3 className="text-sm font-bold text-slate-900 font-headline leading-snug line-clamp-3">
+                        <h3 className="text-sm font-bold text-slate-900 font-headline leading-snug line-clamp-3 hover:text-blue-900 transition-colors">
                           {item.title}
                         </h3>
                         <span className="text-[10px] font-bold uppercase text-blue-900 bg-blue-50 px-2 py-0.5 rounded inline-block mt-1">
@@ -433,32 +519,51 @@ export default function AdminCrawlerPage() {
                   </div>
 
                   {/* Ações do Card */}
-                  <div className="pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
+                  <div
+                    className="pt-3 border-t border-slate-100 flex items-center justify-between gap-2"
+                    onClick={(e) => e.stopPropagation()}
+                  >
                     <a
                       href={item.link}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-[11px] text-slate-500 hover:text-blue-900 flex items-center gap-1 font-semibold"
                     >
-                      <span>Ver original</span>
+                      <span>Fonte original</span>
                       <ExternalLink className="w-3 h-3" />
                     </a>
 
-                    <div>
+                    <div className="flex items-center gap-2">
                       {item.alreadyImported ? (
-                        <span className="inline-flex items-center gap-1 px-3 py-1 bg-emerald-100 text-emerald-800 rounded text-xs font-bold uppercase">
-                          <Check className="w-3.5 h-3.5" />
-                          <span>Já Publicada</span>
-                        </span>
-                      ) : (
-                        <button
-                          onClick={() => handlePublishSingle(item)}
-                          disabled={isPosting}
-                          className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-blue-950 hover:bg-blue-900 text-white rounded text-xs font-bold uppercase tracking-wider transition-all disabled:opacity-50 shadow-xs"
+                        <a
+                          href={targetPortalUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded text-xs font-bold uppercase tracking-wider transition-all shadow-xs"
                         >
-                          <Send className="w-3.5 h-3.5 text-amber-400" />
-                          <span>{isPosting ? 'Postando...' : 'Postar no Eixo'}</span>
-                        </button>
+                          <ExternalLink className="w-3.5 h-3.5" />
+                          <span>Abrir no Portal</span>
+                        </a>
+                      ) : (
+                        <>
+                          <button
+                            type="button"
+                            onClick={() => setPreviewModalItem(item)}
+                            className="inline-flex items-center gap-1 px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded text-xs font-semibold transition-colors"
+                          >
+                            <BookOpen className="w-3.5 h-3.5" />
+                            <span>Ler</span>
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handlePublishSingle(item, undefined, true)}
+                            disabled={isPosting}
+                            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-blue-950 hover:bg-blue-900 text-white rounded text-xs font-bold uppercase tracking-wider transition-all disabled:opacity-50 shadow-xs"
+                          >
+                            <Send className="w-3.5 h-3.5 text-amber-400" />
+                            <span>{isPosting ? 'Postando...' : 'Postar no Eixo'}</span>
+                          </button>
+                        </>
                       )}
                     </div>
                   </div>
@@ -479,6 +584,123 @@ export default function AdminCrawlerPage() {
           <p className="text-xs text-slate-500 max-w-md mx-auto">
             Selecione os portais desejados acima, configure o período de 1 a 10 dias e clique em &ldquo;Rastrear Notícias Agora&rdquo;.
           </p>
+        </div>
+      )}
+
+      {/* MODAL DE PRÉ-VISUALIZAÇÃO E LEITURA COMPLETA */}
+      {previewModalItem && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200">
+          <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
+            {/* Topo do Modal */}
+            <div className="p-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-bold uppercase tracking-wider text-blue-950 bg-blue-100 px-2 py-0.5 rounded">
+                  {previewModalItem.sourceName}
+                </span>
+                <span className="text-xs text-slate-500 font-mono">
+                  {new Date(previewModalItem.pubDate).toLocaleDateString('pt-BR')} às{' '}
+                  {new Date(previewModalItem.pubDate).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+                </span>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setPreviewModalItem(null)}
+                className="p-1.5 text-slate-400 hover:text-slate-700 rounded-lg hover:bg-slate-200 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Conteúdo do Modal */}
+            <div className="p-6 overflow-y-auto space-y-4 flex-1">
+              <span className="text-xs font-bold uppercase tracking-widest text-red-700 block">
+                Editoria: {previewModalItem.suggestedCategory}
+              </span>
+
+              <h2 className="font-serif-journal font-bold text-2xl text-slate-900 leading-tight">
+                {previewModalItem.title}
+              </h2>
+
+              <p className="text-sm text-slate-600 font-medium leading-relaxed italic border-l-3 border-[#c8102e] pl-3 py-0.5 bg-slate-50">
+                {previewModalItem.summary}
+              </p>
+
+              {previewModalItem.imageUrl && (
+                <div className="aspect-16/9 rounded-lg overflow-hidden bg-slate-100">
+                  <NewsImage
+                    src={previewModalItem.imageUrl}
+                    alt={previewModalItem.title}
+                    className="w-full h-full object-cover"
+                    category={previewModalItem.suggestedCategory}
+                  />
+                </div>
+              )}
+
+              <div className="prose text-sm text-slate-800 leading-relaxed space-y-3 pt-2">
+                <p>{previewModalItem.contentSnippet || previewModalItem.summary}</p>
+              </div>
+
+              <div className="p-3 bg-slate-100 rounded text-xs text-slate-600 flex items-center justify-between">
+                <span>Fonte: <strong>{previewModalItem.sourceName}</strong></span>
+                <a
+                  href={previewModalItem.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-900 font-semibold underline flex items-center gap-1"
+                >
+                  <span>Ver página original</span>
+                  <ExternalLink className="w-3 h-3" />
+                </a>
+              </div>
+            </div>
+
+            {/* Rodapé do Modal com Ações */}
+            <div className="p-4 border-t border-slate-200 bg-slate-50 flex items-center justify-between gap-3">
+              <button
+                type="button"
+                onClick={() => setPreviewModalItem(null)}
+                className="px-4 py-2 text-xs font-semibold text-slate-600 hover:text-slate-900"
+              >
+                Fechar
+              </button>
+
+              <div className="flex items-center gap-2">
+                {previewModalItem.alreadyImported ? (
+                  <a
+                    href={`/noticia/${previewModalItem.publishedSlug || previewModalItem.slug}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 shadow-xs"
+                  >
+                    <span>Abrir Notícia no Portal</span>
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </a>
+                ) : (
+                  <>
+                    <button
+                      type="button"
+                      disabled={postingId === previewModalItem.id}
+                      onClick={() => handlePublishSingle(previewModalItem, undefined, false)}
+                      className="px-4 py-2 bg-blue-950 hover:bg-blue-900 text-white rounded-lg text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 shadow-xs disabled:opacity-50"
+                    >
+                      <Send className="w-3.5 h-3.5 text-amber-400" />
+                      <span>{postingId === previewModalItem.id ? 'Publicando...' : 'Publicar no Eixo'}</span>
+                    </button>
+                    <button
+                      type="button"
+                      disabled={postingId === previewModalItem.id}
+                      onClick={() => handlePublishSingle(previewModalItem, undefined, true)}
+                      className="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 shadow-xs disabled:opacity-50"
+                    >
+                      <ExternalLink className="w-3.5 h-3.5" />
+                      <span>Publicar e Abrir no Site ↗</span>
+                    </button>
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
         </div>
       )}
     </div>

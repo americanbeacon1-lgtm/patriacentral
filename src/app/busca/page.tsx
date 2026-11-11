@@ -20,6 +20,14 @@ interface SearchPageProps {
   searchParams: Promise<{ q?: string; tag?: string }>;
 }
 
+function normalizeText(text: string): string {
+  return (text || '')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .trim();
+}
+
 export default async function SearchPage({ searchParams }: SearchPageProps) {
   const { q, tag } = await searchParams;
   const settings = db.getSettings();
@@ -29,18 +37,29 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   let results = allArticles;
 
   if (tag) {
+    const normTag = normalizeText(tag);
     results = results.filter((a) =>
-      a.tags?.some((t) => t.toLowerCase() === tag.toLowerCase())
+      a.tags?.some((t) => normalizeText(t) === normTag)
     );
   } else if (q) {
-    const term = q.toLowerCase();
-    results = results.filter(
-      (a) =>
-        a.title.toLowerCase().includes(term) ||
-        a.subtitle?.toLowerCase().includes(term) ||
-        a.content?.toLowerCase().includes(term) ||
-        a.tags?.some((t) => t.toLowerCase().includes(term))
-    );
+    const normQuery = normalizeText(q);
+    const tokens = normQuery.split(/\s+/).filter((t) => t.length > 1);
+
+    results = results.filter((a) => {
+      const artText = normalizeText(
+        `${a.title} ${a.subtitle || ''} ${a.summary || ''} ${a.content || ''} ${(a.tags || []).join(' ')} ${a.sourceName || ''}`
+      );
+
+      // Correspondência exata da frase de busca
+      if (artText.includes(normQuery)) return true;
+
+      // Correspondência de todos os termos principais digitados
+      if (tokens.length > 0) {
+        return tokens.every((token) => artText.includes(token));
+      }
+
+      return false;
+    });
   }
 
   const halfPage = db.getActiveBanner('half_page');

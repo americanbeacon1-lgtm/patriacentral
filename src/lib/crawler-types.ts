@@ -19,6 +19,8 @@ export interface ExtractedNewsItem {
   suggestedCategory: string;
   suggestedTags: string[];
   alreadyImported: boolean;
+  slug?: string;
+  publishedSlug?: string;
 }
 
 export const KNOWN_SOURCES: NewsSource[] = [

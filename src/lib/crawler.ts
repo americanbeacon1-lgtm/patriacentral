@@ -364,7 +364,11 @@ export async function fetchNewsFromPortals(options: {
             .replace(/[^a-z0-9]+/g, '-')
             .replace(/^-+|-+$/g, '');
 
-          const alreadyImported = existingSlugs.has(slugCandidate) || existingTitles.has(title.toLowerCase().trim());
+          const matchingArticle = existingArticles.find(
+            (a) => a.slug === slugCandidate || a.title.toLowerCase().trim() === title.toLowerCase().trim()
+          );
+          const alreadyImported = Boolean(matchingArticle);
+          const publishedSlug = matchingArticle?.slug || (alreadyImported ? slugCandidate : undefined);
 
           results.push({
             id: 'ext-' + Buffer.from(link || title).toString('base64').substring(0, 16),
@@ -380,6 +384,8 @@ export async function fetchNewsFromPortals(options: {
             suggestedCategory,
             suggestedTags: [source.name, suggestedCategory.toUpperCase(), 'Brasil', 'Notícias'],
             alreadyImported,
+            slug: slugCandidate,
+            publishedSlug,
           });
         }
       } catch (err) {
