@@ -128,6 +128,17 @@ export default function AdminCrawlerPage() {
 
       const publishedSlug = data.article?.slug || item.slug || 'noticia';
 
+      // Persiste no storage do navegador para reidratação instantânea sem 404
+      if (data.article) {
+        try {
+          localStorage.setItem('eixo_article_' + publishedSlug, JSON.stringify(data.article));
+          const listRaw = localStorage.getItem('eixo_custom_articles');
+          const list = listRaw ? JSON.parse(listRaw) : [];
+          list.unshift(data.article);
+          localStorage.setItem('eixo_custom_articles', JSON.stringify(list.slice(0, 100)));
+        } catch {}
+      }
+
       // Marca o item como importado na lista local e armazena o publishedSlug
       setNewsItems((prev) =>
         prev.map((i) =>
@@ -189,9 +200,18 @@ export default function AdminCrawlerPage() {
       // Atualiza todos para importados
       const slugMap: Record<string, string> = {};
       if (Array.isArray(data.articles)) {
-        data.articles.forEach((a: any) => {
-          if (a.title && a.slug) slugMap[a.title.toLowerCase().trim()] = a.slug;
-        });
+        try {
+          const listRaw = localStorage.getItem('eixo_custom_articles');
+          const list = listRaw ? JSON.parse(listRaw) : [];
+          data.articles.forEach((a: any) => {
+            if (a.title && a.slug) {
+              slugMap[a.title.toLowerCase().trim()] = a.slug;
+              localStorage.setItem('eixo_article_' + a.slug, JSON.stringify(a));
+              list.unshift(a);
+            }
+          });
+          localStorage.setItem('eixo_custom_articles', JSON.stringify(list.slice(0, 100)));
+        } catch {}
       }
 
       setNewsItems((prev) =>

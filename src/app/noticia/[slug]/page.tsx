@@ -1,12 +1,13 @@
 import React from 'react';
-import { notFound } from 'next/navigation';
 import { db } from '@/lib/db';
+import { findArticleBySlugInFeeds } from '@/lib/crawler';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import AdDisplay from '@/components/AdDisplay';
 import CookieBanner from '@/components/CookieBanner';
 import ShareButtons from '@/components/Article/ShareButtons';
 import NewsImage from '@/components/NewsImage';
+import ArticleClientFallback from '@/components/Article/ArticleClientFallback';
 import Link from 'next/link';
 import { Metadata } from 'next';
 
@@ -18,12 +19,15 @@ interface ArticlePageProps {
 
 export async function generateMetadata({ params }: ArticlePageProps): Promise<Metadata> {
   const { slug } = await params;
-  const article = db.getArticleBySlug(slug);
+  let article = db.getArticleBySlug(slug);
+  if (!article) {
+    article = await findArticleBySlugInFeeds(slug);
+  }
   const settings = db.getSettings();
 
   if (!article) {
     return {
-      title: `Notícia não encontrada - ${settings.portalName}`,
+      title: `${settings.portalName} | Reportagem`,
     };
   }
 
@@ -61,18 +65,31 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
 
 export default async function ArticlePage({ params }: ArticlePageProps) {
   const { slug } = await params;
-  const article = db.getArticleBySlug(slug);
+  let article = db.getArticleBySlug(slug);
+  if (!article) {
+    article = await findArticleBySlugInFeeds(slug);
+  }
+
+  const settings = db.getSettings();
+  const categories = db.getCategories();
 
   if (!article) {
-    notFound();
+    return (
+      <div className="min-h-screen bg-white flex flex-col font-sans-journal text-[#16181d]">
+        <Header categories={categories} settings={settings} />
+        <main className="flex-1 w-full max-w-[1280px] mx-auto px-5 box-border py-6 flex justify-center">
+          <ArticleClientFallback slug={slug} />
+        </main>
+        <Footer settings={settings} />
+        <CookieBanner />
+      </div>
+    );
   }
 
   try {
     db.incrementArticleViews(slug);
   } catch {}
 
-  const settings = db.getSettings();
-  const categories = db.getCategories();
   const author = db.getAuthorById(article.authorId);
   const category = db.getCategoryBySlug(article.categoryId);
   const relatedArticles = db.getArticles({ categorySlug: article.categoryId, limit: 4 })

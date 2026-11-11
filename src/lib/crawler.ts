@@ -671,3 +671,38 @@ export async function publishExtractedNewsItem(
 
   return db.saveArticle(newArticle);
 }
+
+// Tenta localizar e auto-publicar uma notícia a partir dos feeds recentes se não encontrada no banco
+export async function findArticleBySlugInFeeds(slug: string): Promise<Article | undefined> {
+  if (!slug) return undefined;
+  const normTarget = slug
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .trim();
+
+  try {
+    const items = await fetchNewsFromPortals({ daysAgo: 10 });
+    const matchingItem = items.find((item) => {
+      const itemSlug = (item.slug || '')
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .trim();
+      return (
+        itemSlug === normTarget ||
+        (normTarget.length > 15 && itemSlug.startsWith(normTarget.slice(0, 35))) ||
+        (itemSlug.length > 15 && normTarget.startsWith(itemSlug.slice(0, 35)))
+      );
+    });
+
+    if (matchingItem) {
+      const published = await publishExtractedNewsItem(matchingItem);
+      return published;
+    }
+  } catch (err) {
+    console.warn('Erro ao resolver notícia dinâmica por slug:', slug, err);
+  }
+
+  return undefined;
+}

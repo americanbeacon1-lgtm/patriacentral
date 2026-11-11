@@ -5,6 +5,7 @@ import AdDisplay from '@/components/AdDisplay';
 import CookieBanner from '@/components/CookieBanner';
 import NewsImage from '@/components/NewsImage';
 import TrendingArticles from '@/components/Homepage/TrendingArticles';
+import SearchClientSupplement from '@/components/SearchClientSupplement';
 import Link from 'next/link';
 import { db } from '@/lib/db';
 import { Metadata } from 'next';
@@ -99,6 +100,9 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
             <span className="text-[13px] text-[#5b616e] mb-4">
               Encontradas <strong>{results.length}</strong> matérias.
             </span>
+
+            {/* Matérias salvas recentemente no navegador que ainda não sincronizaram com este container do servidor */}
+            <SearchClientSupplement query={q} serverSlugs={results.map((r) => r.slug)} />
 
             {results.length > 0 ? (
               <div className="flex flex-col">
