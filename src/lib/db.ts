@@ -63,9 +63,21 @@ function mergeInitialArticles(dbSchema: DatabaseSchema): void {
   }
 }
 
+function sanitizeDatabase(dbSchema: DatabaseSchema): DatabaseSchema {
+  if (dbSchema && dbSchema.settings) {
+    if (!dbSchema.settings.portalName || dbSchema.settings.portalName.toLowerCase().includes('eixo')) {
+      dbSchema.settings.portalName = 'Pátria Central';
+    }
+    if (!dbSchema.settings.companyName || dbSchema.settings.companyName.toLowerCase().includes('eixo')) {
+      dbSchema.settings.companyName = 'Pátria Central';
+    }
+  }
+  return dbSchema;
+}
+
 function ensureDatabase(): DatabaseSchema {
   if (inMemoryDatabase) {
-    return inMemoryDatabase;
+    return sanitizeDatabase(inMemoryDatabase);
   }
 
   // 1. Tenta carregar do /tmp (versão mais recente salva em runtime na Vercel)
@@ -75,7 +87,7 @@ function ensureDatabase(): DatabaseSchema {
       inMemoryDatabase = JSON.parse(raw);
       if (inMemoryDatabase && Array.isArray(inMemoryDatabase.articles)) {
         mergeInitialArticles(inMemoryDatabase);
-        return inMemoryDatabase;
+        return sanitizeDatabase(inMemoryDatabase);
       }
     }
   } catch {}
@@ -87,7 +99,7 @@ function ensureDatabase(): DatabaseSchema {
       inMemoryDatabase = JSON.parse(raw);
       if (inMemoryDatabase && Array.isArray(inMemoryDatabase.articles)) {
         mergeInitialArticles(inMemoryDatabase);
-        return inMemoryDatabase;
+        return sanitizeDatabase(inMemoryDatabase);
       }
     }
   } catch {}
@@ -103,7 +115,7 @@ function ensureDatabase(): DatabaseSchema {
     fs.writeFileSync(DB_FILE, JSON.stringify(inMemoryDatabase, null, 2), 'utf-8');
   } catch {}
 
-  return inMemoryDatabase;
+  return sanitizeDatabase(inMemoryDatabase);
 }
 
 function saveDatabase(data: DatabaseSchema): void {

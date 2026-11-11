@@ -255,7 +255,7 @@ export default function Header({ categories, settings, urgentText, urgentLink }:
               <span className="w-2 sm:w-2.5 h-9 sm:h-11 bg-[#c8102e] shrink-0 rounded-xs"></span>
               <span className="flex flex-col">
                 <span className="font-serif-journal font-extrabold text-2xl sm:text-3xl lg:text-[38px] leading-none tracking-tight text-[#0b2545]">
-                  {settings.portalName}
+                  {settings?.portalName && !settings.portalName.toLowerCase().includes('eixo') ? settings.portalName : 'Pátria Central'}
                 </span>
                 <span className="text-[9.5px] sm:text-[11px] tracking-[0.16em] uppercase text-[#5b616e] font-semibold mt-0.5">
                   Jornalismo de interesse público

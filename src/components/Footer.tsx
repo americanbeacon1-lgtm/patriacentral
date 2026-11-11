@@ -38,7 +38,7 @@ export default function Footer({ settings }: FooterProps) {
         {/* Coluna 1: O Portal */}
         <div className="flex flex-col gap-2.5">
           <span className="font-serif-journal font-bold text-2xl text-white">
-            {settings.portalName || 'Pátria Central'}
+            {settings?.portalName && !settings.portalName.toLowerCase().includes('eixo') ? settings.portalName : 'Pátria Central'}
           </span>
           <p className="text-[13px] leading-relaxed text-[#c4c8d0]">
             Portal de jornalismo político, econômico e institucional do Brasil. Cobertura dos Três Poderes, análise e notícias nacionais.

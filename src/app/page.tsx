@@ -1,5 +1,11 @@
 import React from 'react';
+import { Metadata } from 'next';
 import { db } from '@/lib/db';
+
+export const metadata: Metadata = {
+  title: 'Pátria Central | Notícias do Brasil e do Poder',
+  description: 'Portal de jornalismo político, econômico e institucional do Brasil. Notícias dos Três Poderes, cobertura nacional e análises.',
+};
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import AdDisplay from '@/components/AdDisplay';
