@@ -3,6 +3,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import AdDisplay from '@/components/AdDisplay';
 import CookieBanner from '@/components/CookieBanner';
+import NewsImage from '@/components/NewsImage';
 import TrendingArticles from '@/components/Homepage/TrendingArticles';
 import Link from 'next/link';
 import { db } from '@/lib/db';
@@ -87,11 +88,11 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                     className="grid grid-cols-[minmax(96px,30%)_minmax(0,1fr)] gap-4 sm:gap-5 py-4 border-b border-[#e3e5e9] group"
                   >
                     <div className="aspect-3/2 relative overflow-hidden rounded-[2px] bg-[#f4f5f7]">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
+                      <NewsImage
                         src={art.imageUrl}
                         alt={art.title}
                         className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300"
+                        category={art.categoryId}
                         loading="lazy"
                       />
                     </div>

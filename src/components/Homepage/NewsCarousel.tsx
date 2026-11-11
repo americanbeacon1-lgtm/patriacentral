@@ -3,6 +3,7 @@
 import React, { useRef } from 'react';
 import Link from 'next/link';
 import { Article } from '@/lib/types';
+import NewsImage from '@/components/NewsImage';
 
 interface NewsCarouselProps {
   articles: Article[];
@@ -56,11 +57,11 @@ export default function NewsCarousel({ articles }: NewsCarouselProps) {
             className="snap-start flex flex-col gap-2 group"
           >
             <div className="aspect-4/3 relative overflow-hidden rounded-[2px] bg-[#f4f5f7]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <NewsImage
                 src={art.imageUrl}
                 alt={art.title}
                 className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300"
+                category={art.categoryId}
                 loading="lazy"
               />
             </div>

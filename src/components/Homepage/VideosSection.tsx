@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Article } from '@/lib/types';
+import NewsImage from '@/components/NewsImage';
 
 interface VideosSectionProps {
   articles: Article[];
@@ -52,11 +53,11 @@ export default function VideosSection({ articles }: VideosSectionProps) {
               className="flex flex-col gap-2 text-white group"
             >
               <div className="aspect-16/9 relative overflow-hidden rounded-[2px] bg-slate-800">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
+                <NewsImage
                   src={v.imageUrl}
                   alt={v.title}
                   className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300"
+                  category="politica"
                   loading="lazy"
                 />
                 <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>

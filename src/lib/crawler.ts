@@ -32,53 +32,134 @@ function cleanText(text: string): string {
 
 // Verifica se uma imagem é um logo, ícone, SVG ou genérica
 function isInvalidOrLogoImage(url?: string): boolean {
-  if (!url) return true;
-  const lower = url.toLowerCase();
-  if (lower.endsWith('.svg') || lower.includes('.svg?')) return true;
-  if (lower.includes('logo-agenciabrasil') || lower.includes('img_facebook.png')) return true;
-  if (lower.includes('imagem-padrao') || lower.includes('fallback') || lower.includes('pixel.gif')) return true;
-  if (lower.includes('/logo') && (lower.endsWith('.png') || lower.endsWith('.gif'))) return true;
+  if (!url || typeof url !== 'string') return true;
+  const lower = url.toLowerCase().trim();
+  if (lower.length < 8) return true;
+  if (lower.endsWith('.svg') || lower.includes('.svg?') || lower.includes('.svg#')) return true;
+  if (lower.includes('logo-agenciabrasil') || lower.includes('img_facebook.png') || lower.includes('logo-globo')) return true;
+  if (lower.includes('ebc.png') || lower.includes('/ebc.png') || lower.includes('tracking') || lower.includes('pixel.gif')) return true;
+  if (lower.includes('imagem-padrao') || lower.includes('fallback') || lower.includes('1x1.png')) return true;
+  if (lower.includes('/logo') && (lower.endsWith('.png') || lower.endsWith('.gif') || lower.includes('share'))) return true;
   return false;
+}
+
+// Imagens temáticas jornalísticas de alta qualidade por categoria
+const CATEGORY_EDITORIAL_FALLBACKS: Record<string, string[]> = {
+  politica: [
+    'https://images.unsplash.com/photo-1541888946425-d0fbb186c5f7?w=1200&auto=format&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?w=1200&auto=format&fit=crop&q=80',
+  ],
+  governo: [
+    'https://images.unsplash.com/photo-1541888946425-d0fbb186c5f7?w=1200&auto=format&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=1200&auto=format&fit=crop&q=80',
+  ],
+  congresso: [
+    'https://images.unsplash.com/photo-1575517111478-7f6afd0973db?w=1200&auto=format&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=1200&auto=format&fit=crop&q=80',
+  ],
+  economia: [
+    'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1200&auto=format&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=1200&auto=format&fit=crop&q=80',
+  ],
+  justica: [
+    'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=1200&auto=format&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1505664194779-8beaceb93744?w=1200&auto=format&fit=crop&q=80',
+  ],
+  agro: [
+    'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=1200&auto=format&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1523741543316-beb7fc7023d8?w=1200&auto=format&fit=crop&q=80',
+  ],
+  infraestrutura: [
+    'https://images.unsplash.com/photo-1509391365360-2e959784a276?w=1200&auto=format&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1545459720-aac8509eb02c?w=1200&auto=format&fit=crop&q=80',
+  ],
+  saude: [
+    'https://images.unsplash.com/photo-1632053002930-b3b3a3aa85d0?w=1200&auto=format&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?w=1200&auto=format&fit=crop&q=80',
+  ],
+  educacao: [
+    'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=1200&auto=format&fit=crop&q=80',
+  ],
+  tecnologia: [
+    'https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&auto=format&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1200&auto=format&fit=crop&q=80',
+  ],
+  brasil: [
+    'https://images.unsplash.com/photo-1483729558449-99ef09a8c325?w=1200&auto=format&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1585829365295-ab7cd400c167?w=1200&auto=format&fit=crop&q=80',
+  ],
+  'distrito-federal': [
+    'https://images.unsplash.com/photo-1541888946425-d0fbb186c5f7?w=1200&auto=format&fit=crop&q=80',
+  ],
+};
+
+function getCategoryFallbackImage(category: string, index: number = 0): string {
+  const list = CATEGORY_EDITORIAL_FALLBACKS[category.toLowerCase()] || CATEGORY_EDITORIAL_FALLBACKS.brasil;
+  return list[index % list.length] || 'https://images.unsplash.com/photo-1585829365295-ab7cd400c167?w=1200&auto=format&fit=crop&q=80';
 }
 
 // Extrai URL de imagem de tags RSS
 function extractImageUrl(item: any): string | undefined {
-  // media:content pode ser objeto ou array
+  // 1. Tag específica da Agência Brasil / EBC: <imagem-destaque>
+  if (item['imagem-destaque']) {
+    const ebcImg = typeof item['imagem-destaque'] === 'string'
+      ? item['imagem-destaque']
+      : item['imagem-destaque']?.['#text'];
+    if (ebcImg && !isInvalidOrLogoImage(ebcImg)) {
+      return ebcImg.trim();
+    }
+  }
+
+  // 2. media:content pode ser objeto ou array (G1, Metrópoles, etc.)
   if (item['media:content']) {
     const media = Array.isArray(item['media:content']) ? item['media:content'] : [item['media:content']];
     for (const m of media) {
-      if (m?.['@_url'] && !isInvalidOrLogoImage(m['@_url'])) {
-        return m['@_url'];
+      const u = m?.['@_url'] || m?.url || (typeof m === 'string' ? m : undefined);
+      if (u && !isInvalidOrLogoImage(u)) {
+        return u.trim();
       }
     }
   }
 
-  // enclosure pode ser objeto ou array
+  // 3. enclosure pode ser objeto ou array
   if (item['enclosure']) {
     const encs = Array.isArray(item['enclosure']) ? item['enclosure'] : [item['enclosure']];
     for (const enc of encs) {
-      if (enc?.['@_url'] && !isInvalidOrLogoImage(enc['@_url'])) {
-        return enc['@_url'];
+      const u = enc?.['@_url'] || enc?.url;
+      if (u && !isInvalidOrLogoImage(u)) {
+        return u.trim();
       }
     }
   }
 
-  // media:thumbnail pode ser objeto ou array
+  // 4. media:thumbnail
   if (item['media:thumbnail']) {
     const thumbs = Array.isArray(item['media:thumbnail']) ? item['media:thumbnail'] : [item['media:thumbnail']];
     for (const thumb of thumbs) {
-      if (thumb?.['@_url'] && !isInvalidOrLogoImage(thumb['@_url'])) {
-        return thumb['@_url'];
+      const u = thumb?.['@_url'] || thumb?.url;
+      if (u && !isInvalidOrLogoImage(u)) {
+        return u.trim();
       }
     }
   }
 
-  // Tenta extrair de tags <img> dentro do description ou content
-  const rawContent = (item.description || '') + ' ' + (item['content:encoded'] || '');
+  // 5. image ou image:loc
+  if (item['image']) {
+    const imgObj = item['image'];
+    const u = typeof imgObj === 'string' ? imgObj : imgObj?.url || imgObj?.['#text'];
+    if (u && !isInvalidOrLogoImage(u)) {
+      return u.trim();
+    }
+  }
+
+  // 6. Tenta extrair de tags <img> dentro do description ou content:encoded
+  const rawContent = (typeof item.description === 'string' ? item.description : item.description?.['#text'] || '') +
+    ' ' +
+    (typeof item['content:encoded'] === 'string' ? item['content:encoded'] : item['content:encoded']?.['#text'] || '');
   const imgMatches = Array.from(rawContent.matchAll(/<img[^>]+src=["']([^"']+)["']/gi));
   for (const match of imgMatches) {
     if (match[1] && !isInvalidOrLogoImage(match[1])) {
-      return match[1];
+      return match[1].trim();
     }
   }
 
@@ -91,13 +172,14 @@ export async function fetchPageOgImage(articleUrl: string): Promise<string | und
 
   try {
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 3500);
+    const timeout = setTimeout(() => controller.abort(), 4500);
 
     const res = await fetch(articleUrl, {
       signal: controller.signal,
       headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+        'Accept-Language': 'pt-BR,pt;q=0.9,en-US;q=0.8',
       },
     });
     clearTimeout(timeout);
@@ -107,10 +189,11 @@ export async function fetchPageOgImage(articleUrl: string): Promise<string | und
     const html = await res.text();
 
     const ogMatch =
-      html.match(/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i) ||
-      html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image["']/i) ||
-      html.match(/<meta[^>]+name=["']twitter:image["'][^>]+content=["']([^"']+)["']/i) ||
-      html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+name=["']twitter:image["']/i) ||
+      html.match(/<meta[^>]+property=["']og:image(?::secure_url|:url)?["'][^>]+content=["']([^"']+)["']/i) ||
+      html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image(?::secure_url|:url)?["']/i) ||
+      html.match(/<meta[^>]+name=["']twitter:image(?::src)?["'][^>]+content=["']([^"']+)["']/i) ||
+      html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+name=["']twitter:image(?::src)?["']/i) ||
+      html.match(/<meta[^>]+itemprop=["']image["'][^>]+content=["']([^"']+)["']/i) ||
       html.match(/<link[^>]+rel=["']image_src["'][^>]+href=["']([^"']+)["']/i);
 
     if (ogMatch && ogMatch[1]) {
@@ -123,7 +206,7 @@ export async function fetchPageOgImage(articleUrl: string): Promise<string | und
       }
     }
   } catch {
-    // Timeout ou erro de rede não impede o fluxo
+    // Timeout ou erro de rede não interrompe
   }
 
   return undefined;
@@ -280,16 +363,27 @@ export async function fetchNewsFromPortals(options: {
   // Ordena por data decrescente (mais recentes primeiro)
   results.sort((a, b) => new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime());
 
-  // Para os primeiros 15 itens sem imagem ou com imagem pendente, busca og:image diretamente da página de notícia
-  const itemsNeedingImage = results.filter((r) => isInvalidOrLogoImage(r.imageUrl) && r.link).slice(0, 15);
-  await Promise.all(
-    itemsNeedingImage.map(async (item) => {
-      const realImg = await fetchPageOgImage(item.link);
-      if (realImg) {
-        item.imageUrl = realImg;
-      }
-    })
-  );
+  // Busca og:image para TODOS os itens sem imagem (executando em lotes de 6 em paralelo)
+  const itemsNeedingImage = results.filter((r) => isInvalidOrLogoImage(r.imageUrl) && r.link);
+  const BATCH_SIZE = 6;
+  for (let i = 0; i < itemsNeedingImage.length; i += BATCH_SIZE) {
+    const batch = itemsNeedingImage.slice(i, i + BATCH_SIZE);
+    await Promise.all(
+      batch.map(async (item) => {
+        const realImg = await fetchPageOgImage(item.link);
+        if (realImg) {
+          item.imageUrl = realImg;
+        }
+      })
+    );
+  }
+
+  // Para qualquer item que ainda não tenha imagem (ou falhou a conexão), aplica imediatamente fallback temático HD
+  results.forEach((item, idx) => {
+    if (isInvalidOrLogoImage(item.imageUrl)) {
+      item.imageUrl = getCategoryFallbackImage(item.suggestedCategory, idx);
+    }
+  });
 
   return results;
 }
@@ -342,15 +436,7 @@ export async function publishExtractedNewsItem(
 
   // Se ainda assim não houver, utiliza imagem editorial de alta qualidade de acordo com a editoria
   if (isInvalidOrLogoImage(finalImageUrl)) {
-    const editorialFallbacks: Record<string, string> = {
-      politica: 'https://images.unsplash.com/photo-1541888946425-d0fbb186c5f7?w=1000&auto=format&fit=crop&q=80',
-      congresso: 'https://images.unsplash.com/photo-1575517111478-7f6afd0973db?w=1000&auto=format&fit=crop&q=80',
-      economia: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1000&auto=format&fit=crop&q=80',
-      governo: 'https://images.unsplash.com/photo-1541888946425-d0fbb186c5f7?w=1000&auto=format&fit=crop&q=80',
-      justica: 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=1000&auto=format&fit=crop&q=80',
-      infraestrutura: 'https://images.unsplash.com/photo-1509391365360-2e959784a276?w=1000&auto=format&fit=crop&q=80',
-    };
-    finalImageUrl = editorialFallbacks[categoryId] || 'https://images.unsplash.com/photo-1585829365295-ab7cd400c167?w=1000&auto=format&fit=crop&q=80';
+    finalImageUrl = getCategoryFallbackImage(categoryId);
   }
 
   // Monta o corpo da notícia com citação profissional de fonte e links jornalísticos

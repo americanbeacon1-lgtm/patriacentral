@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Article } from '@/lib/types';
+import NewsImage from '@/components/NewsImage';
 
 interface SpecialReportsProps {
   articles: Article[];
@@ -26,11 +27,11 @@ export default function SpecialReports({ articles }: SpecialReportsProps) {
             className="grid grid-cols-[minmax(96px,30%)_minmax(0,1fr)] gap-4 sm:gap-5 pb-4 mb-4 border-b border-[#e3e5e9] group last:border-b-0 last:pb-0 last:mb-0"
           >
             <div className="aspect-4/3 relative overflow-hidden rounded-[2px] bg-[#f4f5f7]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <NewsImage
                 src={art.imageUrl}
                 alt={art.title}
                 className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300"
+                category={art.categoryId}
                 loading="lazy"
               />
             </div>

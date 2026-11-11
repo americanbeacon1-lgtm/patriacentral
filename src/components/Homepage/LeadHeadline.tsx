@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Article, Author, Category } from '@/lib/types';
+import NewsImage from '@/components/NewsImage';
 
 interface LeadHeadlineProps {
   article: Article;
@@ -18,11 +19,12 @@ export default function LeadHeadline({ article, author, category }: LeadHeadline
         href={`/noticia/${article.slug}`}
         className="block aspect-16/9 relative overflow-hidden rounded-[2px] bg-[#f4f5f7] group"
       >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        <NewsImage
           src={article.imageUrl}
           alt={article.imageCaption || article.title}
           className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300"
+          category={article.categoryId}
+          loading="eager"
         />
         {article.imageCredit && (
           <span className="absolute bottom-1.5 right-1.5 bg-black/60 text-[10px] text-white px-2 py-0.5 rounded backdrop-blur-xs">

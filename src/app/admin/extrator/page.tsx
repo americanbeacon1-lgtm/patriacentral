@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import NewsImage from '@/components/NewsImage';
 import { ExtractedNewsItem, KNOWN_SOURCES } from '@/lib/crawler-types';
 import { Category } from '@/lib/types';
 import {
@@ -405,16 +406,15 @@ export default function AdminCrawlerPage() {
 
                     {/* Imagem + Título */}
                     <div className="flex gap-4 mb-3">
-                      {item.imageUrl && (
-                        <div className="w-24 h-20 rounded-lg overflow-hidden bg-slate-100 shrink-0">
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img
-                            src={item.imageUrl}
-                            alt={item.title}
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                      )}
+                      <div className="w-24 h-20 rounded-lg overflow-hidden bg-slate-100 shrink-0">
+                        <NewsImage
+                          src={item.imageUrl}
+                          alt={item.title}
+                          className="w-full h-full object-cover"
+                          category={item.suggestedCategory}
+                          loading="lazy"
+                        />
+                      </div>
 
                       <div className="flex-1">
                         <h3 className="text-sm font-bold text-slate-900 font-headline leading-snug line-clamp-3">

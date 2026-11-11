@@ -6,6 +6,7 @@ import Footer from '@/components/Footer';
 import AdDisplay from '@/components/AdDisplay';
 import CookieBanner from '@/components/CookieBanner';
 import ShareButtons from '@/components/Article/ShareButtons';
+import NewsImage from '@/components/NewsImage';
 import Link from 'next/link';
 import { Metadata } from 'next';
 
@@ -177,11 +178,12 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           {/* Foto Principal com Legenda */}
           <figure className="m-0 flex flex-col gap-1.5 my-2">
             <div className="aspect-16/9 relative overflow-hidden rounded-[2px] bg-[#f4f5f7]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <NewsImage
                 src={article.imageUrl}
                 alt={article.imageCaption || article.title}
                 className="w-full h-full object-cover"
+                category={article.categoryId}
+                loading="eager"
               />
             </div>
             {(article.imageCaption || article.imageCredit) && (
@@ -262,11 +264,12 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                     className="flex flex-col gap-2 group"
                   >
                     <div className="aspect-3/2 relative overflow-hidden rounded-[2px] bg-[#f4f5f7]">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
+                      <NewsImage
                         src={rel.imageUrl}
                         alt={rel.title}
                         className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300"
+                        category={rel.categoryId}
+                        loading="lazy"
                       />
                     </div>
                     <span className="font-semibold text-[15px] leading-[1.35] text-[#16181d] group-hover:text-[#0b2545] transition-colors line-clamp-3">

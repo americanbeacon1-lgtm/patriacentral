@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Article } from '@/lib/types';
+import NewsImage from '@/components/NewsImage';
 
 interface SecondaryHeadlinesProps {
   articles: Article[];
@@ -17,11 +18,11 @@ export default function SecondaryHeadlines({ articles }: SecondaryHeadlinesProps
             href={`/noticia/${art.slug}`}
             className="block aspect-3/2 relative overflow-hidden rounded-[2px] bg-[#f4f5f7]"
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <NewsImage
               src={art.imageUrl}
               alt={art.title}
               className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300"
+              category={art.categoryId}
               loading="lazy"
             />
           </Link>
