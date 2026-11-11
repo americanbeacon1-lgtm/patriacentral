@@ -71,6 +71,12 @@ function sanitizeDatabase(dbSchema: DatabaseSchema): DatabaseSchema {
     if (!dbSchema.settings.companyName || dbSchema.settings.companyName.toLowerCase().includes('eixo')) {
       dbSchema.settings.companyName = 'Pátria Central';
     }
+    if (!dbSchema.settings.commercialEmail || dbSchema.settings.commercialEmail.includes('gustavomourabarbosa')) {
+      dbSchema.settings.commercialEmail = 'americanbeacon@americanbeacon.online';
+    }
+    if (!dbSchema.settings.redactionEmail || dbSchema.settings.redactionEmail.includes('gustavomourabarbosa')) {
+      dbSchema.settings.redactionEmail = 'americanbeacon@americanbeacon.online';
+    }
   }
   return dbSchema;
 }

@@ -75,7 +75,7 @@ export default function MediaKitPage() {
                 Veículo de comunicação digital de abrangência nacional, focado na cobertura dos Três Poderes, análise econômica e políticas públicas.
               </p>
               <div className="p-3 bg-[#f4f5f7] rounded-[4px] border border-[#e3e5e9] text-xs text-[#5b616e]">
-                Contato de patrocínio e propostas: <strong className="text-[#0b2545]">gustavomourabarbosagmm@gmail.com</strong>
+                Contato de patrocínio e propostas: <strong className="text-[#0b2545]">americanbeacon@americanbeacon.online</strong>
               </div>
             </div>
 

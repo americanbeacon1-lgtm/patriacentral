@@ -251,8 +251,8 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           {/* Aviso Editorial e Erratas */}
           <p className="text-[14px] text-[#5b616e] italic pt-3 border-t border-[#e3e5e9]">
             Encontrou algum erro? Escreva para a nossa equipe em{' '}
-            <a href="mailto:redacao@patriacentral.com.br" className="underline text-[#0b2545]">
-              redacao@patriacentral.com.br
+            <a href="mailto:americanbeacon@americanbeacon.online" className="underline text-[#0b2545]">
+              americanbeacon@americanbeacon.online
             </a>
             . Pedidos de direito de resposta seguem a política publicada no rodapé.
           </p>

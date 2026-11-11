@@ -73,8 +73,8 @@ export const DEFAULT_SETTINGS: SiteSettings = {
   addressSaoPaulo: '',
   chiefEditor: '',
   journalismCouncil: '',
-  commercialEmail: 'gustavomourabarbosagmm@gmail.com',
-  redactionEmail: 'gustavomourabarbosagmm@gmail.com',
+  commercialEmail: 'americanbeacon@americanbeacon.online',
+  redactionEmail: 'americanbeacon@americanbeacon.online',
   commercialPhone: '(61) 3245-8900',
   redactionPhone: '(61) 3245-8901',
 };

@@ -49,7 +49,7 @@ const INSTITUTIONAL_CONTENT: Record<string, { title: string; subtitle: string; c
     content: `
       <h2>Jornalista Responsável</h2>
       <p>O jornalista Roberto Mendonça Valente (Registro Profissional MTE 14.892/DF) responde formal e editorialmente por todas as publicações veiculadas no portal, zelando pelo cumprimento irrestrito do Código de Ética dos Jornalistas Brasileiros e pela exatidão das matérias publicadas.</p>
-      <p>Contatos diretos com a chefia de redação podem ser encaminhados para: <code>redacao@patriacentral.com.br</code>.</p>
+      <p>Contatos diretos com a chefia de redação podem ser encaminhados para: <code>americanbeacon@americanbeacon.online</code>.</p>
     `,
   },
   'equipe-reportagem': {
@@ -78,7 +78,7 @@ const INSTITUTIONAL_CONTENT: Record<string, { title: string; subtitle: string; c
     content: `
       <h2>Correções Imediatas e Transparentes</h2>
       <p>O Pátria Central reconhece e corrige seus erros de forma célere e transparente. Quando um equívoco de fato ou digitação for identificado, o texto é atualizado com nota de correção no final da matéria com horário e data.</p>
-      <p>Canal exclusivo de correções: <code>redacao@patriacentral.com.br</code>.</p>
+      <p>Canal exclusivo de correções: <code>americanbeacon@americanbeacon.online</code>.</p>
     `,
   },
   'direito-de-resposta': {

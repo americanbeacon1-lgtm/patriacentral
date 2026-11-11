@@ -89,10 +89,10 @@ export default function CommercialPage() {
           </div>
           <div className="p-3.5 bg-[#f4f5f7] border border-[#e3e5e9] rounded-[4px] text-[13.5px] text-[#3c414b] flex flex-col sm:flex-row sm:items-center justify-between gap-2 mt-2">
             <span>
-              E-mail oficial para patrocínio e propostas comerciais: <strong className="text-[#0b2545]">gustavomourabarbosagmm@gmail.com</strong>
+              E-mail oficial para patrocínio e propostas comerciais: <strong className="text-[#0b2545]">americanbeacon@americanbeacon.online</strong>
             </span>
             <a
-              href="mailto:gustavomourabarbosagmm@gmail.com"
+              href="mailto:americanbeacon@americanbeacon.online"
               style={{ backgroundColor: '#c8102e', color: '#ffffff' }}
               className="px-3.5 py-1.5 rounded-[3px] text-white font-bold text-[12px] uppercase tracking-wider self-start sm:self-auto hover:bg-[#a50d25] transition-colors"
             >

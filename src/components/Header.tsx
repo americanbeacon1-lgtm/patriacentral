@@ -574,7 +574,7 @@ export default function Header({ categories, settings, urgentText, urgentLink }:
                 Anuncie no Portal
               </Link>
               <div className="flex justify-between items-center text-[11px] text-slate-500 pt-1">
-                <span>gustavomourabarbosagmm@gmail.com</span>
+                <span>americanbeacon@americanbeacon.online</span>
                 <Link
                   href="/admin"
                   onClick={() => setMobileMenuOpen(false)}
