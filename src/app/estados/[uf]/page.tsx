@@ -11,6 +11,8 @@ import Link from 'next/link';
 import { Metadata } from 'next';
 import { BRAZILIAN_STATES } from '@/lib/constants';
 
+export const dynamic = 'force-dynamic';
+
 interface StatePageProps {
   params: Promise<{ uf: string }>;
 }

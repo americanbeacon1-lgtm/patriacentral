@@ -16,6 +16,7 @@ import SpecialReports from '@/components/Homepage/SpecialReports';
 import OpinionSection from '@/components/Homepage/OpinionSection';
 import NewsletterBox from '@/components/Homepage/NewsletterBox';
 
+export const dynamic = 'force-dynamic';
 export const revalidate = 0; // Sempre atualizado dinamicamente
 
 export default function HomePage() {

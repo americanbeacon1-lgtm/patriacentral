@@ -10,6 +10,8 @@ import TrendingArticles from '@/components/Homepage/TrendingArticles';
 import Link from 'next/link';
 import { Metadata } from 'next';
 
+export const dynamic = 'force-dynamic';
+
 interface CategoryPageProps {
   params: Promise<{ slug: string }>;
 }

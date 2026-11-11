@@ -10,6 +10,8 @@ import NewsImage from '@/components/NewsImage';
 import Link from 'next/link';
 import { Metadata } from 'next';
 
+export const dynamic = 'force-dynamic';
+
 interface ArticlePageProps {
   params: Promise<{ slug: string }>;
 }
