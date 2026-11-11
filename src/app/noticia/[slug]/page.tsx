@@ -65,7 +65,9 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     notFound();
   }
 
-  db.incrementArticleViews(slug);
+  try {
+    db.incrementArticleViews(slug);
+  } catch {}
 
   const settings = db.getSettings();
   const categories = db.getCategories();

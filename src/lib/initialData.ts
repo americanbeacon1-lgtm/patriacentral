@@ -86,7 +86,7 @@ export const INITIAL_ARTICLES: Article[] = [
       <p>O anúncio foi recebido com entusiasmo pelo setor produtivo. Representantes da Frente Parlamentar da Agropecuária e entidades empresariais destacaram que a iniciativa consolida a segurança jurídica necessária para destravar capital internacional.</p>
     `,
     summary: 'Plano prevê ligação de malhas no Centro-Oeste e Sudeste e redução de custos logísticos para o agronegócio e a indústria.',
-    imageUrl: 'https://images.unsplash.com/photo-1541888946425-d0fbb186c5f7?w=1200&auto=format&fit=crop&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=1200&auto=format&fit=crop&q=80',
     imageCaption: 'Obras de infraestrutura logística de integração nacional contam com monitoramento em tempo real.',
     imageCredit: 'Agência Brasil / Divulgação',
     categoryId: 'infraestrutura',
@@ -198,7 +198,7 @@ export const INITIAL_ARTICLES: Article[] = [
       <p>Doses contra HPV, meningite, sarampo e poliomielite foram aplicadas com autorização dos responsáveis, superando metas de proteção coletiva.</p>
     `,
     summary: 'Mobilização nas escolas públicas resgata padrão de excelência vacinal brasileiro.',
-    imageUrl: 'https://images.unsplash.com/photo-1632053002930-b3b3a3aa85d0?w=800&auto=format&fit=crop&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?w=1200&auto=format&fit=crop&q=80',
     imageCaption: 'Profissionais de saúde aplicam imunizantes em estudantes da rede pública no interior paulista.',
     imageCredit: 'Governo do Estado de São Paulo',
     categoryId: 'saude',
@@ -256,7 +256,7 @@ export const INITIAL_ARTICLES: Article[] = [
       <p>Prefeituras locais relatam aumento expressivo no ISS e geração de empregos qualificados para jovens técnicos formados em institutos federais da região.</p>
     `,
     summary: 'Série especial do Eixo Nacional investiga os pólos de energia do futuro e a nova fronteira de desenvolvimento.',
-    imageUrl: 'https://images.unsplash.com/photo-1509391365360-2e959784a276?w=1000&auto=format&fit=crop&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=1200&auto=format&fit=crop&q=80',
     imageCaption: 'Complexo de energia solar e eólica no interior do Ceará integrado ao hub portuário do Pecém.',
     imageCredit: 'Eixo Nacional / Reportagem Especial',
     categoryId: 'especiais',

@@ -33,56 +33,82 @@ interface DatabaseSchema {
   settings: SiteSettings;
 }
 
+let inMemoryDatabase: DatabaseSchema | null = null;
+
 const DATA_DIR = path.join(process.cwd(), '.data');
 const DB_FILE = path.join(DATA_DIR, 'database.json');
+const TMP_FILE = path.join('/tmp', 'database.json');
+
+function getInitialData(): DatabaseSchema {
+  return {
+    articles: INITIAL_ARTICLES,
+    categories: INITIAL_CATEGORIES,
+    authors: INITIAL_AUTHORS,
+    advertisers: INITIAL_ADVERTISERS,
+    campaigns: INITIAL_CAMPAIGNS,
+    banners: INITIAL_BANNERS,
+    events: [],
+    leads: INITIAL_LEADS,
+    settings: DEFAULT_SETTINGS,
+  };
+}
 
 function ensureDatabase(): DatabaseSchema {
-  if (!fs.existsSync(DATA_DIR)) {
-    fs.mkdirSync(DATA_DIR, { recursive: true });
+  if (inMemoryDatabase) {
+    return inMemoryDatabase;
   }
 
-  if (!fs.existsSync(DB_FILE)) {
-    const initialData: DatabaseSchema = {
-      articles: INITIAL_ARTICLES,
-      categories: INITIAL_CATEGORIES,
-      authors: INITIAL_AUTHORS,
-      advertisers: INITIAL_ADVERTISERS,
-      campaigns: INITIAL_CAMPAIGNS,
-      banners: INITIAL_BANNERS,
-      events: [],
-      leads: INITIAL_LEADS,
-      settings: DEFAULT_SETTINGS,
-    };
-    fs.writeFileSync(DB_FILE, JSON.stringify(initialData, null, 2), 'utf-8');
-    return initialData;
-  }
-
+  // 1. Tenta carregar do /tmp (versão mais recente salva em runtime na Vercel)
   try {
-    const raw = fs.readFileSync(DB_FILE, 'utf-8');
-    return JSON.parse(raw);
-  } catch (error) {
-    console.error('Error reading database, recreating...', error);
-    const initialData: DatabaseSchema = {
-      articles: INITIAL_ARTICLES,
-      categories: INITIAL_CATEGORIES,
-      authors: INITIAL_AUTHORS,
-      advertisers: INITIAL_ADVERTISERS,
-      campaigns: INITIAL_CAMPAIGNS,
-      banners: INITIAL_BANNERS,
-      events: [],
-      leads: INITIAL_LEADS,
-      settings: DEFAULT_SETTINGS,
-    };
-    fs.writeFileSync(DB_FILE, JSON.stringify(initialData, null, 2), 'utf-8');
-    return initialData;
-  }
+    if (fs.existsSync(TMP_FILE)) {
+      const raw = fs.readFileSync(TMP_FILE, 'utf-8');
+      inMemoryDatabase = JSON.parse(raw);
+      if (inMemoryDatabase && Array.isArray(inMemoryDatabase.articles)) {
+        return inMemoryDatabase;
+      }
+    }
+  } catch {}
+
+  // 2. Tenta carregar de .data/database.json (arquivos commitados do projeto)
+  try {
+    if (fs.existsSync(DB_FILE)) {
+      const raw = fs.readFileSync(DB_FILE, 'utf-8');
+      inMemoryDatabase = JSON.parse(raw);
+      if (inMemoryDatabase && Array.isArray(inMemoryDatabase.articles)) {
+        return inMemoryDatabase;
+      }
+    }
+  } catch {}
+
+  // 3. Fallback para initialData pré-definido
+  inMemoryDatabase = getInitialData();
+
+  // Tenta salvar localmente se for possível (sem lançar erro caso o filesystem seja read-only)
+  try {
+    if (!fs.existsSync(DATA_DIR)) {
+      fs.mkdirSync(DATA_DIR, { recursive: true });
+    }
+    fs.writeFileSync(DB_FILE, JSON.stringify(inMemoryDatabase, null, 2), 'utf-8');
+  } catch {}
+
+  return inMemoryDatabase;
 }
 
 function saveDatabase(data: DatabaseSchema): void {
-  if (!fs.existsSync(DATA_DIR)) {
-    fs.mkdirSync(DATA_DIR, { recursive: true });
-  }
-  fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2), 'utf-8');
+  inMemoryDatabase = data;
+
+  // 1. Salva em /tmp (sempre gravável na Vercel Serverless / AWS Lambda)
+  try {
+    fs.writeFileSync(TMP_FILE, JSON.stringify(data, null, 2), 'utf-8');
+  } catch {}
+
+  // 2. Tenta salvar no diretório local do projeto (para desenvolvimento local)
+  try {
+    if (!fs.existsSync(DATA_DIR)) {
+      fs.mkdirSync(DATA_DIR, { recursive: true });
+    }
+    fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2), 'utf-8');
+  } catch {}
 }
 
 export const db = {
@@ -182,12 +208,14 @@ export const db = {
   },
 
   incrementArticleViews(slug: string): void {
-    const data = ensureDatabase();
-    const article = data.articles.find((a) => a.slug === slug || a.id === slug);
-    if (article) {
-      article.viewsCount = (article.viewsCount || 0) + 1;
-      saveDatabase(data);
-    }
+    try {
+      const data = ensureDatabase();
+      const article = data.articles.find((a) => a.slug === slug || a.id === slug);
+      if (article) {
+        article.viewsCount = (article.viewsCount || 0) + 1;
+        saveDatabase(data);
+      }
+    } catch {}
   },
 
   saveArticle(article: Article): Article {
