@@ -131,11 +131,13 @@ export default function AdminCrawlerPage() {
       // Persiste no storage do navegador para reidratação instantânea sem 404
       if (data.article) {
         try {
+          localStorage.setItem('patria_article_' + publishedSlug, JSON.stringify(data.article));
           localStorage.setItem('eixo_article_' + publishedSlug, JSON.stringify(data.article));
-          const listRaw = localStorage.getItem('eixo_custom_articles');
+          const listRaw = localStorage.getItem('patria_custom_articles') || localStorage.getItem('eixo_custom_articles');
           const list = listRaw ? JSON.parse(listRaw) : [];
           list.unshift(data.article);
-          localStorage.setItem('eixo_custom_articles', JSON.stringify(list.slice(0, 100)));
+          localStorage.setItem('patria_custom_articles', JSON.stringify(list.slice(0, 1000)));
+          localStorage.setItem('eixo_custom_articles', JSON.stringify(list.slice(0, 1000)));
         } catch {}
       }
 
@@ -169,7 +171,7 @@ export default function AdminCrawlerPage() {
     }
   };
 
-  // Postar em lote todas as não importadas
+  // Postar em lote todas as não importadas em blocos com progresso
   const handlePublishBatch = async () => {
     const unimported = newsItems.filter((i) => !i.alreadyImported);
     if (unimported.length === 0) {
@@ -184,47 +186,69 @@ export default function AdminCrawlerPage() {
     setPostingBatch(true);
     setMessage(null);
 
+    const CHUNK_SIZE = 40;
+    const totalChunks = Math.ceil(unimported.length / CHUNK_SIZE);
+    let totalPublished = 0;
+    const globalSlugMap: Record<string, string> = {};
+
     try {
-      const res = await fetch('/api/admin/crawler', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          action: 'publish_batch',
-          items: unimported,
-        }),
-      });
+      for (let chunkIdx = 0; chunkIdx < totalChunks; chunkIdx++) {
+        const chunk = unimported.slice(chunkIdx * CHUNK_SIZE, (chunkIdx + 1) * CHUNK_SIZE);
 
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Erro na publicação em lote.');
+        setMessage({
+          type: 'success',
+          text: `Publicando lote ${chunkIdx + 1} de ${totalChunks} (${totalPublished}/${unimported.length} matérias concluídas)...`,
+        });
 
-      // Atualiza todos para importados
-      const slugMap: Record<string, string> = {};
-      if (Array.isArray(data.articles)) {
-        try {
-          const listRaw = localStorage.getItem('eixo_custom_articles');
-          const list = listRaw ? JSON.parse(listRaw) : [];
-          data.articles.forEach((a: any) => {
-            if (a.title && a.slug) {
-              slugMap[a.title.toLowerCase().trim()] = a.slug;
-              localStorage.setItem('eixo_article_' + a.slug, JSON.stringify(a));
-              list.unshift(a);
-            }
-          });
-          localStorage.setItem('eixo_custom_articles', JSON.stringify(list.slice(0, 100)));
-        } catch {}
+        const res = await fetch('/api/admin/crawler', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'publish_batch',
+            items: chunk,
+          }),
+        });
+
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || `Erro no lote ${chunkIdx + 1}.`);
+
+        if (Array.isArray(data.articles)) {
+          totalPublished += data.articles.length;
+          try {
+            const listRaw = localStorage.getItem('patria_custom_articles') || localStorage.getItem('eixo_custom_articles');
+            const list = listRaw ? JSON.parse(listRaw) : [];
+            data.articles.forEach((a: any) => {
+              if (a.title && a.slug) {
+                globalSlugMap[a.title.toLowerCase().trim()] = a.slug;
+                localStorage.setItem('patria_article_' + a.slug, JSON.stringify(a));
+                localStorage.setItem('eixo_article_' + a.slug, JSON.stringify(a));
+                list.unshift(a);
+              }
+            });
+            localStorage.setItem('patria_custom_articles', JSON.stringify(list.slice(0, 1000)));
+            localStorage.setItem('eixo_custom_articles', JSON.stringify(list.slice(0, 1000)));
+          } catch {}
+
+          // Atualiza estado local progressivamente após cada lote
+          setNewsItems((prev) =>
+            prev.map((i) => {
+              const slug = globalSlugMap[i.title.toLowerCase().trim()];
+              if (slug) {
+                return {
+                  ...i,
+                  alreadyImported: true,
+                  publishedSlug: slug,
+                };
+              }
+              return i;
+            })
+          );
+        }
       }
-
-      setNewsItems((prev) =>
-        prev.map((i) => ({
-          ...i,
-          alreadyImported: true,
-          publishedSlug: slugMap[i.title.toLowerCase().trim()] || i.slug,
-        }))
-      );
 
       setMessage({
         type: 'success',
-        text: `Sucesso! ${data.count} notícias foram postadas simultaneamente no Pátria Central!`,
+        text: `Sucesso total! ${totalPublished} notícias foram postadas e integradas ao acervo do Pátria Central!`,
         actionUrl: `/editoria/ultimas`,
       });
     } catch (err: any) {

@@ -672,6 +672,124 @@ export async function publishExtractedNewsItem(
   return db.saveArticle(newArticle);
 }
 
+export function buildArticleContentFromItem(item: ExtractedNewsItem): string {
+  const rawText = cleanText(item.contentSnippet || item.summary || item.title);
+  const sentences = rawText
+    .split(/(?<=[.!?])\s+/)
+    .filter((s) => s.trim().length > 15)
+    .map((s) => s.trim());
+
+  let lead = '';
+  const bodyParas: string[] = [];
+
+  if (sentences.length >= 2) {
+    lead = sentences[0];
+    let current = '';
+    for (let i = 1; i < sentences.length; i++) {
+      current += (current ? ' ' : '') + sentences[i];
+      if (current.length > 140 || i === sentences.length - 1) {
+        bodyParas.push(current);
+        current = '';
+      }
+    }
+  } else {
+    lead = rawText;
+  }
+
+  return `
+    <p class="lead font-medium text-lg leading-relaxed text-[#16181d] mb-4">${lead}</p>
+    
+    ${bodyParas.map((chunk) => `<p class="mb-4 text-[#16181d] leading-relaxed">${chunk}</p>`).join('\n')}
+
+    <blockquote class="border-l-4 border-[#04391d] pl-4 py-3 my-6 italic text-[#3c414b] bg-[#f4f5f7] rounded-r">
+      Informações apuradas originalmente pelo veículo <strong>${item.sourceName}</strong>. 
+      ${item.link ? `<a href="${item.link}" target="_blank" rel="noopener noreferrer" class="text-[#008744] underline font-semibold ml-1 hover:text-[#04391d]">Consulte a publicação original na íntegra.</a>` : ''}
+    </blockquote>
+
+    <p class="text-[#5b616e] text-sm border-t border-[#e3e5e9] pt-3 mt-6">
+      A cobertura completa e as repercussões continuam sendo monitoradas pela equipe do Portal Pátria Central em Brasília e nas capitais brasileiras.
+    </p>
+  `;
+}
+
+export async function publishExtractedNewsItemsBatch(
+  items: ExtractedNewsItem[]
+): Promise<Article[]> {
+  const chapeuMap: Record<string, string> = {
+    politica: 'PODER & BASTIDORES',
+    governo: 'GOVERNO FEDERAL',
+    congresso: 'CONGRESSO NACIONAL',
+    economia: 'MERCADO & FINANÇAS',
+    justica: 'TRIBUNAIS & SEGURANÇA',
+    agro: 'AGRONEGÓCIO BRASIL',
+    infraestrutura: 'LOGÍSTICA & DESENVOLVIMENTO',
+    saude: 'SAÚDE PÚBLICA',
+    educacao: 'ENSINO & PESQUISA',
+    tecnologia: 'INOVAÇÃO & TECNOLOGIA',
+    brasil: 'COBERTURA NACIONAL',
+    'distrito-federal': 'DISTRITO FEDERAL',
+  };
+
+  const articlesToSave: Article[] = [];
+
+  for (let idx = 0; idx < items.length; idx++) {
+    const item = items[idx];
+    const title = (item.title || 'Notícia Pátria Central').trim();
+    const categoryId = item.suggestedCategory || 'brasil';
+    const chapeu = chapeuMap[categoryId] || 'NOTÍCIA';
+
+    let slug = (item.slug || title)
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+
+    if (!slug || slug.length < 3) {
+      slug = 'noticia-' + Date.now() + '-' + idx;
+    }
+
+    let finalImageUrl = item.imageUrl;
+    if (isInvalidOrLogoImage(finalImageUrl)) {
+      finalImageUrl = getCategoryFallbackImage(categoryId, idx);
+    }
+
+    const content = buildArticleContentFromItem(item);
+
+    articlesToSave.push({
+      id: 'art-' + Date.now() + '-' + idx + '-' + Math.random().toString(36).substring(2, 6),
+      title,
+      slug,
+      chapeu,
+      subtitle: item.summary || `${title} — Acompanhe os detalhes apurados.`,
+      content,
+      summary: item.summary,
+      imageUrl: finalImageUrl || 'https://images.unsplash.com/photo-1585829365295-ab7cd400c167?w=1000&auto=format&fit=crop&q=80',
+      imageCaption: `Reportagem sobre ${title.substring(0, 60)}...`,
+      imageCredit: item.imageCredit || `${item.sourceName} / Divulgação`,
+      categoryId,
+      tags: Array.from(new Set([...(item.suggestedTags || []), 'Pátria Central', 'Jornalismo'])),
+      authorId: 'roberto-valente',
+      publishedAt: item.pubDate
+        ? new Date(parseNewsDate(item.pubDate)).toISOString()
+        : new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      status: 'published',
+      isLeadStory: false,
+      isSecondary: false,
+      isBreaking: false,
+      isSpecial: false,
+      readingTime: Math.max(2, Math.ceil(content.length / 800)),
+      viewsCount: Math.floor(Math.random() * 450) + 120,
+      sourceUrl: item.link,
+      sourceName: item.sourceName,
+      categoryName: categoryId.toUpperCase(),
+    });
+  }
+
+  return db.saveArticles(articlesToSave);
+}
+
 // Tenta localizar e auto-publicar uma notícia a partir dos feeds recentes se não encontrada no banco
 export async function findArticleBySlugInFeeds(slug: string): Promise<Article | undefined> {
   if (!slug) return undefined;

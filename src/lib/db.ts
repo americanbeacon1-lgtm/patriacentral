@@ -448,6 +448,39 @@ export const db = {
     return article;
   },
 
+  saveArticles(newArticles: Article[]): Article[] {
+    const data = ensureDatabase();
+    const existingSlugs = new Set(data.articles.map((a) => a.slug));
+    const processed: Article[] = [];
+
+    for (const article of newArticles) {
+      let uniqueSlug = article.slug;
+      let counter = 1;
+      while (existingSlugs.has(uniqueSlug)) {
+        uniqueSlug = `${article.slug}-${counter}`;
+        counter++;
+      }
+      existingSlugs.add(uniqueSlug);
+
+      const finalArticle: Article = {
+        ...article,
+        slug: uniqueSlug,
+        updatedAt: new Date().toISOString(),
+      };
+
+      const existingIndex = data.articles.findIndex((a) => a.id === article.id);
+      if (existingIndex >= 0) {
+        data.articles[existingIndex] = finalArticle;
+      } else {
+        data.articles.unshift(finalArticle);
+      }
+      processed.push(finalArticle);
+    }
+
+    saveDatabase(data);
+    return processed;
+  },
+
   deleteArticle(id: string): boolean {
     const data = ensureDatabase();
     const lenBefore = data.articles.length;

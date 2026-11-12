@@ -18,7 +18,7 @@ export default function ArticleClientFallback({ slug }: FallbackProps) {
   useEffect(() => {
     try {
       // 1. Tenta recuperar do storage individual da matéria
-      const direct = localStorage.getItem('eixo_article_' + slug);
+      const direct = localStorage.getItem('patria_article_' + slug) || localStorage.getItem('eixo_article_' + slug);
       if (direct) {
         const parsed = JSON.parse(direct);
         setArticle(parsed);
@@ -33,7 +33,7 @@ export default function ArticleClientFallback({ slug }: FallbackProps) {
       }
 
       // 2. Tenta recuperar da lista geral de matérias publicadas
-      const listRaw = localStorage.getItem('eixo_custom_articles');
+      const listRaw = localStorage.getItem('patria_custom_articles') || localStorage.getItem('eixo_custom_articles');
       if (listRaw) {
         const list = JSON.parse(listRaw);
         const match = list.find((a: any) => a.slug === slug || a.id === slug);

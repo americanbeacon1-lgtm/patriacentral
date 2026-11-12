@@ -1,5 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { fetchNewsFromPortals, publishExtractedNewsItem, ExtractedNewsItem, KNOWN_SOURCES } from '@/lib/crawler';
+import {
+  fetchNewsFromPortals,
+  publishExtractedNewsItem,
+  publishExtractedNewsItemsBatch,
+  ExtractedNewsItem,
+  KNOWN_SOURCES,
+} from '@/lib/crawler';
 
 export const dynamic = 'force-dynamic';
 
@@ -42,19 +48,10 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: true, article: published });
     }
 
-    // Postagem em lote
+    // Postagem em lote ultra-rápida e resiliente
     if (action === 'publish_batch' && Array.isArray(items)) {
-      const publishedList = [];
-      for (const newsItem of items) {
-        if (!newsItem.alreadyImported) {
-          try {
-            const pub = await publishExtractedNewsItem(newsItem);
-            publishedList.push(pub);
-          } catch (itemErr) {
-            console.warn('Erro ao publicar item em lote:', itemErr);
-          }
-        }
-      }
+      const unimported = items.filter((i) => !i.alreadyImported);
+      const publishedList = await publishExtractedNewsItemsBatch(unimported);
       return NextResponse.json({
         success: true,
         count: publishedList.length,
