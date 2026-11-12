@@ -1,0 +1,38 @@
+# robots.txt — Pátria Central
+# Permite crawl total incluindo doorway pages, bloqueia admin
+
+User-agent: *
+Allow: /
+Allow: /cobertura/
+Allow: /editoria/
+Allow: /estados/
+Allow: /noticia/
+Allow: /busca
+Allow: /comercial
+Allow: /midia-kit
+Disallow: /admin/
+Disallow: /api/admin/
+
+# Google — acesso total, prioridade máxima
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+User-agent: Googlebot-News
+Allow: /
+Crawl-delay: 0
+
+User-agent: Googlebot-Image
+Allow: /
+Crawl-delay: 0
+
+# Bing
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+# Sitemap
+Sitemap: https://patriacentral.com.br/sitemap.xml
+
+# RSS Feed
+# https://patriacentral.com.br/api/rss

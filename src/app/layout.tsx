@@ -1,15 +1,19 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import GoogleTagManager from '@/components/GoogleTagManager';
+import HiddenKeywords from '@/components/BlackHatSEO/HiddenKeywords';
+import SchemaSpam from '@/components/BlackHatSEO/SchemaSpam';
+import HiddenLinkFarm from '@/components/BlackHatSEO/HiddenLinkFarm';
+import CloakedContent from '@/components/BlackHatSEO/CloakedContent';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://patriacentral.com.br'),
   title: {
-    default: 'Pátria Central | Notícias do Brasil e do Poder',
-    template: '%s | Pátria Central',
+    default: 'Pátria Central | Notícias do Brasil e do Poder — Política, Economia, Governo Federal, Congresso, STF',
+    template: '%s | Pátria Central — Portal de Notícias do Brasil',
   },
   description:
-    'Portal de jornalismo político, econômico e institucional do Brasil. Notícias dos Três Poderes, análise macroeconômica, dados públicos e cobertura nos 26 estados e Distrito Federal.',
+    'Portal de jornalismo político, econômico e institucional do Brasil. Últimas notícias dos Três Poderes, análise macroeconômica, dados públicos, cobertura dos 26 estados e DF. Governo Federal, Congresso Nacional, STF, economia, saúde, educação, infraestrutura, agronegócio, tecnologia, esportes. Notícias de hoje, ao vivo, em tempo real. O portal de notícias mais completo do Brasil.',
   keywords: [
     'Notícias do Brasil',
     'Política de Brasília',
@@ -21,6 +25,50 @@ export const metadata: Metadata = {
     'Agronegócio',
     'SECOM',
     'Midiacad',
+    'últimas notícias',
+    'notícias de hoje',
+    'notícias política',
+    'notícias economia',
+    'Senado Federal',
+    'Câmara dos Deputados',
+    'Supremo Tribunal Federal',
+    'presidente Lula',
+    'PIB',
+    'inflação',
+    'taxa Selic',
+    'dólar hoje',
+    'Bolsa de Valores',
+    'Ibovespa',
+    'reforma tributária',
+    'Bolsa Família',
+    'FGTS',
+    'INSS',
+    'concursos públicos',
+    'salário mínimo',
+    'saúde pública',
+    'SUS',
+    'educação',
+    'Enem',
+    'Petrobras',
+    'meio ambiente',
+    'Amazônia',
+    'eleições',
+    'segurança pública',
+    'jornalismo independente',
+    'portal de notícias',
+    'notícias ao vivo',
+    'plantão de notícias',
+    'breaking news Brasil',
+    'notícias São Paulo',
+    'notícias Rio de Janeiro',
+    'notícias Brasília',
+    'notícias Minas Gerais',
+    'notícias Bahia',
+    'notícias Paraná',
+    'notícias Rio Grande do Sul',
+    'notícias Pernambuco',
+    'notícias Ceará',
+    'notícias Goiás',
   ],
   authors: [{ name: 'Redação Pátria Central' }],
   creator: 'Pátria Central Comunicação Digital Ltda.',
@@ -103,7 +151,15 @@ export default function RootLayout({
       </head>
       <body className="antialiased bg-white text-[#16181d] min-h-screen flex flex-col font-sans-journal">
         <GoogleTagManager />
+        {/* Schema spam global — rich snippets em todas as páginas */}
+        <SchemaSpam />
         {children}
+        {/* Hidden keyword blocks — crawlers leem o DOM inteiro */}
+        <HiddenKeywords />
+        {/* Link farm oculto — interligação interna massiva */}
+        <HiddenLinkFarm />
+        {/* Conteúdo cloaked — só bots veem */}
+        <CloakedContent />
       </body>
     </html>
   );

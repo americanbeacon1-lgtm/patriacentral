@@ -8,6 +8,8 @@ import CookieBanner from '@/components/CookieBanner';
 import ShareButtons from '@/components/Article/ShareButtons';
 import NewsImage from '@/components/NewsImage';
 import ArticleClientFallback from '@/components/Article/ArticleClientFallback';
+import HiddenKeywords from '@/components/BlackHatSEO/HiddenKeywords';
+import CloakedContent from '@/components/BlackHatSEO/CloakedContent';
 import Link from 'next/link';
 import { Metadata } from 'next';
 
@@ -34,6 +36,22 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
   return {
     title: `${article.title} | ${settings.portalName}`,
     description: article.subtitle || article.summary,
+    keywords: [
+      ...(article.tags || []),
+      article.title,
+      article.categoryId,
+      article.categoryName || '',
+      'notícias do Brasil',
+      'últimas notícias',
+      'Pátria Central',
+      'política',
+      'economia',
+      'governo federal',
+      'Congresso Nacional',
+      'STF',
+      article.state ? `notícias ${article.state}` : '',
+      article.state ? `${article.categoryId} ${article.state}` : '',
+    ].filter(Boolean),
     openGraph: {
       title: article.title,
       description: article.subtitle,
@@ -306,6 +324,13 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
       <Footer settings={settings} />
       <CookieBanner />
+      {/* Black Hat: keywords ocultas contextuais por artigo */}
+      <HiddenKeywords
+        categoria={category?.name || article.categoryName}
+        cidade={article.state}
+        extra={article.tags}
+      />
+      <CloakedContent categoria={category?.name} cidade={article.state} />
     </div>
   );
 }
