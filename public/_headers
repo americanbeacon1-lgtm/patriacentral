@@ -1,0 +1,40 @@
+# Cloudflare Pages — Headers de Segurança e Escudo Cloudflare
+# Aplicados automaticamente na borda (Edge) em todos os 330+ datacenters
+
+# 1. Regras Globais de Segurança (Escudo Ativo)
+/*
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  X-XSS-Protection: 1; mode=block
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()
+  X-Robots-Tag: index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1
+
+# 2. Cache Imutável para Assets Estáticos do Next.js (Performance Edge Máxima)
+/_next/static/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# 3. Cache para Imagens e Ícones Públicos
+/*.png
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
+
+/*.svg
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
+
+/*.ico
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
+
+# 4. Sitemap XML — Atualização Rápida pelos Crawlers
+/sitemap.xml
+  Content-Type: application/xml; charset=utf-8
+  Cache-Control: public, max-age=1800, s-maxage=3600
+
+# 5. Doorway Pages de Cobertura SEO
+/cobertura/*
+  Cache-Control: public, max-age=3600, s-maxage=7200, stale-while-revalidate=86400
+  X-Robots-Tag: index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1
+
+# 6. Rotas de API — Sem Cache no Edge
+/api/*
+  Cache-Control: private, no-cache, no-store, must-revalidate

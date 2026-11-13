@@ -1,0 +1,3 @@
+# Cloudflare Pages — Redirecionamentos de Borda
+/noticias-de/* /cobertura/:splat 200
+/ultimas-noticias/* /cobertura/ultimas-noticias-:splat 200

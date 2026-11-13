@@ -5,6 +5,10 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:worker": "npx @opennextjs/cloudflare",
+    "deploy:worker": "npm run build:worker && wrangler deploy",
+    "pages:build": "npx @opennextjs/cloudflare",
+    "build:cloudflare": "npx @opennextjs/cloudflare",
     "start": "next start",
     "lint": "eslint"
   },
@@ -23,6 +27,8 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.5.29",
+    "@opennextjs/cloudflare": "^1.20.17",
+    "wrangler": "^4.161.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
