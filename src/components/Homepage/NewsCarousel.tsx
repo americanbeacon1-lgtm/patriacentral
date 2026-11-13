@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Article } from '@/lib/types';
 import NewsImage from '@/components/NewsImage';
+import { getLocalArticles, mergeAndDeduplicateArticles } from '@/lib/client-articles';
 
 interface NewsCarouselProps {
   articles: Article[];
@@ -11,6 +12,19 @@ interface NewsCarouselProps {
 
 export default function NewsCarousel({ articles }: NewsCarouselProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [items, setItems] = useState<Article[]>(articles);
+
+  useEffect(() => {
+    try {
+      const local = getLocalArticles();
+      if (local.length > 0) {
+        const merged = mergeAndDeduplicateArticles(articles, local);
+        setItems(merged.slice(1, 15));
+      }
+    } catch (e) {
+      console.warn('Erro ao atualizar carrossel:', e);
+    }
+  }, [articles]);
 
   const scroll = (direction: number) => {
     if (scrollRef.current) {
@@ -18,7 +32,7 @@ export default function NewsCarousel({ articles }: NewsCarouselProps) {
     }
   };
 
-  if (!articles || articles.length === 0) return null;
+  if (!items || items.length === 0) return null;
 
   return (
     <section className="py-7 border-b border-[#e3e5e9] flex flex-col gap-4">
@@ -50,9 +64,9 @@ export default function NewsCarousel({ articles }: NewsCarouselProps) {
         ref={scrollRef}
         className="grid grid-flow-col auto-cols-[minmax(240px,280px)] gap-5 overflow-x-auto scroll-smooth snap-x snap-mandatory scrollbar-none pb-1"
       >
-        {articles.map((art) => (
+        {items.map((art) => (
           <Link
-            key={art.id}
+            key={art.id || art.slug}
             href={`/noticia/${art.slug}`}
             className="snap-start flex flex-col gap-2 group"
           >

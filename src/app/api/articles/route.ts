@@ -11,6 +11,14 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
+    // Suporte a sincronização em lote (bulk sync)
+    const bulkList = Array.isArray(body) ? body : Array.isArray(body.articles) ? body.articles : null;
+    if (bulkList && bulkList.length > 0) {
+      const validArticles = bulkList.filter((a: any) => a && a.title && (a.slug || a.id));
+      const savedList = db.saveArticles(validArticles);
+      return NextResponse.json({ success: true, count: savedList.length, articles: savedList });
+    }
+
     if (!body.title || !body.categoryId) {
       return NextResponse.json({ error: 'Título e editoria são obrigatórios.' }, { status: 400 });
     }

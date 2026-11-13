@@ -1,32 +1,56 @@
-import React from 'react';
+// language: TypeScript, file: CategoryBlocks.tsx, target: Next.js 15 / React 19
+// Blocos editoriais da Capa (Política, Economia, Brasil) com hidratação dinâmica
+
+'use client';
+
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Article } from '@/lib/types';
+import {
+  getLocalArticles,
+  mergeAndDeduplicateArticles,
+  articleMatchesCategoryClient,
+} from '@/lib/client-articles';
 
 interface CategoryBlocksProps {
   articles: Article[];
 }
 
-export default function CategoryBlocks({ articles }: CategoryBlocksProps) {
+export default function CategoryBlocks({ articles: initialArticles }: CategoryBlocksProps) {
+  const [articles, setArticles] = useState<Article[]>(initialArticles);
+
+  useEffect(() => {
+    try {
+      const local = getLocalArticles();
+      if (local.length > 0) {
+        const merged = mergeAndDeduplicateArticles(initialArticles, local);
+        setArticles(merged);
+      }
+    } catch (e) {
+      console.warn('Erro ao atualizar blocos de editoria:', e);
+    }
+  }, [initialArticles]);
+
   const blocks = [
     {
       name: 'Política',
       slug: 'politica',
       items: articles
-        .filter((a) => a.categoryId === 'politica' || a.categoryId === 'governo' || a.categoryId === 'congresso')
+        .filter((a) => articleMatchesCategoryClient(a, 'politica'))
         .slice(0, 4),
     },
     {
       name: 'Economia',
       slug: 'economia',
       items: articles
-        .filter((a) => a.categoryId === 'economia' || a.categoryId === 'infraestrutura' || a.categoryId === 'agro')
+        .filter((a) => articleMatchesCategoryClient(a, 'economia'))
         .slice(0, 4),
     },
     {
       name: 'Brasil',
       slug: 'brasil',
       items: articles
-        .filter((a) => a.categoryId === 'brasil' || a.categoryId === 'saude' || a.categoryId === 'educacao')
+        .filter((a) => articleMatchesCategoryClient(a, 'brasil'))
         .slice(0, 4),
     },
   ];
@@ -44,7 +68,7 @@ export default function CategoryBlocks({ articles }: CategoryBlocksProps) {
           <div className="flex flex-col">
             {block.items.map((art) => (
               <Link
-                key={art.id}
+                key={art.id || art.slug}
                 href={`/noticia/${art.slug}`}
                 className="flex flex-col gap-1 py-3 border-b border-[#e3e5e9] group"
               >

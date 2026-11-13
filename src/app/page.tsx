@@ -13,6 +13,8 @@ import CookieBanner from '@/components/CookieBanner';
 import LeadHeadline from '@/components/Homepage/LeadHeadline';
 import SecondaryHeadlines from '@/components/Homepage/SecondaryHeadlines';
 import RealtimeTicker from '@/components/Homepage/RealtimeTicker';
+import HomePageLiveHero from '@/components/Homepage/HomePageLiveHero';
+import HomePageAllNewsFeed from '@/components/Homepage/HomePageAllNewsFeed';
 import TrendingArticles from '@/components/Homepage/TrendingArticles';
 import NewsCarousel from '@/components/Homepage/NewsCarousel';
 import CategoryBlocks from '@/components/Homepage/CategoryBlocks';
@@ -70,28 +72,13 @@ export default function HomePage() {
           <AdDisplay banner={superbanner} position="superbanner" />
         </div>
 
-        {/* Hero Section: Manchete Principal + Últimas Notícias */}
-        <section className="flex flex-wrap gap-7 py-5 pb-8 border-b border-[#e3e5e9]">
-          {/* Manchete Principal (flex: 2 1 520px) */}
-          <div className="flex-[2_1_520px] min-w-0">
-            {leadArticle && (
-              <LeadHeadline
-                article={leadArticle}
-                author={leadAuthor}
-                category={leadCategory}
-              />
-            )}
-          </div>
-
-          {/* Últimas Notícias em Tempo Real + Retângulo Médio (flex: 1 1 300px) */}
-          <aside className="flex-[1_1_300px] flex flex-col gap-5 min-w-0">
-            <RealtimeTicker articles={allArticles.slice(0, 8)} />
-            <AdDisplay banner={mediumRect} position="medium_rectangle" />
-          </aside>
-        </section>
-
-        {/* Manchetes Secundárias (Grade de 3 colunas) */}
-        <SecondaryHeadlines articles={secondaryArticles} />
+        {/* Hero Section Reativo em Tempo Real: Manchete Principal + Secundárias + Plantão */}
+        <HomePageLiveHero
+          initialArticles={allArticles}
+          authors={authors}
+          categories={categories}
+          mediumRectBanner={mediumRect}
+        />
 
         {/* Destaques da Redação (Carrossel Horizontal com Snap) */}
         <NewsCarousel articles={carouselArticles.length > 0 ? carouselArticles : restArticles} />
@@ -122,6 +109,12 @@ export default function HomePage() {
 
         {/* Opinião e Colunistas */}
         <OpinionSection columnists={columnists} />
+
+        {/* FEED COMPLETO DE TODAS AS NOTÍCIAS PUBLICADAS NO BRASIL */}
+        <HomePageAllNewsFeed
+          initialArticles={allArticles}
+          categories={categories}
+        />
 
         {/* Caixa de Newsletter Resumo */}
         <NewsletterBox portalName={settings.portalName} />

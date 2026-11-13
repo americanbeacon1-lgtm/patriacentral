@@ -7,6 +7,7 @@ import AdDisplay from '@/components/AdDisplay';
 import CookieBanner from '@/components/CookieBanner';
 import NewsImage from '@/components/NewsImage';
 import TrendingArticles from '@/components/Homepage/TrendingArticles';
+import CategoryClientFeed from '@/components/Category/CategoryClientFeed';
 import Link from 'next/link';
 import { Metadata } from 'next';
 
@@ -203,64 +204,14 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
               </div>
             )}
 
-            {/* Aviso Editorial amigável em caso de fallback */}
-            {isFallback && (
-              <div className="p-3.5 bg-blue-50/60 border border-blue-200/60 rounded text-xs text-blue-900 mb-4 leading-relaxed">
-                A redação do Portal Pátria Central está apurando novas reportagens específicas para <strong>{category.name}</strong>. Acompanhe abaixo os principais destaques nacionais em tempo real:
-              </div>
-            )}
-
-            {/* Listagem de Notícias */}
-            {articles.length > 0 ? (
-              <div className="flex flex-col">
-                {articles.map((art) => (
-                  <Link
-                    key={art.id}
-                    href={`/noticia/${art.slug}`}
-                    className="grid grid-cols-[100px_1fr] sm:grid-cols-[160px_1fr] md:grid-cols-[200px_1fr] gap-3 sm:gap-5 py-4 border-b border-[#e3e5e9] group"
-                  >
-                    <div className="aspect-16/10 relative overflow-hidden rounded bg-[#f4f5f7]">
-                      <NewsImage
-                        src={art.imageUrl}
-                        alt={art.title}
-                        className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300"
-                        category={category.id}
-                        loading="lazy"
-                      />
-                    </div>
-                    <div className="flex flex-col justify-between gap-1">
-                      <div>
-                        <span className="text-[10.5px] sm:text-[11.5px] font-bold tracking-[0.08em] uppercase text-[#008744]">
-                          {art.chapeu || category.name}
-                        </span>
-                        <h2 className="font-serif-journal font-semibold text-[16px] sm:text-[19px] lg:text-[20px] leading-[1.25] text-[#04391d] group-hover:text-[#008744] transition-colors line-clamp-2 mt-0.5">
-                          {art.title}
-                        </h2>
-                        {art.subtitle && (
-                          <p className="text-[13px] sm:text-[14px] leading-relaxed text-[#3c414b] line-clamp-2 mt-1 hidden sm:block">
-                            {art.subtitle}
-                          </p>
-                        )}
-                      </div>
-                      <span className="text-[11px] sm:text-[12px] text-[#5b616e] mt-1 flex items-center gap-1.5 sm:gap-2 flex-wrap">
-                        <span className="font-semibold text-[#04391d]">
-                          {new Date(art.publishedAt).toLocaleDateString('pt-BR', { day: 'numeric', month: 'short' })} às{' '}
-                          {new Date(art.publishedAt).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
-                        </span>
-                        <span>·</span>
-                        <span>{art.state || 'Nacional'}</span>
-                        <span>·</span>
-                        <span>{art.readingTime || 3} min de leitura</span>
-                      </span>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            ) : (
-              <p className="text-[15px] text-[#5b616e] py-6">
-                Nenhuma notícia encontrada nesta editoria no momento.
-              </p>
-            )}
+            {/* Feed Dinâmico com Hidratação Local e Suporte a Todas as Subcategorias */}
+            <CategoryClientFeed
+              categorySlug={category.slug}
+              categoryName={category.name}
+              serverArticles={articles}
+              allServerArticles={allArticles}
+              isUltimas={isUltimas}
+            />
           </div>
 
           {/* Coluna Lateral: Half Page 300 × 600 + Mais Lidas (flex: 1 1 300px) */}
