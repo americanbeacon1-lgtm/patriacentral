@@ -38,3 +38,7 @@
 # 6. Rotas de API — Sem Cache no Edge
 /api/*
   Cache-Control: private, no-cache, no-store, must-revalidate
+
+# 7. Páginas de Notícias — Cache Edge (Suporta milhões de views dos seus bots sem gastar CPU)
+/noticia/*
+  Cache-Control: public, max-age=60, s-maxage=3600, stale-while-revalidate=86400

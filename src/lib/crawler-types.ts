@@ -3,6 +3,7 @@ export interface NewsSource {
   name: string;
   badgeColor: string;
   rssUrls: { url: string; category: string }[];
+  enabled?: boolean;
 }
 
 export interface ExtractedNewsItem {
@@ -72,6 +73,7 @@ export const KNOWN_SOURCES: NewsSource[] = [
     id: 'camara',
     name: 'Agência Câmara de Notícias',
     badgeColor: 'bg-indigo-800 text-white',
+    enabled: false, // Desativado para evitar timeouts de 1.8s e erros 4xx no Edge
     rssUrls: [
       { url: 'https://www.camara.leg.br/noticias/rss/ultimas-noticias', category: 'congresso' },
     ],
@@ -80,6 +82,7 @@ export const KNOWN_SOURCES: NewsSource[] = [
     id: 'senado',
     name: 'Agência Senado',
     badgeColor: 'bg-blue-800 text-white',
+    enabled: false, // Desativado para evitar timeouts de 1.8s e erros 4xx no Edge
     rssUrls: [
       { url: 'https://www12.senado.leg.br/noticias/feed/todas-noticias/rss', category: 'congresso' },
     ],

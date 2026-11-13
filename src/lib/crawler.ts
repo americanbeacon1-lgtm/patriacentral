@@ -279,17 +279,39 @@ function detectCategory(title: string, content: string, defaultCategory: string)
   return defaultCategory || 'brasil';
 }
 
+// Cache global em memória para feeds de notícias externas
+// Protege o Worker de CPU Timeouts quando robôs de visualização acessam em massa
+interface FeedCacheEntry {
+  timestamp: number;
+  items: ExtractedNewsItem[];
+}
+let globalFeedCache: FeedCacheEntry | null = null;
+const FEED_CACHE_TTL_MS = 15 * 60 * 1000; // 15 minutos de cache em memória
+
+// Cache negativo para slugs inexistentes (retorna 404 em 0ms sem re-escanear feeds)
+const NOT_FOUND_SLUGS = new Map<string, number>();
+const NOT_FOUND_TTL_MS = 30 * 60 * 1000; // 30 minutos
+
 export async function fetchNewsFromPortals(options: {
   sourceIds?: string[];
   daysAgo: number; // 1 a 10 dias
+  bypassCache?: boolean;
 }): Promise<ExtractedNewsItem[]> {
-  const { sourceIds, daysAgo } = options;
+  const { sourceIds, daysAgo, bypassCache } = options;
+
+  // Se for busca geral (sem filtros de fontes) e tiver cache recente, responde da memória em 0.001ms
+  const isGeneralFetch = !sourceIds || sourceIds.length === 0;
+  if (isGeneralFetch && !bypassCache && globalFeedCache && (Date.now() - globalFeedCache.timestamp < FEED_CACHE_TTL_MS)) {
+    return globalFeedCache.items;
+  }
+
   const days = Math.min(10, Math.max(1, daysAgo || 3));
   const cutoffTime = Date.now() - days * 24 * 60 * 60 * 1000;
 
+  const activeSources = KNOWN_SOURCES.filter((s) => s.enabled !== false);
   const targetSources = sourceIds && sourceIds.length > 0
-    ? KNOWN_SOURCES.filter((s) => sourceIds.includes(s.id))
-    : KNOWN_SOURCES;
+    ? activeSources.filter((s) => sourceIds.includes(s.id))
+    : activeSources;
 
   const existingArticles = db.getArticles();
   const existingSlugs = new Set(existingArticles.map((a) => a.slug));
@@ -301,10 +323,14 @@ export async function fetchNewsFromPortals(options: {
     for (const rssInfo of source.rssUrls) {
       try {
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 6000);
+        const timeoutId = setTimeout(() => controller.abort(), 2000);
 
         const response = await fetch(rssInfo.url, {
           signal: controller.signal,
+          // @ts-ignore
+          next: { revalidate: 900 },
+          // @ts-ignore Cloudflare Edge Cache
+          cf: { cacheTtl: 900, cacheEverything: true },
           headers: {
             'User-Agent': 'Mozilla/5.0 (compatible; PatriaCentralBot/1.0; +https://patriacentral.com.br/redacao)',
             'Accept': 'application/rss+xml, application/xml, text/xml, */*',
@@ -418,6 +444,14 @@ export async function fetchNewsFromPortals(options: {
       item.imageUrl = getCategoryFallbackImage(item.suggestedCategory, idx);
     }
   });
+
+  // Salva no cache global em memória para que novos visitantes e bots leiam da memória sem custo de CPU
+  if (isGeneralFetch && results.length > 0) {
+    globalFeedCache = {
+      timestamp: Date.now(),
+      items: results,
+    };
+  }
 
   return results;
 }
@@ -799,6 +833,15 @@ export async function findArticleBySlugInFeeds(slug: string): Promise<Article | 
     .replace(/[\u0300-\u036f]/g, '')
     .trim();
 
+  // Cache negativo: se o slug já falhou recentemente, responde 404 em 0ms sem consumir CPU
+  if (NOT_FOUND_SLUGS.has(normTarget)) {
+    const ts = NOT_FOUND_SLUGS.get(normTarget)!;
+    if (Date.now() - ts < NOT_FOUND_TTL_MS) {
+      return undefined;
+    }
+    NOT_FOUND_SLUGS.delete(normTarget);
+  }
+
   try {
     const items = await fetchNewsFromPortals({ daysAgo: 10 });
     const matchingItem = items.find((item) => {
@@ -822,5 +865,7 @@ export async function findArticleBySlugInFeeds(slug: string): Promise<Article | 
     console.warn('Erro ao resolver notícia dinâmica por slug:', slug, err);
   }
 
+  // Registra no cache negativo para proteger de rajadas de bots em slugs 404
+  NOT_FOUND_SLUGS.set(normTarget, Date.now());
   return undefined;
 }
